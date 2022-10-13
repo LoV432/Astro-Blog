@@ -1,0 +1,49 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../config';
+const { slug } = Astro.params;
+import { marked } from '../../../node_modules/marked';
+var posts  =  await fetch('http://localhost:1337/api/posts/' + slug).then(res => res.json())
+// const content = marked.parse("# Hola");
+// console.log(content)
+const post = posts.data.attributes
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<BaseHead title={post.heading} description={post.description} />
+		<style>
+			.title {
+				font-size: 2em;
+				margin: 0.25em 0 0;
+			}
+			hr {
+  				border-top: 1px solid #DDD;
+				margin: 1rem 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<article>
+				{post.heading && (
+					<img
+						width={720}
+						height={360}
+						src="#"
+						alt=""
+					/>
+				)}
+				<h1 class="title">{post.heading}</h1>
+				{post.createdAt && <time>{post.heading}</time>}
+				{post.createdAt && <div>Last updated on <time>{post.createdAt}</time></div>}
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
