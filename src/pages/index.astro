@@ -15,10 +15,8 @@ const currentPage = posts.meta.pagination.page
 
 <!DOCTYPE html>
 <html lang="en" class=" bg-zinc-800 text-zinc-200">
-	<head>
+	<body class="min-h-screen grid grid-rows-[auto,1fr]">
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
 		<Header />
 		<main class="mt-10">
 			<section>
@@ -28,7 +26,7 @@ const currentPage = posts.meta.pagination.page
 				  </form>
 			</section>
 			<section>
-				<ul>
+				<!-- <ul>
 					{posts.data.map((post) => (
 						<li>
 							<time datetime={post.attributes.createdAt}>
@@ -48,16 +46,16 @@ const currentPage = posts.meta.pagination.page
 							
 							</li>
 					))}
-				</ul>
+				</ul> -->
 			</section>
 			<section>
-				{totalPages > 1 &&
+				<!-- {totalPages > 1 &&
 					<>{currentPage < totalPages && <a href={"?page=" + (currentPage + 1)}>Forward</a>}</><br/>
 					<>{currentPage > 1 && <a href={"?page=" + (currentPage - 1)}>Back</a>}</>
 					
-				}
+				} -->
 			</section>
 		</main>
-		<Footer />
+		<section class=" place-items-end text-left p-5"><Footer /></section>
 	</body>
 </html>
