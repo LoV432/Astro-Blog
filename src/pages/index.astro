@@ -14,34 +14,17 @@ const currentPage = posts.meta.pagination.page
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class=" bg-zinc-800 text-zinc-200">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			ul {
-				list-style-type: none;
-				padding: unset;
-			}
-			ul li {
-				display: flex;
-			}
-			ul li time {
-				flex: 0 0 130px;
-				font-style: italic;
-				color: #979797;
-			}
-			ul li a:visited {
-				color: #8e32dc;
-			}
-		</style>
 	</head>
 	<body>
 		<Header />
-		<main>
+		<main class="mt-10">
 			<section>
-				<form method="get" action="/search">
-					<input class="bg-green-800 text-white rounded-md h-6 mb-2 text-center" type="text" id="search" name="search" placeholder="Search"><br>
-					<input class="bg-red-800 text-white rounded-md w-16 h-8 text-center" type="submit" value="Go!">
+				<form method="get" action="/search" class="w-full grid place-items-center">
+					<input class=" bg-black rounded-md h-9 mb-2 text-center w-2/4" type="text" id="search" name="search" placeholder="Search"><br>
+					<input class="hidden" type="submit" value="Go!">
 				  </form>
 			</section>
 			<section>
