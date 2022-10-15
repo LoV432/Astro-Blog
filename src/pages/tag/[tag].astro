@@ -2,44 +2,39 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../config';
-const { tag } = Astro.params;
-var posts  =  await fetch('http://localhost:1337/api/posts?filters[tags][tag][$eq]='+ tag +'&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&populate[tags][fields]=tag').then(res => res.json())
+import { SITE_TITLE, SITE_DESCRIPTION, API } from '../../config';
+const { tag } = Astro.params
+var api = 'http://localhost:1337/api/posts?filters[tags][tag][$eq]='+ tag +'&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=10'
+let search: string = ""
+if (Astro.url.searchParams.get('page')){
+	api = api + "&pagination[page]=" + Astro.url.searchParams.get('page')
+}
+if (Astro.url.searchParams.get('search')){
+	api = api + "&filters%5Bheading%5D%5B$contains%5D=" + Astro.url.searchParams.get('search')
+	search = "&search=" + Astro.url.searchParams.get('search')
+}
+
+
+const posts  =  await fetch(api).then(res => res.json())
+const totalPages = posts.meta.pagination.pageCount
+const currentPage = posts.meta.pagination.page
 ---
 
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			ul {
-				list-style-type: none;
-				padding: unset;
-			}
-			ul li {
-				display: flex;
-			}
-			ul li time {
-				flex: 0 0 130px;
-				font-style: italic;
-				color: #595959;
-			}
-			ul li a:visited {
-				color: #8e32dc;
-			}
-		</style>
-	</head>
-	<body>
+<html lang="en" class=" bg-[#121212] text-zinc-200">
+	<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	<body class="min-h-screen grid grid-rows-[auto,1fr,auto]">
 		<Header />
-		<main>
+		<main class="mt-10">
 			<section>
-				<form method="get" action="/search">
-					<input class="bg-green-800 text-white rounded-md h-6 mb-2 text-center" type="text" id="search" name="search" placeholder="Search"><br>
-					<input class="bg-red-800 text-white rounded-md w-16 h-8 text-center" type="submit" value="Go!">
+				<form method="get" action={"/tag/" + tag} class="w-full grid place-items-center">
+					<input type="text" id="search" name="search" placeholder={"Search #" + tag} class="input input-bordered input-error text-center w-[19rem] md:w-[45rem] h-9 mb-10" />
+					<!-- <input class=" bg-[#e63535] text-white placeholder:text-white rounded-md h-9 mb-10 text-center w-[19rem] md:w-[45rem]" type="text" id="search" name="search" placeholder="Search"><br> -->
+					<input class="hidden" type="submit" value="Go!">
 				  </form>
 			</section>
-			<section>
-				<ul>
+			<section class="grid place-items-center">
+				<!-- <ul>
 					{posts.data.map((post) => (
 						<li>
 							<time datetime={post.attributes.createdAt}>
@@ -59,9 +54,42 @@ var posts  =  await fetch('http://localhost:1337/api/posts?filters[tags][tag][$e
 							
 							</li>
 					))}
-				</ul>
+				</ul> -->
+				{posts.data.map((post) => (
+				<div onclick={"window.location.replace('/blog/" + post.id + "')"} class="grid md:grid-cols-[1fr,63%] md:grid-rows-[unset] sm:grid-rows-[1fr,66%] w-[20rem] md:w-[48rem] mb-6 hover:cursor-pointer">
+					<img src={API + post.attributes.cover.data.attributes.formats.medium.url} class="aspect-[16/9] rounded-l-sm h-full"/>
+					<div class="bg-[#F5F5F5] text-black h-fit md:h-full rounded-r-sm">
+						<div class="text-4xl m-5 mb-2">{post.attributes.heading}</div>
+						<div class="w-fit mx-5 mb-5">
+							<span class="bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 pb-1 rounded dark:bg-indigo-200 dark:text-indigo-900">tags:</span>
+							{
+								post.attributes.tags.data.map((tag) => (
+									<span> <a class="text-blue-700" href={"/tag/" + tag.attributes.tag}>#{tag.attributes.tag}</a> &VeryThinSpace;</span>
+								))
+							}
+							</div>
+						<div class="pl-5 pr-5 pb-5">{post.attributes.description}</div>
+					</div>
+				</div>
+				))}
+			</section>
+			<section class="grid place-items-center">
+				<div class="flex">
+					{totalPages > 1 &&
+							<>{currentPage > 1 ? <a href={"/tag/" + tag + "?page=" + (currentPage - 1) + search}>
+								<button class="btn bg-[#ffffff] hover:bg-gray-300 text-black rounded-r-none min-w-[8rem]">Previous page</button>
+							</a> : 	
+								<button class="btn hover:cursor-not-allowed  rounded-r-none min-w-[8rem]">Previous page</button>
+							}  </>
+							<>{currentPage < totalPages ? <a href={"/tag/" + tag + "?page=" + (currentPage + 1) + search}>
+								<button class="btn bg-[#ffffff] hover:bg-gray-300 text-black  rounded-l-none min-w-[8rem]">Next</button>
+							</a> : 	
+								<button class="btn hover:cursor-not-allowed rounded-l-none min-w-[8rem]">Next</button>
+							}</>
+					}
+				</div>
 			</section>
 		</main>
-		<Footer />
+		<section class=" place-items-end text-left p-5"><Footer /></section>
 	</body>
 </html>
