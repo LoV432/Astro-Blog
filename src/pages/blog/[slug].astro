@@ -2,9 +2,10 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { API, PUBLICAPI } from '../../config';
 const { slug } = Astro.params;
 import { marked } from '../../../node_modules/marked';
-var posts  =  await fetch('http://localhost:1337/api/posts/'+ slug + '?fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&populate[cover][fields][0]=formats').then(res => res.json())
+var posts  =  await fetch(API + '/api/posts/'+ slug + '?fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&populate[cover][fields][0]=formats').then(res => res.json())
 // console.log(content)
 const post = posts.data.attributes
 const content = marked.parse(post.content);
@@ -21,7 +22,7 @@ const options= {
 		<Header />
 		<main class="grid place-items-center">
 			<section class="grid grid-cols-[1fr] gap-6 mt-10 px-14 w-[25rem] md:w-[40rem] lg:w-[50rem]">
-				<img class="rounded-md aspect-video" src={"http://localhost:1337"+post.cover.data.attributes.formats.large.url} alt=""/>
+				<img class="rounded-md aspect-video" src={PUBLICAPI + post.cover.data.attributes.formats.large.url} alt=""/>
 				<div class="">
 					{//@ts-ignore
 					post.publishedAt && <time>Published on: {new Date(post.publishedAt).toLocaleString('en-US', options) }</time>}
