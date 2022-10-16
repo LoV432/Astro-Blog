@@ -29,32 +29,10 @@ const currentPage = posts.meta.pagination.page
 			<section>
 				<form method="get" action={"/tag/" + tag} class="w-full grid place-items-center">
 					<input type="text" id="search" name="search" placeholder={"Search #" + tag} class="input input-bordered input-error text-center w-[19rem] md:w-[45rem] h-9 mb-10" />
-					<!-- <input class=" bg-[#e63535] text-white placeholder:text-white rounded-md h-9 mb-10 text-center w-[19rem] md:w-[45rem]" type="text" id="search" name="search" placeholder="Search"><br> -->
 					<input class="hidden" type="submit" value="Go!">
 				  </form>
 			</section>
 			<section class="grid place-items-center">
-				<!-- <ul>
-					{posts.data.map((post) => (
-						<li>
-							<time datetime={post.attributes.createdAt}>
-								{new Date(post.attributes.createdAt).toLocaleDateString('en-us', {
-									year: 'numeric',
-									month: 'short',
-									day: 'numeric',
-								})}
-							</time>
-							<a href={"/blog/" + post.id}>{post.attributes.heading}</a>
-						</li>
-						<li class="pb-3"><span>tags: </span>
-							{post.attributes.tags.data.map((tag) => (
-								<span>&VeryThinSpace; <a href={"/tag/" + tag.attributes.tag}>{tag.attributes.tag}</a>, &VeryThinSpace;</span>
-							))
-								}
-							
-							</li>
-					))}
-				</ul> -->
 				{posts.data.map((post) => (
 				<div onclick={"window.location.replace('/blog/" + post.id + "')"} class="grid md:grid-cols-[1fr,63%] md:grid-rows-[unset] sm:grid-rows-[1fr,66%] w-[20rem] md:w-[48rem] mb-6 hover:cursor-pointer">
 					<img src={"/images?src=" + post.attributes.cover.data.attributes.formats.medium.url} class="aspect-[16/9] rounded-l-sm h-full"/>

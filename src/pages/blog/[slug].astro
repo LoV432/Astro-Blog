@@ -6,7 +6,6 @@ import { API } from '../../config';
 const { slug } = Astro.params;
 import { marked } from '../../../node_modules/marked';
 var posts  =  await fetch(API + '/api/posts/'+ slug + '?fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&populate[cover][fields][0]=formats').then(res => res.json())
-// console.log(content)
 const post = posts.data.attributes
 const content = marked.parse(post.content);
 const options= {
@@ -33,21 +32,6 @@ const options= {
 			</section>
 			
 		</main>
-		<!-- <main>
-			<article>
-				{post.heading && (
-					<img
-						width={720}
-						height={360}
-						src="#"
-						alt=""
-					/>
-				)}
-				<h1 class="title">{post.heading}</h1>
-				{post.createdAt && <time>{post.heading}</time>}
-				{post.createdAt && <div>Last updated on <time>{post.createdAt}</time></div>}
-			</article>
-		</main> -->
 		<section class=" place-items-end text-left p-5"><Footer /></section>
 	</body>
 </html>
