@@ -21,7 +21,7 @@ const options= {
 		<Header />
 		<main class="grid place-items-center">
 			<section class="grid grid-cols-[1fr] gap-6 mt-10 px-14 w-[25rem] md:w-[40rem] lg:w-[50rem]">
-				<img class="rounded-md aspect-video" src={"/images.jpg?src=" +  post.cover.data.attributes.formats.large.url} alt=""/>
+				<img class="rounded-lg max-w-[42rem]" src={"/images.jpg?src=" +  post.cover.data.attributes.formats.large.url} alt=""/>
 				<div class="">
 					{//@ts-ignore
 					post.publishedAt && <time>Published on: {new Date(post.publishedAt).toLocaleString('en-US', options) }</time>}
