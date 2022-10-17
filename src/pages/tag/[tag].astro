@@ -35,7 +35,7 @@ const currentPage = posts.meta.pagination.page
 			<section class="grid place-items-center">
 				{posts.data.map((post) => (
 				<div onclick={"window.location.replace('/blog/" + post.id + "')"} class="grid md:grid-cols-[1fr,63%] md:grid-rows-[unset] sm:grid-rows-[1fr,66%] w-[20rem] md:w-[48rem] mb-6 hover:cursor-pointer">
-					<img src={"/images?src=" + post.attributes.cover.data.attributes.formats.medium.url} class="aspect-[16/9] rounded-l-sm h-full"/>
+					<img src={"/images.jpg?src=" + post.attributes.cover.data.attributes.formats.medium.url} class="aspect-[16/9] rounded-l-sm h-full"/>
 					<div class="bg-[#F5F5F5] text-black h-fit md:h-full rounded-r-sm">
 						<div class="text-4xl m-5 mb-2">{post.attributes.heading}</div>
 						<div class="w-fit mx-5 mb-5">
