@@ -1,12 +1,18 @@
 import { API } from '../config';
 export async function get({ request }) {
-  const imageSrc = new URLSearchParams(request.url.split("?")[1]).get("src")
-  const response = await fetch(API + imageSrc);
-  const buffer = Buffer.from(await response.arrayBuffer());
-  return new Response(buffer, {
-    status: 200,
-    headers: {
-      "Content-Type": "image/jpg"
-    }
-  });
+  const imageSrc = new URLSearchParams(request.url.split("?")[1]).get("src").split("/")[2]
+  const response = await fetch(API + "/uploads/" + imageSrc)
+  if (response.headers.get("Content-Type").split("/")[0] == "image"){
+    const buffer = Buffer.from(await response.arrayBuffer())
+    return new Response(buffer, {
+      status: 200,
+      headers: {
+        "Content-Type": "image/jpg"
+      }
+    });
+  } else {
+    return new Response(null, {
+      status: 403,
+    });
+  }
 }
