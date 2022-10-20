@@ -11,9 +11,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^0.11.4",
     "@astrojs/node": "^1.1.0",
-    "@astrojs/rss": "^1.0.2",
     "@astrojs/sitemap": "^1.0.0",
     "@astrojs/tailwind": "^2.0.2",
     "astro": "^1.4.7",
