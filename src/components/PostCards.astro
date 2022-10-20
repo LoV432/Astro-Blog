@@ -1,0 +1,25 @@
+---
+const {posts} = Astro.props;
+---
+
+<section class="grid place-items-center">
+    {posts.data.map((post) => (
+    <div onclick={"window.location.href = '/blog/" + post.id + "'"} 
+    class="grid md:grid-cols-[1fr,63%] md:grid-rows-[unset] sm:grid-rows-[1fr,66%] w-[20rem] md:w-[48rem] mb-6 
+     shadow-lg hover:shadow-slate-300/10 hover:cursor-pointer hover:-translate-y-1 transition-all">
+     <img src={"/images.jpg?src=" + post.attributes.cover.data.attributes.formats.medium.url} class="rounded-l-sm w-full h-full object-cover "/>
+        <div class="bg-[#F5F5F5] text-black h-fit md:h-full rounded-r-sm">
+            <div class="text-4xl m-5 mb-2">{post.attributes.heading}</div>
+            <div class="w-fit mx-5 mb-5">
+                <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 pb-1 rounded dark:bg-indigo-200 dark:text-indigo-900">tags:</span>
+                {
+                    post.attributes.tags.data.map((tag) => (
+                        <span> <a class="text-blue-700" href={"/tag/" + tag.attributes.tag}>#{tag.attributes.tag}</a> &VeryThinSpace;</span>
+                    ))
+                }
+                </div>
+            <div class="pl-5 pr-5 pb-5">{post.attributes.description}</div>
+        </div>
+    </div>
+    ))}
+</section>
