@@ -4,7 +4,7 @@ const {posts} = Astro.props;
 
 <section class="grid place-items-center">
     {posts.data.map((post) => (
-    <div onclick={"window.location.href = '/blog/" + post.id + "'"} 
+    <div tabindex="0" onclick={"window.location.href = '/blog/" + post.id + "'"} onkeydown={"if (event.key === 'Enter') window.location.href = '/blog/" + post.id + "'"}
     class="grid md:grid-cols-[1fr,63%] md:grid-rows-[unset] sm:grid-rows-[1fr,66%] w-[20rem] md:w-[48rem] mb-6 
      shadow-lg hover:shadow-slate-300/10 hover:cursor-pointer hover:-translate-y-1 transition-all">
      <img src={"/images.jpg?src=" + post.attributes.cover.data.attributes.formats.medium.url} class="rounded-l-sm w-full h-full object-cover "/>
