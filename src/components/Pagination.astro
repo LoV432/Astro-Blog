@@ -5,14 +5,14 @@ const {totalPages, currentPage, search, tag=""} = Astro.props;
     <div class="flex">
         {totalPages > 1 &&
                 <>{currentPage > 1 ? <a href={tag + "?page=" + (currentPage - 1) + search}>
-                    <button class="btn bg-[#ffffff] hover:bg-gray-300 text-black rounded-r-none min-w-[8rem]">Previous page</button>
+                    <button class="btn bg-transparent border-2 border-rose-700 hover:border-rose-700 text-rose-700 hover:shadow-lg hover:shadow-rose-600/20 rounded-r-none min-w-[8rem]">Previous page</button>
                 </a> : 	
-                    <button class="btn hover:cursor-not-allowed  rounded-r-none min-w-[8rem]">Previous page</button>
+                    <button class="btn bg-transparent hover:cursor-not-allowed hover:bg-[rgb(25,29,36)] rounded-r-none min-w-[8rem]">Previous page</button>
                 }  </>
                 <>{currentPage < totalPages ? <a href={tag + "?page=" + (currentPage + 1) + search}>
-                    <button class="btn bg-[#ffffff] hover:bg-gray-300 text-black  rounded-l-none min-w-[8rem]">Next</button>
+                    <button class="btn bg-transparent border-2 border-rose-700 hover:border-rose-700 text-rose-700 hover:shadow-lg hover:shadow-rose-600/20 rounded-l-none min-w-[8rem]">Next</button>
                 </a> : 	
-                    <button class="btn hover:cursor-not-allowed rounded-l-none min-w-[8rem]">Next</button>
+                    <button class="btn bg-transparent hover:cursor-not-allowed hover:bg-[rgb(25,29,36)] rounded-l-none min-w-[8rem]">Next</button>
                 }</>
         }
     </div>

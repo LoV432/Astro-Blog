@@ -4,7 +4,7 @@ const {action="/", placeholder="Search"} = Astro.props;
 
 <section>
     <form method="get" action={action} class="w-full grid place-items-center">
-        <input type="text" id="search" name="search" placeholder={placeholder} class="input input-bordered input-error text-center w-[19rem] md:w-[45rem] h-9 mb-10" />
+        <input type="text" id="search" name="search" placeholder={placeholder} class="border-rose-700 border-2 rounded-lg bg-zinc-800  focus:outline-none focus:shadow-lg focus:shadow-rose-600/50 font-[Kalam] text-2xl font-bold input-error text-center w-[19rem] md:w-[48rem] h-14 mb-10" />
         <input class="hidden" type="submit" value="Go!">
         </form>
 </section>
