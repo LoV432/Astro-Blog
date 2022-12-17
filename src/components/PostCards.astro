@@ -11,7 +11,7 @@ const {posts} = Astro.props;
         <div class="min-h-[210.667px]">
             <PostImage imageObject={post.attributes.cover.data.attributes} classes={"rounded-l-sm w-full h-full object-cover"} size={"medium"} alt={"Thumbnail"}/>
         </div>
-        <div class="h-fit md:h-full rounded-r-sm">
+        <div class="h-fit md:h-full rounded-r-sm bg-zinc-900">
             <div class="text-4xl m-5 mb-2">{post.attributes.heading}</div>
             <div class="w-fit mx-5 mb-5">
                 <span class="bg-rose-200 text-rose-900 text-xs font-semibold mr-2 px-2.5 py-0.5 pb-1 rounded">tags:</span>
