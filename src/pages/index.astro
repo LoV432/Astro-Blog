@@ -7,7 +7,7 @@ import Pagination from '../components/Pagination.astro';
 import Search from '../components/Search.astro';
 import PostCards from '../components/PostCards.astro';
 
-var api = API + "/api/posts?fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=10"
+var api = API + "/api/posts?fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&pagination[pageSize]=10"
 let search: string = ""
 
 if (Astro.url.searchParams.get('page')){

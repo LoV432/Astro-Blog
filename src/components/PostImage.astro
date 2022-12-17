@@ -1,0 +1,11 @@
+---
+const {imageObject, classes, size} = Astro.props;
+let image: string
+if (Object.hasOwn(imageObject.formats, size)) {
+    image = imageObject.formats[size].url
+} else {
+    image = imageObject.url
+}
+
+---
+<img src={"/images.jpg?src=" + image} class={classes}/>

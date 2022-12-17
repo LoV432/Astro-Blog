@@ -7,7 +7,8 @@ export async function get({ request }) {
     return new Response(buffer, {
       status: 200,
       headers: {
-        "Content-Type": "image/jpg"
+        "Content-Type": "image/jpg",
+        "Cache-Control": "max-age=15552000"
       }
     });
   } else {
