@@ -5,7 +5,7 @@ const {posts} = Astro.props;
 
 <section class="grid place-items-center">
     {posts.data.map((post) => (
-    <div tabindex="0" onclick={"window.location.href = '/blog/" + post.id + "'"} onkeydown={"if (event.key === 'Enter') window.location.href = '/blog/" + post.id + "'"}
+    <a tabindex="0" href={"/blog/" + post.id} rel="prefetch"
     class="grid md:grid-cols-[1fr,63%] md:grid-rows-[unset] sm:grid-rows-[1fr,66%] w-[20rem] md:w-[48rem] mb-6 
      border-2 rounded-lg border-rose-700 shadow-xl shadow-rose-600/10 hover:shadow-rose-600/40 hover:cursor-pointer hover:-translate-y-1 transition-all overflow-hidden">
         <div class="min-h-[210.667px]">
@@ -14,15 +14,17 @@ const {posts} = Astro.props;
         <div class="h-fit md:h-full rounded-r-sm bg-zinc-900">
             <div class="text-4xl m-5 mb-2">{post.attributes.heading}</div>
             <div class="w-fit mx-5 mb-5">
-                <span class="bg-rose-200 text-rose-900 text-xs font-semibold mr-2 px-2.5 py-0.5 pb-1 rounded">tags:</span>
-                {
-                    post.attributes.tags.data.map((tag) => (
-                        <span> <a class="text-blue-700" href={"/tag/" + tag.attributes.tag}>#{tag.attributes.tag}</a> &VeryThinSpace;</span>
-                    ))
-                }
-                </div>
+                <object>
+                    <span class="bg-rose-200 text-rose-900 text-xs font-semibold mr-2 px-2.5 py-0.5 pb-1 rounded">tags:</span>
+                        {
+                            post.attributes.tags.data.map((tag) => (
+                                <span> <a class="text-blue-700" href={"/tag/" + tag.attributes.tag} rel="prefetch">#{tag.attributes.tag}</a> &VeryThinSpace;</span>
+                            ))
+                        }
+                </object>
+            </div>
             <div class="pl-5 pr-5 pb-5">{post.attributes.description}</div>
         </div>
-    </div>
+    </a>
     ))}
 </section>
