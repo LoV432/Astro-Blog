@@ -6,6 +6,7 @@ import PostImage from '../../components/PostImage.astro';
 import { API } from '../../config';
 const { slug } = Astro.params;
 import { marked } from '../../../node_modules/marked';
+import DOMPurify from 'isomorphic-dompurify';
 import hljs from 'highlight.js/lib/common'
 import 'highlight.js/styles/github-dark.css';
 var posts  =  await fetch(API + '/api/posts/?filters[slug][$eq]='+ slug + '&fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&populate[cover][fields][0]=formats&populate[cover][fields]=url').then(res => res.json())
@@ -18,11 +19,10 @@ marked.setOptions({
     return hljs.highlight(code, { language }).value;
   },
   langPrefix: 'hljs language-',
-  sanitize: true,
   smartypants: true,
 });
 
-const content = marked.parse(post.content);
+const content = DOMPurify.sanitize(marked.parse(post.content));
 const options= {
 	dateStyle: 'short',
 	timeStyle: 'short'
