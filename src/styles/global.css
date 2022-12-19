@@ -15,4 +15,7 @@
 pre {
 	max-width: 87vw;
 }
-  
+
+.hljs{
+  background: none !important;
+}
