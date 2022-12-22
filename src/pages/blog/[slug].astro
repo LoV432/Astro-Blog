@@ -10,6 +10,9 @@ import DOMPurify from 'isomorphic-dompurify';
 import hljs from 'highlight.js/lib/common'
 import 'highlight.js/styles/github-dark.css';
 var posts  =  await fetch(API + '/api/posts/?filters[slug][$eq]='+ slug + '&fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&fields[5]=description&populate[cover][fields][0]=formats&populate[cover][fields]=url').then(res => res.json())
+if (!posts.data[0]){
+  	return Astro.redirect('/404');
+}
 const post = posts.data[0].attributes
 
 marked.setOptions({ 
