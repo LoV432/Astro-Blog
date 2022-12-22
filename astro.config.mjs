@@ -14,5 +14,7 @@ export default defineConfig({
   site: 'https://example.com',
   integrations: [tailwind(), prefetch()],
   output: "server",
-  adapter: node()
+  adapter: node({
+    mode: 'standalone'
+  })
 });
