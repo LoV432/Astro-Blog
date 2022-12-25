@@ -7,7 +7,8 @@ import Pagination from '../components/Pagination.astro';
 import Search from '../components/Search.astro';
 import PostCards from '../components/PostCards.astro';
 
-var api = API + "/api/posts?sort=id:desc&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&pagination[pageSize]=" + PAGESIZE
+const { page } = Astro.params
+var api = API + "/api/posts?sort=id:desc&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&pagination[pageSize]=" + PAGESIZE + "&pagination[page]=" + page;
 let search: string = ""
 
 if (Astro.url.searchParams.get('search')){
@@ -34,3 +35,4 @@ const currentPage = posts.meta.pagination.page
 		<Footer />
 	</body>
 </html>
+

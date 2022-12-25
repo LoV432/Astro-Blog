@@ -1,14 +1,14 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import Pagination from '../../components/Pagination.astro';
-import Search from '../../components/Search.astro';
-import PostCards from '../../components/PostCards.astro';
-import { SITE_TITLE, SITE_DESCRIPTION, API, PAGESIZE } from '../../config';
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION, API, PAGESIZE } from '../../../config';
+import Pagination from '../../../components/Pagination.astro';
+import Search from '../../../components/Search.astro';
+import PostCards from '../../../components/PostCards.astro';
 
-const { tag } = Astro.params
-var api = API + "/api/posts?filters[tags][tag][$eq]="+ tag +"&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=" + PAGESIZE
+const { page, tag } = Astro.params
+var api = API + "/api/posts?filters[tags][tag][$eq]="+ tag +"&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=" + PAGESIZE + "&pagination[page]=" + page;
 let search: string = ""
 
 if (Astro.url.searchParams.get('search')){
