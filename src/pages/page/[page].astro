@@ -1,0 +1,43 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import MainPageBody from '../../components/MainPageBody.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION, API, PAGESIZE } from '../../config';
+import Pagination from '../../components/Pagination.astro';
+import Search from '../../components/Search.astro';
+import PostCards from '../../components/PostCards.astro';
+
+const { page } = Astro.params
+//@ts-ignore
+if (isNaN(page)){
+	return Astro.redirect('/404');
+}
+var api = API + "/api/posts?sort=id:desc&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&pagination[pageSize]=" + PAGESIZE + "&pagination[page]=" + parseInt(page);
+let search: string = ""
+
+if (Astro.url.searchParams.get('search')){
+	api = api + "&filters%5Bheading%5D%5B$contains%5D=" + Astro.url.searchParams.get('search')
+	search = "?search=" + Astro.url.searchParams.get('search')
+}
+
+
+const posts  =  await fetch(api).then(res => res.json())
+const totalPages = posts.meta.pagination.pageCount
+const currentPage = posts.meta.pagination.page
+---
+
+<!DOCTYPE html>
+<html lang="en" class=" bg-[#121212] text-zinc-200">
+	<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	<MainPageBody>
+		<Header />
+		<main>
+			<Search/>
+			<PostCards posts={posts}/>
+			<Pagination totalPages={totalPages} currentPage={currentPage} search={search}/>
+		</main>
+		<Footer />
+	</MainPageBody>
+</html>
+
