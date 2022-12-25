@@ -8,7 +8,7 @@ import PostCards from '../../components/PostCards.astro';
 import { SITE_TITLE, SITE_DESCRIPTION, API } from '../../config';
 
 const { tag } = Astro.params
-var api = API + '/api/posts?filters[tags][tag][$eq]='+ tag +'&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=5'
+var api = API + "/api/posts?filters[tags][tag][$eq]="+ tag +"&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=" + PAGESIZE
 let search: string = ""
 
 if (Astro.url.searchParams.get('page')){
