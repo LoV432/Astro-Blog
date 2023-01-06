@@ -74,6 +74,21 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 		return new Date(time).toLocaleString('en-US', options);
 	}
 
+	function reportComment(element) {
+		document.activeElement.blur(); // close dropdown
+		const commentID = element.dataset.commentid
+		const postID = document.querySelector('body').dataset.post_id
+		const options = {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'},
+			body: '{"postID":"'+ postID +'","commentID":"'+ commentID +'"}'
+		};
+		window.fetch('/blog/report', options)
+			.then(response => response.json())
+			.then(response => console.log(response))
+			.catch(err => console.error(err));
+		}
+
 	let updatedAtElement = document.querySelector("#updatedAt")
 	let updatedAt = updatedAtElement.dataset.updatedat
 	let publishedAtElement = document.querySelector("#publishedAt")
