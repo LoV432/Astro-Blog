@@ -1,0 +1,60 @@
+<script is:inline>
+	function sendComment() {
+		let nameElement = document.querySelector('#commenter-name');
+		let emailElement = document.querySelector('#commenter-email');
+		let commentElement = document.querySelector('#commenter-comment');
+
+		const name = nameElement.value.replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and spaces
+		const email = emailElement.value.replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and spaces
+		const comment = commentElement.value.replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and spaces
+		if (name === '' || email === '' || comment === '') {
+			return 0;
+		}
+		const id = document.querySelector('body').dataset.post_id;
+		const options = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: '{"post_id":"' + id + '","name":"' + name + '","email":"' + email + '","comment":"' + comment + '"}'
+		};
+
+		window.fetch('/blog/comment', options)
+			.then((response) => response.json())
+			.then((response) => console.log(response))
+			.catch((err) => console.error(err));
+
+    [nameElement.value, emailElement.value, commentElement.value] = ['', '', '']; // Clear all text fields
+	}
+</script>
+
+<section class="place-self-center mt-20 py-6 w-[90%] md:w-[45rem] lg:w-[55rem] border-y-2 border-rose-800 rounded" aria-label="Post Comment Section">
+	<div class="collapse collapse-plus rounded-box">
+		<input type="checkbox" />
+		<div class="collapse-title text-xl font-medium">Write a comment</div>
+		<div class="collapse-content">
+			<div class="form-control">
+				<label class="label">
+					<span class="label-text">Your Name</span>
+				</label>
+				<label class="input-group">
+					<span class="w-20 justify-center">Name</span>
+					<input id="commenter-name" type="text" placeholder="Chloe Walker" class="input input-bordered" />
+				</label>
+
+				<label class="label">
+					<span class="label-text">Your Email</span>
+				</label>
+				<label class="input-group">
+					<span class="w-20 justify-center">Email</span>
+					<input id="commenter-email" type="text" placeholder="info@site.com" class="input input-bordered" />
+				</label>
+
+				<label class="label">
+					<span class="label-text">Your Comment</span>
+				</label>
+				<textarea id="commenter-comment" class="textarea textarea-bordered h-44 text-xl" placeholder="What's on your mind?"></textarea>
+
+				<button onclick="sendComment()" class="btn btn-outline border-rose-800 hover:border-rose-800 hover:bg-rose-900 text-rose-700 hover:text-white mt-6 w-32">Send</button>
+			</div>
+		</div>
+	</div>
+</section>
