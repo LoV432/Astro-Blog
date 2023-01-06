@@ -10,8 +10,8 @@ const options = {
 	<article class="p-6 mb-6 text-base rounded-md border border-rose-800 bg-zinc-900">
 		<footer class="flex justify-between items-center mb-2">
 			<div class="flex items-center">
-				<p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-					<img class="mr-2 w-6 h-6 rounded-full" src={"https://avatars.dicebear.com/api/open-peeps/" + Math.random() * 99999999 + ".svg?background=%23ffffff"} alt={comment.author.name} />{comment.author.name}
+				<p aria-label="Commenter Image and Name" class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+					<img class="mr-2 w-6 h-6 rounded-full" src={"https://avatars.dicebear.com/api/open-peeps/" + Math.random() * 99999999 + ".svg?background=%23ffffff"} alt={comment.author.name}/>{comment.author.name}
 				</p>
 				<p class="text-sm text-gray-600 dark:text-gray-400">
 					<time>
@@ -27,6 +27,6 @@ const options = {
 				<span class="sr-only">Report Comment</span>
 			</button>
 		</footer>
-		<pre class="whitespace-pre-wrap">{comment.content}</pre>
+		<pre aria-label="Comment Content" class="whitespace-pre-wrap">{comment.content}</pre>
 	</article>
 </div>
