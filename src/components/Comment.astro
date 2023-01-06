@@ -1,9 +1,5 @@
 ---
 const { comment } = Astro.props;
-const options = {
-	dateStyle: 'short',
-	timeStyle: 'short'
-};
 ---
 
 <div class="rounded pb-5 first:pt-5 grid grid-cols-[auto] md:grid-cols-[auto,1fr] gap-5">
@@ -14,11 +10,8 @@ const options = {
 					<img class="mr-2 w-6 h-6 rounded-full" src={"https://avatars.dicebear.com/api/open-peeps/" + Math.random() * 99999999 + ".svg?background=%23ffffff"} alt={comment.author.name}/>{comment.author.name}
 				</p>
 				<p class="text-sm text-gray-600 dark:text-gray-400">
-					<time>
-						{
-							//@ts-ignore
-							new Date(comment.createdAt).toLocaleString('en-US', options)
-						}
+					<time class="commentPostTime" data-commentposttime={comment.createdAt}>
+						{comment.createdAt}
 					</time>
 				</p>
 			</div>
