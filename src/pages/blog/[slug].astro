@@ -16,7 +16,8 @@ let posts  =  await fetch(API + '/api/posts/?filters[slug][$eq]='+ slug + '&fiel
 if (!posts.data[0]){
   	return Astro.redirect('/404');
 }
-const comments  =  await fetch(API + '/api/comments/api::post.post:' + posts.data[0].id + "?sort=id:desc").then(res => res.json())
+let comments  =  await fetch(API + '/api/comments/api::post.post:' + posts.data[0].id + "?sort=id:desc").then(res => res.json())
+comments = comments.filter(comment => !comment.blocked )
 const post = posts.data[0].attributes
 
 marked.setOptions({ 
