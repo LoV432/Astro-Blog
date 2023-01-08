@@ -71,7 +71,9 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 			}
 
 			function reportComment(element) {
-				document.activeElement.blur(); // close dropdown
+				setTimeout(() => {
+					document.activeElement.blur();
+				}, '100'); // close dropdown
 				const commentID = element.dataset.commentid;
 				const postID = document.querySelector('body').dataset.post_id;
 				const options = {

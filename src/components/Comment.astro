@@ -22,8 +22,18 @@ const { comment } = Astro.props;
 				</svg>
 				<span class="sr-only">Report Comment</span>
 				<ul tabindex="0" class="dropdown-content menu p-2 shadow border border-rose-600 bg-zinc-900 rounded-box w-36">
-					<li><a data-commentid={comment.id} onclick="document.activeElement.blur();" class="place-self-center justify-center text-center text-green-600 font-extrabold active:bg-green-900 w-28">CANCEL</a></li>
-					<li><a data-commentid={comment.id} onclick="reportComment(this)" class="place-self-center justify-center text-red-600 font-extrabold active:bg-red-900 w-28">REPORT?</a></li>
+					<li>
+						<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
+							<input type="checkbox" data-commentid={comment.id} onclick="setTimeout(() => {document.activeElement.blur(); }, '100')" class="hidden" />
+							<span class="text-green-600 font-extrabold active:bg-green-900 focus:bg-green-900 w-28 py-3 px-4 rounded-md">CANCEL</span>
+						</label>
+					</li>
+					<li>
+						<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
+							<input data-commentid={comment.id} onclick="reportComment(this)" class="hidden" />
+							<span class="text-red-600 font-extrabold active:bg-red-900 w-28 py-3 px-4 rounded-md">REPORT?</span>
+						</label>
+					</li>
 				</ul>
 			</button>
 		</footer>
