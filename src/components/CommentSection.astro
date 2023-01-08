@@ -1,15 +1,15 @@
 ---
-const { totalComments } = Astro.props
+const { totalComments } = Astro.props;
 ---
 
 <section class="place-self-center mt-14 py-6 w-[90%] md:w-[45rem] lg:w-[55rem] border-y-2 border-rose-800 rounded" aria-label="Comments Section">
-    <div class="collapse collapse-plus rounded-box">
-        <input aria-label="Show/Hide All Comments" type="checkbox" /> 
-        <div class="collapse-title text-xl font-medium">
-          Comments ({totalComments})
-        </div>
-        <div class="collapse-content"> 
-            <slot />
-        </div>
-      </div>
+	<div class="collapse collapse-plus rounded-box">
+		<input aria-label="Show/Hide All Comments" type="checkbox" />
+		<div class="collapse-title text-xl font-medium">
+			Comments ({totalComments})
+		</div>
+		<div class="collapse-content">
+			<slot />
+		</div>
+	</div>
 </section>

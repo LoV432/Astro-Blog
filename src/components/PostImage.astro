@@ -1,11 +1,11 @@
 ---
-const {imageObject, classes, size, alt} = Astro.props;
-let image: string
+const { imageObject, classes, size, alt } = Astro.props;
+let image: string;
 if (Object.hasOwn(imageObject.formats, size)) {
-    image = imageObject.formats[size].url
+	image = imageObject.formats[size].url;
 } else {
-    image = imageObject.url
+	image = imageObject.url;
 }
-
 ---
-<img src={"/images.jpg?src=" + image} class={classes} alt={alt}/>
+
+<img src={'/images.jpg?src=' + image} class={classes} alt={alt} />

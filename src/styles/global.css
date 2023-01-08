@@ -4,18 +4,16 @@
 
 /* rubik-vinyl-regular - latin */
 @font-face {
-    font-family: 'Rubik Vinyl';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: local(''),
-         url('/rubik-vinyl-v1-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-         url('/rubik-vinyl-v1-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-  }
+	font-family: 'Rubik Vinyl';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: local(''), url('/rubik-vinyl-v1-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */ url('/rubik-vinyl-v1-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
 pre {
 	max-width: 85vw;
 }
 
-.hljs{
-  background: none !important;
+.hljs {
+	background: none !important;
 }

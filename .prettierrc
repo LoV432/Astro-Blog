@@ -2,7 +2,7 @@
 	"useTabs": true,
 	"singleQuote": true,
 	"trailingComma": "none",
-	"printWidth": 500,
+	"printWidth": 400,
 	"pluginSearchDirs": ["."],
 	"overrides": [{ "files": "*.astro", "options": { "parser": "astro" } }]
 }

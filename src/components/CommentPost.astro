@@ -17,12 +17,13 @@
 			body: '{"post_id":"' + id + '","name":"' + name + '","email":"' + email + '","comment":"' + comment + '"}'
 		};
 
-		window.fetch('/blog/comment', options)
+		window
+			.fetch('/blog/comment', options)
 			.then((response) => response.json())
 			.then((response) => console.log(response))
 			.catch((err) => console.error(err));
 
-    [nameElement.value, emailElement.value, commentElement.value] = ['', '', '']; // Clear all text fields
+		[nameElement.value, emailElement.value, commentElement.value] = ['', '', '']; // Clear all text fields
 	}
 </script>
 

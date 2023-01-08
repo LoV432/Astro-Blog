@@ -8,34 +8,33 @@ import Pagination from '../../../../components/Pagination.astro';
 import Search from '../../../../components/Search.astro';
 import PostCards from '../../../../components/PostCards.astro';
 
-const { page, tag } = Astro.params
+const { page, tag } = Astro.params;
 //@ts-ignore
-if (isNaN(page)){
+if (isNaN(page)) {
 	return Astro.redirect('/404');
 }
-var api = API + "/api/posts?filters[tags][tag][$eq]="+ tag +"&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=" + PAGESIZE + "&pagination[page]=" + parseInt(page);
-let search: string = ""
+var api = API + '/api/posts?filters[tags][tag][$eq]=' + tag + '&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=' + PAGESIZE + '&pagination[page]=' + parseInt(page);
+let search: string = '';
 
-if (Astro.url.searchParams.get('search')){
-	api = api + "&filters%5Bheading%5D%5B$contains%5D=" + Astro.url.searchParams.get('search')
-	search = "?search=" + Astro.url.searchParams.get('search')
+if (Astro.url.searchParams.get('search')) {
+	api = api + '&filters%5Bheading%5D%5B$contains%5D=' + Astro.url.searchParams.get('search');
+	search = '?search=' + Astro.url.searchParams.get('search');
 }
 
-
-const posts  =  await fetch(api).then(res => res.json())
-const totalPages = posts.meta.pagination.pageCount
-const currentPage = posts.meta.pagination.page
+const posts = await fetch(api).then((res) => res.json());
+const totalPages = posts.meta.pagination.pageCount;
+const currentPage = posts.meta.pagination.page;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class=" bg-[#121212] text-zinc-200">
+<html lang="en" class="bg-[#121212] text-zinc-200">
 	<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	<MainPageBody>
 		<Header />
 		<main>
-			<Search action={"/tag/" + tag} placeholder={"Search #" + tag} />
-			<PostCards posts={posts}/>
-			<Pagination totalPages={totalPages} currentPage={currentPage} search={search} tag={"/tag/" + tag}/>
+			<Search action={'/tag/' + tag} placeholder={'Search #' + tag} />
+			<PostCards posts={posts} />
+			<Pagination totalPages={totalPages} currentPage={currentPage} search={search} tag={'/tag/' + tag} />
 		</main>
 		<Footer />
 	</MainPageBody>

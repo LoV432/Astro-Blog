@@ -1,3 +1,4 @@
 {
-    "tailwindCSS.emmetCompletions": true
+	"tailwindCSS.emmetCompletions": true,
+	"editor.formatOnSave": true
 }

@@ -10,39 +10,41 @@ import { API } from '../../config';
 const { slug } = Astro.params;
 import { marked } from '../../../node_modules/marked';
 import DOMPurify from 'isomorphic-dompurify';
-import hljs from 'highlight.js/lib/common'
+import hljs from 'highlight.js/lib/common';
 import 'highlight.js/styles/github-dark.css';
-let posts  =  await fetch(API + '/api/posts/?filters[slug][$eq]='+ slug + '&fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&fields[5]=description&populate[cover][fields][0]=formats&populate[cover][fields]=url').then(res => res.json())
-if (!posts.data[0]){
-  	return Astro.redirect('/404');
+let posts = await fetch(API + '/api/posts/?filters[slug][$eq]=' + slug + '&fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&fields[5]=description&populate[cover][fields][0]=formats&populate[cover][fields]=url').then((res) => res.json());
+if (!posts.data[0]) {
+	return Astro.redirect('/404');
 }
-let comments  =  await fetch(API + '/api/comments/api::post.post:' + posts.data[0].id + "?sort=id:desc").then(res => res.json())
-comments = comments.filter(comment => !comment.blocked )
-const post = posts.data[0].attributes
+let comments = await fetch(API + '/api/comments/api::post.post:' + posts.data[0].id + '?sort=id:desc').then((res) => res.json());
+comments = comments.filter((comment) => !comment.blocked);
+const post = posts.data[0].attributes;
 
-marked.setOptions({ 
-  renderer: new marked.Renderer(),
-  highlight: function(code, lang) { // Syntax highlighting
-    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-    return hljs.highlight(code, { language }).value;
-  },
-  langPrefix: 'hljs language-',
-  smartypants: true,
+marked.setOptions({
+	renderer: new marked.Renderer(),
+	highlight: function (code, lang) {
+		// Syntax highlighting
+		const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+		return hljs.highlight(code, { language }).value;
+	},
+	langPrefix: 'hljs language-',
+	smartypants: true
 });
 
 const content = DOMPurify.sanitize(marked.parse(post.content));
 ---
 
 <!DOCTYPE html>
-<html lang="en" class=" bg-[#121212] text-zinc-200">
-	<BaseHead title={post.heading} description={post.description} image={"/images.jpg?src=" + post.cover.data.attributes.formats['thumbnail'].url} />
-	<body data-post_id={posts.data[0].id}> <!-- Inject post id here so its known on client side  -->
+<html lang="en" class="bg-[#121212] text-zinc-200">
+	<BaseHead title={post.heading} description={post.description} image={'/images.jpg?src=' + post.cover.data.attributes.formats['thumbnail'].url} />
+	<body data-post_id={posts.data[0].id}>
+		<!-- Inject post id here so its known on client side  -->
 		<div class="min-h-screen grid grid-rows-[auto,1fr,auto]">
 			<Header />
 			<main class="place-self-center">
 				<section class="mt-10 px-6 md:px-0 w-full md:w-[45rem] lg:w-[55rem]">
 					<div class="pb-6 md:min-h-[459px] min-h-[250px]">
-						<PostImage imageObject={post.cover.data.attributes} classes={"rounded-md w-full h-full object-cover border-2 border-rose-800 flex place-items-center justify-center"} size={"large"} alt={"Heading Image"}/>
+						<PostImage imageObject={post.cover.data.attributes} classes={'rounded-md w-full h-full object-cover border-2 border-rose-800 flex place-items-center justify-center'} size={'large'} alt={'Heading Image'} />
 					</div>
 					<div>
 						<p><time id="publishedAt" data-publishedat={post.publishedAt}>Published on: {post.publishedAt}</time></p>
@@ -52,54 +54,51 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 				<section class="mt-14 px-6 md:px-0 w-full md:w-[45rem] lg:w-[55rem]">
 					<article class="mt-5 prose prose-md md:prose-xl prose-invert max-w-fit" set:html={content} />
 				</section>
-				
 			</main>
-			<CommentPost/>
+			<CommentPost />
 			<CommentSection totalComments={comments.length}>
-				{comments.map((comment) => (
-					<Comment comment={comment}/>
-				))}
+				{comments.map((comment) => <Comment comment={comment} />)}
 			</CommentSection>
 			<Footer />
 		</div>
+		<script is:inline>
+			function getFormattedUTCTime(time) {
+				const options = {
+					dateStyle: 'short',
+					timeStyle: 'short'
+				};
+				return new Date(time).toLocaleString('en-US', options);
+			}
+
+			function reportComment(element) {
+				document.activeElement.blur(); // close dropdown
+				const commentID = element.dataset.commentid;
+				const postID = document.querySelector('body').dataset.post_id;
+				const options = {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: '{"postID":"' + postID + '","commentID":"' + commentID + '"}'
+				};
+				window
+					.fetch('/blog/report', options)
+					.then((response) => response.json())
+					.then((response) => console.log(response))
+					.catch((err) => console.error(err));
+			}
+
+			let updatedAtElement = document.querySelector('#updatedAt');
+			let updatedAt = updatedAtElement.dataset.updatedat;
+			let publishedAtElement = document.querySelector('#publishedAt');
+			let publishedAt = publishedAtElement.dataset.publishedat;
+
+			publishedAtElement.innerHTML = 'Last updated on: ' + getFormattedUTCTime(publishedAt);
+			updatedAtElement.innerHTML = 'Published on: ' + getFormattedUTCTime(updatedAt);
+
+			let allCommentTimes = document.querySelectorAll('.commentPostTime');
+			allCommentTimes.forEach((commentPostTimeElement) => {
+				let commentPostTime = commentPostTimeElement.dataset.commentposttime;
+				commentPostTimeElement.innerHTML = getFormattedUTCTime(commentPostTime);
+			});
+		</script>
 	</body>
 </html>
-
-<script is:inline>
-	function getFormattedUTCTime(time) {
-		const options = {
-			dateStyle: 'short',
-			timeStyle: 'short'
-		};
-		return new Date(time).toLocaleString('en-US', options);
-	}
-
-	function reportComment(element) {
-		document.activeElement.blur(); // close dropdown
-		const commentID = element.dataset.commentid
-		const postID = document.querySelector('body').dataset.post_id
-		const options = {
-			method: 'POST',
-			headers: {'Content-Type': 'application/json'},
-			body: '{"postID":"'+ postID +'","commentID":"'+ commentID +'"}'
-		};
-		window.fetch('/blog/report', options)
-			.then(response => response.json())
-			.then(response => console.log(response))
-			.catch(err => console.error(err));
-		}
-
-	let updatedAtElement = document.querySelector("#updatedAt")
-	let updatedAt = updatedAtElement.dataset.updatedat
-	let publishedAtElement = document.querySelector("#publishedAt")
-	let publishedAt = publishedAtElement.dataset.publishedat
-
-	publishedAtElement.innerHTML = "Last updated on: " + getFormattedUTCTime(publishedAt)
-	updatedAtElement.innerHTML = "Published on: " + getFormattedUTCTime(updatedAt)
-
-	let allCommentTimes = document.querySelectorAll(".commentPostTime")
-	allCommentTimes.forEach(commentPostTimeElement => {
-		let commentPostTime = commentPostTimeElement.dataset.commentposttime
-		commentPostTimeElement.innerHTML = getFormattedUTCTime(commentPostTime)
-	});
-</script>
