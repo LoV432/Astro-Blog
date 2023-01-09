@@ -24,14 +24,14 @@ const { comment } = Astro.props;
 				<ul tabindex="0" class="dropdown-content menu p-2 shadow border border-rose-600 bg-zinc-900 rounded-box w-36">
 					<li>
 						<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
-							<input type="checkbox" data-commentid={comment.id} onclick="setTimeout(() => {document.activeElement.blur(); }, '100')" class="hidden" />
+							<input type="checkbox" data-commentid={comment.id} class="hidden cancelReport" />
 							<span class="text-green-600 font-extrabold active:bg-green-900 focus:bg-green-900 w-28 py-3 px-4 rounded-md">CANCEL</span>
 						</label>
 					</li>
 					<li>
 						<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
-							<input data-commentid={comment.id} onclick="reportComment(this)" class="hidden" />
-							<span class="text-red-600 font-extrabold active:bg-red-900 w-28 py-3 px-4 rounded-md">REPORT?</span>
+							<input data-commentid={comment.id} class="hidden" />
+							<span data-commentid={comment.id} class="text-red-600 font-extrabold active:bg-red-900 w-28 py-3 px-4 rounded-md reportButton">REPORT?</span>
 						</label>
 					</li>
 				</ul>
@@ -40,3 +40,37 @@ const { comment } = Astro.props;
 		<pre aria-label="Comment Content" class="whitespace-pre-wrap">{comment.content}</pre>
 	</article>
 </div>
+
+<script>
+	document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
+		button.addEventListener('click', () => {
+			setTimeout(() => {
+				if (document.activeElement instanceof HTMLElement) {
+					document.activeElement.blur();
+				}
+			}, 100); // close dropdown
+			const commentID = button.dataset.commentid;
+			const postID = document.querySelector('body').dataset.post_id;
+			const options = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: '{"postID":"' + postID + '","commentID":"' + commentID + '"}'
+			};
+			window
+				.fetch('/blog/report', options)
+				.then((response) => response.json())
+				.then((response) => console.log(response))
+				.catch((err) => console.error(err));
+		});
+	});
+
+	document.querySelectorAll('.cancelReport').forEach((button: HTMLElement) => {
+		button.addEventListener('click', () => {
+			setTimeout(() => {
+				if (document.activeElement instanceof HTMLElement) {
+					document.activeElement.blur();
+				}
+			}, 100); // close dropdown
+		});
+	});
+</script>

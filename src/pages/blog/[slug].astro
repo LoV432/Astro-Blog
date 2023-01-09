@@ -61,43 +61,25 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 			</CommentSection>
 			<Footer />
 		</div>
-		<script is:inline>
+		<script>
 			function getFormattedUTCTime(time) {
-				const options = {
+				const options: Intl.DateTimeFormatOptions = {
 					dateStyle: 'short',
 					timeStyle: 'short'
 				};
 				return new Date(time).toLocaleString('en-US', options);
 			}
 
-			function reportComment(element) {
-				setTimeout(() => {
-					document.activeElement.blur();
-				}, '100'); // close dropdown
-				const commentID = element.dataset.commentid;
-				const postID = document.querySelector('body').dataset.post_id;
-				const options = {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: '{"postID":"' + postID + '","commentID":"' + commentID + '"}'
-				};
-				window
-					.fetch('/blog/report', options)
-					.then((response) => response.json())
-					.then((response) => console.log(response))
-					.catch((err) => console.error(err));
-			}
-
-			let updatedAtElement = document.querySelector('#updatedAt');
+			let updatedAtElement: HTMLElement = document.querySelector('#updatedAt');
 			let updatedAt = updatedAtElement.dataset.updatedat;
-			let publishedAtElement = document.querySelector('#publishedAt');
+			let publishedAtElement: HTMLElement = document.querySelector('#publishedAt');
 			let publishedAt = publishedAtElement.dataset.publishedat;
 
 			publishedAtElement.innerHTML = 'Last updated on: ' + getFormattedUTCTime(publishedAt);
 			updatedAtElement.innerHTML = 'Published on: ' + getFormattedUTCTime(updatedAt);
 
 			let allCommentTimes = document.querySelectorAll('.commentPostTime');
-			allCommentTimes.forEach((commentPostTimeElement) => {
+			allCommentTimes.forEach((commentPostTimeElement: HTMLElement) => {
 				let commentPostTime = commentPostTimeElement.dataset.commentposttime;
 				commentPostTimeElement.innerHTML = getFormattedUTCTime(commentPostTime);
 			});
