@@ -75,8 +75,8 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 			let publishedAtElement: HTMLElement = document.querySelector('#publishedAt');
 			let publishedAt = publishedAtElement.dataset.publishedat;
 
-			publishedAtElement.innerHTML = 'Last updated on: ' + getFormattedUTCTime(publishedAt);
-			updatedAtElement.innerHTML = 'Published on: ' + getFormattedUTCTime(updatedAt);
+			publishedAtElement.innerHTML = 'Published on: ' + getFormattedUTCTime(publishedAt);
+			updatedAtElement.innerHTML = 'Last updated on: ' + getFormattedUTCTime(updatedAt);
 
 			let allCommentTimes = document.querySelectorAll('.commentPostTime');
 			allCommentTimes.forEach((commentPostTimeElement: HTMLElement) => {
