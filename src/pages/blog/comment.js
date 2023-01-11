@@ -17,11 +17,18 @@ export async function post({ request, clientAddress }) {
 		headers: { 'Content-Type': 'application/json' },
 		body: '{"author":{"id":"' + commenterIP + '","name":"' + data.name + '","email":"' + data.email + '"},"content":"' + sanitizedComment + '"}'
 	};
-	fetch(API + '/api/comments/api::post.post:' + data.post_id, options)
-		.then((response) => response.json())
-		.then((response) => console.log(response))
-		.catch((err) => console.error(err));
-	return new Response('{"response": "Posted....Probably!"}', {
-		status: 200
-	});
+	let response = await fetch(API + '/api/comments/api::post.post:' + data.post_id, options);
+	let status = response.status;
+	if (status != 200) {
+		console.log('Failed Request!');
+		console.log(options);
+		console.log('END');
+		return new Response('{"response": "failed"}', {
+			status: 400
+		});
+	} else {
+		return new Response('{"response": "Posted....Probably!"}', {
+			status: 200
+		});
+	}
 }
