@@ -1,4 +1,4 @@
-<section class="place-self-center mt-20 pt-6 sm:py-6 w-[90%] md:w-[45rem] lg:w-[55rem] border-y-2 border-rose-800 rounded" aria-label="Post Comment Section">
+<section class="place-self-center mt-20 py-6 w-[90%] md:w-[45rem] lg:w-[55rem] border-y-2 border-rose-800 rounded" aria-label="Post Comment Section">
 	<div class="collapse collapse-plus rounded-box">
 		<input aria-label="Show/Hide Post Comment Section" type="checkbox" />
 		<div class="collapse-title text-xl font-medium">Write a comment</div>
@@ -27,7 +27,7 @@
 					<textarea style="border-radius: 0.75rem !important;" id="commenter-comment" class="textarea textarea-bordered h-44 w-full text-xl" placeholder="What's on your mind?"></textarea>
 				</label>
 				<div>
-					<button id="postComment" class="btn btn-outline btn-square disabled:text-base disabled:font-bold disabled:bg-zinc-800 border-rose-800 hover:border-rose-800 hover:bg-rose-900 text-rose-700 hover:text-white mt-6 w-32">SEND</button>
+					<button id="postComment" class="btn btn-outline btn-square disabled:text-base disabled:font-bold disabled:bg-zinc-800 disabled:hover:bg-zinc-800 border-rose-800 hover:border-rose-800 hover:bg-rose-900 text-rose-700 hover:text-white mt-6 w-32">SEND</button>
 					<p id="fieldsRequired" style="opacity: 0;" class="mt-5 sm:inline-block sm:ml-5">All Fields Are Required!</p>
 				</div>
 			</div>
@@ -64,7 +64,7 @@
 		let status = response.status;
 		postButton.classList.remove('loading');
 		if (status != 200) {
-			postButton.classList.add('shake-little', 'shake-constant', 'disabled:text-rose-800');
+			postButton.classList.add('shake-little', 'shake-constant', 'disabled:text-rose-800', 'disabled:hover:text-rose-800');
 			postButton.innerText = 'Failed!';
 			postButton.disabled = true;
 			setTimeout(() => {
@@ -72,7 +72,7 @@
 			}, 400);
 		} else {
 			[nameElement.value, emailElement.value, commentElement.value] = ['', '', '']; // Clear all text fields
-			postButton.classList.add('disabled:text-green-800');
+			postButton.classList.add('disabled:text-green-800', 'disabled:hover:text-green-800');
 			postButton.innerText = 'Posted!';
 			postButton.disabled = true;
 		}
