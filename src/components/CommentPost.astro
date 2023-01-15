@@ -41,89 +41,43 @@ import { CLOUDFLARE_PUBLIC_KEY } from '../config';
 </section>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <script>
-	async function cloudflareChallenge() {
-		const sitekey = document.querySelector<HTMLElement>('#cf-turnstile').dataset.cloudflare_public_key;
-		return new Promise((resolve) => {
-			//@ts-ignore
-			turnstile.render('#cf-turnstile', {
-				sitekey: sitekey,
-				retry: 'never',
-				'refresh-expired': 'never',
-				callback: function (token) {
-					resolve(token);
-				},
-				'timeout-callback': function () {
-					resolve(undefined);
-				},
-				'expired-callback': function () {
-					resolve(undefined);
-				},
-				'error-callback': function () {
-					resolve(undefined);
-				}
-			});
-		});
-	}
-	const ascii = ['૮⸝⸝> ̫ <⸝⸝ ა', '(,,>﹏<,,)', '(>᎑<๑)/♡', '(つ≧﹏≦)', '૮₍˶ •. • ⑅₎ა ♡', '૮( ๑ᵔ ᵕ ᵔ๑ )ა', '≧﹏≦', '(✿˵•́ᴗ•̀˵)', '(ꈍ◡ꈍ🌸)', '(•◡•🌸)♡'];
-	document.querySelector('#postComment').addEventListener('click', async () => {
-		const postButton: HTMLButtonElement = document.querySelector('#postComment');
-		const nameElement: HTMLInputElement = document.querySelector('#commenter-name');
-		const emailElement: HTMLInputElement = document.querySelector('#commenter-email');
-		const commentElement: HTMLInputElement = document.querySelector('#commenter-comment');
+	const postButton: HTMLButtonElement = document.querySelector('#postComment');
+	const nameElement: HTMLInputElement = document.querySelector('#commenter-name');
+	const emailElement: HTMLInputElement = document.querySelector('#commenter-email');
+	const commentElement: HTMLInputElement = document.querySelector('#commenter-comment');
+	const fieldsRequired: HTMLInputElement = document.querySelector('#fieldsRequired');
 
+	document.querySelector('#postComment').addEventListener('click', async () => {
+		const id = document.querySelector('body').dataset.post_id;
 		const name = nameElement.value.replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and spaces
 		const email = emailElement.value.replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and spaces
 		const comment = commentElement.value.replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and spaces
+
+		// Check if any field empty and show error message if true
 		if (name === '' || email === '' || comment === '') {
-			document.querySelector<HTMLElement>('#fieldsRequired').style.opacity = '100';
+			fieldsRequired.style.opacity = '100';
 			postButton.innerText = ascii[Math.floor(Math.random() * ascii.length)];
 			return 0;
 		}
-		document.querySelector<HTMLElement>('#fieldsRequired').style.opacity = '0';
+		fieldsRequired.style.opacity = '0'; // Remove the empty field error message in case its showing
 		postButton.innerText = '';
 		postButton.classList.add('loading');
-		const id = document.querySelector('body').dataset.post_id;
-		const cloudflareToken = await cloudflareChallenge();
-		const options = {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: '{"post_id":"' + id + '","name":"' + name + '","email":"' + email + '","comment":"' + comment + '","cloudflaretoken":"' + cloudflareToken + '"}'
-		};
-		let response, status;
-		try {
-			response = await window.fetch('/blog/comment', options);
-			status = response.status;
-		} catch {
-			status = 400;
-		}
 
+		const cloudflareToken = await cloudflareChallenge(); // Start Cloudflare Challenge
+
+		const status = await sendRequest(id, name, email, comment, cloudflareToken);
 		postButton.classList.remove('loading');
-
 		switch (status) {
 			case 200:
-				[nameElement.value, emailElement.value, commentElement.value] = ['', '', '']; // Clear all text fields
-				postButton.classList.add('disabled:text-green-800', 'disabled:hover:text-green-800');
-				postButton.innerText = 'Posted!';
-				postButton.disabled = true;
+				success();
 				break;
 
 			case 401:
-				postButton.classList.add('shake-little', 'shake-constant');
-				postButton.innerHTML =
-					'<svg class="w-8 fill-rose-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 0c17.7 0 32 14.3 32 32V96H480c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H160c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256c0-22.1-17.9-40-40-40s-40 17.9-40 40s17.9 40 40 40s40-17.9 40-40zm152 40c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40s17.9 40 40 40zM48 224H64V416H48c-26.5 0-48-21.5-48-48V272c0-26.5 21.5-48 48-48zm544 0c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H576V224h16z"/></svg>';
-				postButton.disabled = true;
-				setTimeout(() => {
-					postButton.classList.remove('shake-little', 'shake-constant');
-				}, 400);
+				bot();
 				break;
 
 			default:
-				postButton.classList.add('shake-little', 'shake-constant', 'disabled:text-rose-800', 'disabled:hover:text-rose-800');
-				postButton.innerText = 'Failed!';
-				postButton.disabled = true;
-				setTimeout(() => {
-					postButton.classList.remove('shake-little', 'shake-constant');
-				}, 400);
+				failed();
 				break;
 		}
 		setTimeout(() => {
@@ -131,6 +85,74 @@ import { CLOUDFLARE_PUBLIC_KEY } from '../config';
 			postButton.disabled = false;
 		}, 10000);
 	});
+
+	async function cloudflareChallenge(): Promise<string> {
+		const sitekey = document.querySelector<HTMLElement>('#cf-turnstile').dataset.cloudflare_public_key;
+		return new Promise((resolve) => {
+			//@ts-ignore
+			turnstile.render('#cf-turnstile', {
+				sitekey: sitekey,
+				retry: 'never',
+				'refresh-expired': 'never',
+				callback: function (token: string) {
+					resolve(token);
+				},
+				'timeout-callback': function () {
+					resolve('undefined');
+				},
+				'expired-callback': function () {
+					resolve('undefined');
+				},
+				'error-callback': function () {
+					resolve('undefined');
+				}
+			});
+		});
+	}
+
+	function success() {
+		[nameElement.value, emailElement.value, commentElement.value] = ['', '', '']; // Clear all text fields
+		postButton.classList.remove('disabled:text-rose-800', 'disabled:hover:text-rose-800');
+		postButton.classList.add('disabled:text-green-800', 'disabled:hover:text-green-800');
+		postButton.innerText = 'Posted!';
+		postButton.disabled = true;
+	}
+
+	function failed() {
+		postButton.classList.remove('disabled:text-green-800', 'disabled:hover:text-green-800');
+		postButton.classList.add('shake-little', 'shake-constant', 'disabled:text-rose-800', 'disabled:hover:text-rose-800');
+		postButton.innerText = 'Failed!';
+		postButton.disabled = true;
+		setTimeout(() => {
+			postButton.classList.remove('shake-little', 'shake-constant');
+		}, 400);
+	}
+
+	function bot() {
+		postButton.classList.add('shake-little', 'shake-constant');
+		postButton.innerHTML =
+			'<svg class="w-8 fill-rose-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 0c17.7 0 32 14.3 32 32V96H480c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H160c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256c0-22.1-17.9-40-40-40s-40 17.9-40 40s17.9 40 40 40s40-17.9 40-40zm152 40c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40s17.9 40 40 40zM48 224H64V416H48c-26.5 0-48-21.5-48-48V272c0-26.5 21.5-48 48-48zm544 0c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H576V224h16z"/></svg>';
+		postButton.disabled = true;
+		setTimeout(() => {
+			postButton.classList.remove('shake-little', 'shake-constant');
+		}, 400);
+	}
+
+	async function sendRequest(id: string, name: string, email: string, comment: string, cloudflareToken: string): Promise<number> {
+		const options = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: '{"post_id":"' + id + '","name":"' + name + '","email":"' + email + '","comment":"' + comment + '","cloudflaretoken":"' + cloudflareToken + '"}'
+		};
+		try {
+			const response = await window.fetch('/blog/comment', options);
+			const status = response.status;
+			return status;
+		} catch {
+			return 400;
+		}
+	}
+	const ascii = ['૮⸝⸝> ̫ <⸝⸝ ა', '(,,>﹏<,,)', '(>᎑<๑)/♡', '(つ≧﹏≦)', '૮₍˶ •. • ⑅₎ა ♡', '૮( ๑ᵔ ᵕ ᵔ๑ )ა', '≧﹏≦', '(✿˵•́ᴗ•̀˵)', '(ꈍ◡ꈍ🌸)', '(•◡•🌸)♡'];
 </script>
 
 <style>
