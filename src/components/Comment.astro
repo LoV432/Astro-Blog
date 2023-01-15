@@ -44,11 +44,7 @@ const { comment } = Astro.props;
 <script>
 	document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
 		button.addEventListener('click', async () => {
-			setTimeout(() => {
-				if (document.activeElement instanceof HTMLElement) {
-					document.activeElement.blur();
-				}
-			}, 100); // close dropdown
+			closeDropDown();
 			const cloudflareToken = await cloudflareChallenge();
 			// Dont go any forward in case it failed
 			if (cloudflareToken == 'undefined') {
@@ -68,11 +64,7 @@ const { comment } = Astro.props;
 
 	document.querySelectorAll('.cancelReport').forEach((button: HTMLElement) => {
 		button.addEventListener('click', () => {
-			setTimeout(() => {
-				if (document.activeElement instanceof HTMLElement) {
-					document.activeElement.blur();
-				}
-			}, 100); // close dropdown
+			closeDropDown();
 		});
 	});
 
@@ -98,5 +90,13 @@ const { comment } = Astro.props;
 				}
 			});
 		});
+	}
+
+	function closeDropDown() {
+		setTimeout(() => {
+			if (document.activeElement instanceof HTMLElement) {
+				document.activeElement.blur();
+			}
+		}, 100);
 	}
 </script>
