@@ -43,24 +43,26 @@ const { comment } = Astro.props;
 
 <script>
 	document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
-		button.addEventListener('click', () => {
+		button.addEventListener('click', async () => {
 			setTimeout(() => {
 				if (document.activeElement instanceof HTMLElement) {
 					document.activeElement.blur();
 				}
 			}, 100); // close dropdown
+			const cloudflareToken = await cloudflareChallenge();
+			// Dont go any forward in case it failed
+			if (cloudflareToken == 'undefined') {
+				return 0;
+			}
+
 			const commentID = button.dataset.commentid;
 			const postID = document.querySelector('body').dataset.post_id;
 			const options = {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: '{"postID":"' + postID + '","commentID":"' + commentID + '"}'
+				body: '{"postID":"' + postID + '","commentID":"' + commentID + '","cloudflaretoken":"' + cloudflareToken + '"}'
 			};
-			window
-				.fetch('/blog/report', options)
-				.then((response) => response.json())
-				.then((response) => console.log(response))
-				.catch((err) => console.error(err));
+			window.fetch('/blog/report', options);
 		});
 	});
 
@@ -73,4 +75,28 @@ const { comment } = Astro.props;
 			}, 100); // close dropdown
 		});
 	});
+
+	async function cloudflareChallenge(): Promise<string> {
+		const sitekey = document.querySelector<HTMLElement>('#cf-turnstile').dataset.cloudflare_public_key;
+		return new Promise((resolve) => {
+			//@ts-ignore
+			turnstile.render('#cf-turnstile', {
+				sitekey: sitekey,
+				retry: 'never',
+				'refresh-expired': 'never',
+				callback: function (token: string) {
+					resolve(token);
+				},
+				'timeout-callback': function () {
+					resolve('undefined');
+				},
+				'expired-callback': function () {
+					resolve('undefined');
+				},
+				'error-callback': function () {
+					resolve('undefined');
+				}
+			});
+		});
+	}
 </script>
