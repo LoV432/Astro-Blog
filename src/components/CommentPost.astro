@@ -64,6 +64,16 @@ import { CLOUDFLARE_PUBLIC_KEY } from '../config';
 		postButton.classList.add('loading');
 
 		const cloudflareToken = await cloudflareChallenge(); // Start Cloudflare Challenge
+		// Dont go any forward in case it failed
+		if (cloudflareToken == 'undefined') {
+			postButton.classList.remove('loading');
+			bot();
+			setTimeout(() => {
+				postButton.innerText = 'SEND';
+				postButton.disabled = false;
+			}, 10000);
+			return 0;
+		}
 
 		const status = await sendRequest(id, name, email, comment, cloudflareToken);
 		postButton.classList.remove('loading');
