@@ -1,9 +1,10 @@
 ---
 const { comment } = Astro.props;
+const commentType: string = comment.isAdminComment == null ? 'guest' : 'admin';
 ---
 
 <div class="rounded pb-5 first:pt-5 grid grid-cols-[auto] md:grid-cols-[auto,1fr] gap-5">
-	<article class="p-6 mb-6 text-base rounded-md border border-rose-800 bg-zinc-900">
+	<article class={'p-6 mb-6 text-base rounded-md bg-zinc-900 customBorder ' + commentType}>
 		<footer class="flex justify-between items-center mb-2">
 			<div class="flex items-center">
 				<p aria-label="Commenter Image and Name" class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
