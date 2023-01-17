@@ -36,7 +36,7 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 
 <!DOCTYPE html>
 <html lang="en" class="bg-[#121212] text-zinc-200">
-	<BaseHead title={post.heading} description={post.description} image={'/images.jpg?src=' + post.cover.data.attributes.formats['thumbnail'].url} />
+	<BaseHead title={post.heading} description={post.description} image={post.cover.data.attributes.formats['thumbnail'].url} />
 	<body data-post_id={posts.data[0].id}>
 		<!-- Inject post id here so its known on client side  -->
 		<div class="min-h-screen grid grid-rows-[auto,1fr,auto]">
