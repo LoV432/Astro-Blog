@@ -2,6 +2,7 @@ import DOMPurify from 'isomorphic-dompurify';
 import { API, CLOUDFLARE_SECRET_KEY } from '../../config';
 export async function post({ request, clientAddress }) {
 	let commenterIP;
+	const avatar = 'https://avatars.dicebear.com/api/identicon/' + Math.random() * 99999999 + '.svg?background=%23ffffff';
 	if (request.headers.get('x-real-ip') != null) {
 		// this assumes the x-real-ip header can be trusted (like all traffic coming thru cloudflare)
 		commenterIP = request.headers.get('x-real-ip');
@@ -20,7 +21,7 @@ export async function post({ request, clientAddress }) {
 	const options = {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: '{"author":{"id":"' + commenterIP + '","name":"' + data.name + '","email":"' + data.email + '"},"content":"' + sanitizedComment + '"}'
+		body: '{"author":{"id":"' + commenterIP + '","name":"' + data.name + '","email":"' + data.email + '","avatar":"' + avatar + '"},"content":"' + sanitizedComment + '"}'
 	};
 	let response = await fetch(API + '/api/comments/api::post.post:' + data.post_id, options);
 	let status = response.status;

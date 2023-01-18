@@ -1,6 +1,7 @@
 ---
 const { comment, isReply = false , replyTo = '' } = Astro.props;
 const commentType: string = comment.isAdminComment == null ? 'guest' : 'admin';
+const avatar: string = comment.author.avatar == null ? 'https://avatars.dicebear.com/api/identicon/loveingtheairUwU.svg?background=%23ffffff' : comment.author.avatar;
 ---
 
 <div class={"rounded grid grid-cols-[auto] md:grid-cols-[auto,1fr] gap-5 " + (isReply ? "pl-5" : "")}>
@@ -8,7 +9,7 @@ const commentType: string = comment.isAdminComment == null ? 'guest' : 'admin';
 		<footer class="flex items-center mb-2">
 			<div class="flex w-full">
 				<div aria-label="Commenter Image and Name" class="mr-3 self-center">
-					<img class="w-10 h-10 rounded-sm" loading="lazy" src={'https://avatars.dicebear.com/api/identicon/' + Math.random() * 99999999 + '.svg?background=%23ffffff'} alt={comment.author.name} />
+					<img class="w-10 h-10 rounded-sm" loading="lazy" src={avatar} alt={comment.author.name} />
 				</div>
 				<div class="self-center">
 					<p class=" text-base">
