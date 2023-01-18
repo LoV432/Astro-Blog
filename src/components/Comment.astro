@@ -1,47 +1,52 @@
 ---
-const { comment } = Astro.props;
+const { comment, isReply = false , replyTo = '' } = Astro.props;
 const commentType: string = comment.isAdminComment == null ? 'guest' : 'admin';
 ---
 
-<div class="rounded pb-5 first:pt-5 grid grid-cols-[auto] md:grid-cols-[auto,1fr] gap-5">
-	<article class={'p-6 mb-6 text-base rounded-md bg-zinc-900 customBorder ' + commentType}>
-		<footer class="flex justify-between items-center mb-2">
-			<div class="flex items-center">
-				<p aria-label="Commenter Image and Name" class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-					<img class="mr-2 w-6 h-6 rounded-full" loading="lazy" src={'https://avatars.dicebear.com/api/open-peeps/' + Math.random() * 99999999 + '.svg?background=%23ffffff'} alt={comment.author.name} />{comment.author.name}
-				</p>
-				<p class="text-sm text-gray-600 dark:text-gray-400">
-					<time class="commentPostTime" data-commentposttime={comment.createdAt}>
+<div class={"rounded grid grid-cols-[auto] md:grid-cols-[auto,1fr] gap-5 " + (isReply ? "pl-5" : "")}>
+	<article class={'px-6 py-5 mb-6 text-base rounded-md bg-zinc-900 md:min-w-[40rem] customBorder ' + commentType}>
+		<footer class="flex items-center mb-2">
+			<div class="flex w-full">
+				<div aria-label="Commenter Image and Name" class="mr-3 self-center">
+					<img class="w-10 h-10 rounded-sm" loading="lazy" src={'https://avatars.dicebear.com/api/identicon/' + Math.random() * 99999999 + '.svg?background=%23ffffff'} alt={comment.author.name} />
+				</div>
+				<div class="self-center">
+					<p class=" text-base">
+						{comment.author.name}
+						<button class="p-2 pt-[0.55rem] pl-2 dropdown dropdown-right self-start justify-end">
+							<svg xmlns="http://www.w3.org/2000/svg" class="fill-red-700 w-2" viewBox="0 0 448 512"
+								><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+								<path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32V64 368 480c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"></path>
+							</svg>
+							<span class="sr-only">Report Comment</span>
+							<ul tabindex="0" class="dropdown-content menu p-2 shadow border border-rose-600 bg-zinc-900 rounded-box w-36">
+								<li>
+									<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
+										<input type="checkbox" data-commentid={comment.id} class="hidden cancelReport" />
+										<span class="text-green-600 font-extrabold active:bg-green-900 focus:bg-green-900 w-28 py-3 px-4 rounded-md">CANCEL</span>
+									</label>
+								</li>
+								<li>
+									<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
+										<input data-commentid={comment.id} class="hidden" />
+										<span data-commentid={comment.id} class="text-red-600 font-extrabold active:bg-red-900 w-28 py-3 px-4 rounded-md reportButton">REPORT?</span>
+									</label>
+								</li>
+							</ul>
+						</button>
+					</p>
+					<time class="commentPostTime text-sm text-gray-600 dark:text-gray-400" data-commentposttime={comment.createdAt}>
 						{comment.createdAt}
 					</time>
-				</p>
+				</div>
 			</div>
-			<button class="inline-flex items-center p-2 pt-[0.55rem] pl-4 dropdown dropdown-end">
-				<svg xmlns="http://www.w3.org/2000/svg" class="fill-red-700 w-2" viewBox="0 0 448 512"
-					><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-					<path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32V64 368 480c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"></path>
-				</svg>
-				<span class="sr-only">Report Comment</span>
-				<ul tabindex="0" class="dropdown-content menu p-2 shadow border border-rose-600 bg-zinc-900 rounded-box w-36">
-					<li>
-						<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
-							<input type="checkbox" data-commentid={comment.id} class="hidden cancelReport" />
-							<span class="text-green-600 font-extrabold active:bg-green-900 focus:bg-green-900 w-28 py-3 px-4 rounded-md">CANCEL</span>
-						</label>
-					</li>
-					<li>
-						<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
-							<input data-commentid={comment.id} class="hidden" />
-							<span data-commentid={comment.id} class="text-red-600 font-extrabold active:bg-red-900 w-28 py-3 px-4 rounded-md reportButton">REPORT?</span>
-						</label>
-					</li>
-				</ul>
-			</button>
 		</footer>
-		<pre aria-label="Comment Content" class="whitespace-pre-wrap">{comment.content}</pre>
+		{isReply ? <p class="w-full text-sm text-gray-600">Reply to {replyTo}</p> : <></>}
+		<pre aria-label="Comment Content" class="whitespace-pre-wrap mt-3">{comment.content}</pre>
+		
 	</article>
 </div>
-
+<div class="border-l border-zinc-600">{comment.children.slice(0).reverse().map((replyComment) => <Astro.self comment={replyComment} isReply={true} replyTo={comment.author.name} />)}</div>
 <script>
 	document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
 		button.addEventListener('click', async () => {

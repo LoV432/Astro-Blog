@@ -57,7 +57,13 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 			</main>
 			<CommentPost />
 			<CommentSection totalComments={comments.length}>
-				{comments.map((comment) => <Comment comment={comment} />)}
+				{
+					comments.map((comment) => (
+						<div class="first:pt-5 pb-5">
+							<Comment comment={comment} />
+						</div>
+					))
+				}
 			</CommentSection>
 			<Footer />
 		</div>
