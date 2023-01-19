@@ -1,10 +1,10 @@
 ---
-const { comment, isReply = false , replyTo = '' } = Astro.props;
+const { comment, isReply = false, replyTo = '' } = Astro.props;
 const isAdmin: boolean = comment.isAdminComment == null ? false : true;
 const avatar: string = comment.author.avatar == null ? 'https://avatars.dicebear.com/api/identicon/loveingtheairUwU.svg?background=%23ffffff' : comment.author.avatar;
 ---
 
-<div class={"rounded grid grid-cols-[auto] md:grid-cols-[auto,1fr] gap-5 " + (isReply ? "pl-5" : "")}>
+<div class={'rounded grid grid-cols-[auto] md:grid-cols-[auto,1fr] gap-5 ' + (isReply ? 'pl-5' : '')}>
 	<article class={'px-6 py-5 mb-6 text-base rounded-md bg-zinc-900 md:min-w-[40rem] customBorder guest'}>
 		<footer class="flex items-center mb-2">
 			<div class="flex w-full">
@@ -14,32 +14,38 @@ const avatar: string = comment.author.avatar == null ? 'https://avatars.dicebear
 				<div class="self-center w-full">
 					<p class="text-base">
 						{comment.author.name}
-						{isAdmin ? 
-						<span class="p-2 pt-[0.55rem] pl-2 float-right">
-							<svg aria-labelledby="Admin" class="w-3.5 h-3.5 fill-rose-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"> <title>Admin</title><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.7 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0zm0 66.8V444.8C394 378 431.1 230.1 432 141.4L256 66.8l0 0z"/></svg> 
-						</span>
-						: 
-						<button class="p-2 pt-[0.55rem] pl-2 dropdown dropdown-left float-right">
-							<svg xmlns="http://www.w3.org/2000/svg" class="fill-red-800 w-2" viewBox="0 0 448 512"
-								><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-								<path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32V64 368 480c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"></path>
-							</svg>
-							<span class="sr-only">Report Comment</span>
-							<ul tabindex="0" class="dropdown-content menu p-2 shadow border border-rose-600 bg-zinc-900 rounded-box w-36">
-								<li>
-									<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
-										<input type="checkbox" data-commentid={comment.id} class="hidden cancelReport" />
-										<span class="text-green-600 font-extrabold active:bg-green-900 focus:bg-green-900 w-28 py-3 px-4 rounded-md">CANCEL</span>
-									</label>
-								</li>
-								<li>
-									<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
-										<input data-commentid={comment.id} class="hidden" />
-										<span data-commentid={comment.id} class="text-red-600 font-extrabold active:bg-red-900 w-28 py-3 px-4 rounded-md reportButton">REPORT?</span>
-									</label>
-								</li>
-							</ul>
-						</button>
+						{
+							isAdmin ? (
+								<span class="p-2 pt-[0.55rem] pl-2 float-right">
+									<svg aria-labelledby="Admin" class="w-3.5 h-3.5 fill-rose-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+										<title>Admin</title>
+										<path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.7 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0zm0 66.8V444.8C394 378 431.1 230.1 432 141.4L256 66.8l0 0z" />
+									</svg>
+								</span>
+							) : (
+								<button class="p-2 pt-[0.55rem] pl-2 dropdown dropdown-left float-right">
+									<svg xmlns="http://www.w3.org/2000/svg" class="fill-red-800 w-2" viewBox="0 0 448 512">
+										<path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32V64 368 480c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L64 48V32z" />
+									</svg>
+									<span class="sr-only">Report Comment</span>
+									<ul tabindex="0" class="dropdown-content menu p-2 shadow border border-rose-600 bg-zinc-900 rounded-box w-36">
+										<li>
+											<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
+												<input type="checkbox" data-commentid={comment.id} class="hidden cancelReport" />
+												<span class="text-green-600 font-extrabold active:bg-green-900 focus:bg-green-900 w-28 py-3 px-4 rounded-md">CANCEL</span>
+											</label>
+										</li>
+										<li>
+											<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
+												<input data-commentid={comment.id} class="hidden" />
+												<span data-commentid={comment.id} class="text-red-600 font-extrabold active:bg-red-900 w-28 py-3 px-4 rounded-md reportButton">
+													REPORT?
+												</span>
+											</label>
+										</li>
+									</ul>
+								</button>
+							)
 						}
 					</p>
 					<time class="commentPostTime text-sm text-gray-600 dark:text-gray-400" data-commentposttime={comment.createdAt}>
@@ -48,14 +54,18 @@ const avatar: string = comment.author.avatar == null ? 'https://avatars.dicebear
 				</div>
 			</div>
 		</footer>
-		{isReply ? <p class="w-full text-sm text-gray-600">Reply to {replyTo}</p> : <></>}
+		{isReply ? <p class="w-full text-sm text-gray-600">Reply to {replyTo}</p> : ''}
 		<pre aria-label="Comment Content" class="whitespace-pre-wrap mt-3">{comment.content}</pre>
-		
 	</article>
 </div>
-<div class="relative after:border-l after:border-zinc-600
-after:absolute after:top-0 after:h-[97%] after:w-full after:-z-10 after:rounded-bl-lg"
- >{comment.children.slice(0).reverse().map((replyComment) => <Astro.self comment={replyComment} isReply={true} replyTo={comment.author.name} />)}</div>
+<div class="relative after:border-l after:border-zinc-600 after:absolute after:top-0 after:h-[97%] after:w-full after:-z-10 after:rounded-bl-lg">
+	{
+		comment.children
+			.slice(0)
+			.reverse()
+			.map((replyComment) => <Astro.self comment={replyComment} isReply={true} replyTo={comment.author.name} />)
+	}
+</div>
 <script>
 	document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
 		button.addEventListener('click', async () => {

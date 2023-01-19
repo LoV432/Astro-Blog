@@ -4,13 +4,13 @@
 
 @layer components {
 	.admin.customBorder {
-		--tw-ring-offset-shadow : inset 0 0 0.5em 0 var(--tw-shadow-color);
-		--tw-ring-shadow : inset 0 0 0.5em 0 var(--tw-shadow-color);
-		@apply border border-rose-800 shadow-md shadow-rose-800
+		--tw-ring-offset-shadow: inset 0 0 0.5em 0 var(--tw-shadow-color);
+		--tw-ring-shadow: inset 0 0 0.5em 0 var(--tw-shadow-color);
+		@apply border border-rose-800 shadow-md shadow-rose-800;
 	}
 
 	.guest.customBorder {
-		@apply border border-rose-800
+		@apply border border-rose-800;
 	}
 }
 
