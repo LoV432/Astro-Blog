@@ -47,7 +47,9 @@ const avatar: string = comment.author.avatar == null ? 'https://avatars.dicebear
 		
 	</article>
 </div>
-<div class="border-l border-zinc-600">{comment.children.slice(0).reverse().map((replyComment) => <Astro.self comment={replyComment} isReply={true} replyTo={comment.author.name} />)}</div>
+<div class="relative before:border-l before:border-zinc-600
+before:absolute before:top-0 before:h-[97%] before:w-[100%] before:rounded-bl-lg"
+ >{comment.children.slice(0).reverse().map((replyComment) => <Astro.self comment={replyComment} isReply={true} replyTo={comment.author.name} />)}</div>
 <script>
 	document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
 		button.addEventListener('click', async () => {
