@@ -53,8 +53,8 @@ const avatar: string = comment.author.avatar == null ? 'https://avatars.dicebear
 		
 	</article>
 </div>
-<div class="relative before:border-l before:border-zinc-600
-before:absolute before:top-0 before:h-[97%] before:w-[100%] before:rounded-bl-lg"
+<div class="relative after:border-l after:border-zinc-600
+after:absolute after:top-0 after:h-[97%] after:w-full after:-z-10 after:rounded-bl-lg"
  >{comment.children.slice(0).reverse().map((replyComment) => <Astro.self comment={replyComment} isReply={true} replyTo={comment.author.name} />)}</div>
 <script>
 	document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
