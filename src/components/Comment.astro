@@ -5,10 +5,10 @@ const avatar: string = comment.author.avatar == null ? 'https://avatars.dicebear
 ---
 
 <div class={'rounded grid grid-cols-[auto] md:grid-cols-[auto,1fr] ' + (isReply ? 'pl-5' : '')}>
-	<article class={'px-6 py-5 mb-6 text-base rounded-md bg-zinc-900 customBorder guest '  + (isReply ? 'md:w-[38.75rem]' : 'md:w-[40rem]')}>
+	<article class={'px-6 py-5 mb-6 text-base rounded-md bg-zinc-900 customBorder guest ' + (isReply ? 'md:w-[38.75rem]' : 'md:w-[40rem]')}>
 		<footer class="flex items-center mb-2">
 			<div class="flex w-full">
-				<div aria-labelby="Commenter Image" class="mr-3 self-center">
+				<div aria-labelledby="Commenter Image" class="mr-3 self-center">
 					<img class="w-10 h-10 rounded-sm" loading="lazy" src={avatar} alt={comment.author.name} />
 				</div>
 				<div class="self-center w-full">
