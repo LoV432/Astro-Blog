@@ -1,11 +1,23 @@
 ---
 const { imageObject, classes, size, alt } = Astro.props;
 let image: string;
+let imageWH: {
+	width: number;
+	height: number;
+};
 if (Object.hasOwn(imageObject.formats, size)) {
 	image = imageObject.formats[size].url;
+	imageWH = {
+		width: imageObject.formats[size].width,
+		height: imageObject.formats[size].height
+	};
 } else {
 	image = imageObject.url;
+	imageWH = {
+		width: imageObject.width,
+		height: imageObject.height
+	};
 }
 ---
 
-<img src={image} class={classes} alt={alt} />
+<img width={imageWH.width + 'px'} height={imageWH.height + 'px'} src={image} class={classes} alt={alt} />

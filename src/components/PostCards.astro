@@ -11,11 +11,9 @@ const { posts } = Astro.props;
 				href={'/blog/' + post.attributes.slug}
 				rel="prefetch"
 				class="grid md:grid-cols-[1fr,63%] md:grid-rows-[unset] sm:grid-rows-[1fr,66%] w-[20rem] md:w-[48rem] mb-6 
-     border-2 rounded-lg border-rose-700 shadow-xl shadow-rose-600/10 hover:shadow-rose-600/40 hover:cursor-pointer hover:-translate-y-1 transition-all overflow-hidden"
+     			border-2 rounded-lg border-rose-700 shadow-xl shadow-rose-600/10 hover:shadow-rose-600/40 hover:cursor-pointer hover:-translate-y-1 transition-all overflow-hidden"
 			>
-				<div class="min-h-[210.667px]">
-					<PostImage imageObject={post.attributes.cover.data.attributes} classes={'rounded-l-sm w-full h-full object-cover flex place-items-center justify-center'} size={'small'} alt={'Thumbnail'} />
-				</div>
+				<PostImage imageObject={post.attributes.cover.data.attributes} classes={'rounded-l-sm w-full h-full object-cover flex place-items-center justify-center'} size={'small'} alt={'Thumbnail'} />
 				<div class="h-fit md:h-full rounded-r-sm bg-zinc-900">
 					<div class="text-4xl m-5 mb-2">{post.attributes.heading}</div>
 					<div class="w-fit mx-5 mb-5">

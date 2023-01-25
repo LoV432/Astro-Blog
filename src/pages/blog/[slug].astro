@@ -12,7 +12,7 @@ import { marked } from '../../../node_modules/marked';
 import DOMPurify from 'isomorphic-dompurify';
 import hljs from 'highlight.js/lib/common';
 import 'highlight.js/styles/github-dark.css';
-let posts = await fetch(API + '/api/posts/?filters[slug][$eq]=' + slug + '&fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&fields[5]=description&populate[cover][fields][0]=formats&populate[cover][fields]=url').then((res) => res.json());
+let posts = await fetch(API + '/api/posts/?filters[slug][$eq]=' + slug + '&fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&fields[5]=description&populate[cover][fields][0]=formats&populate[cover][fields]=url&populate[cover][fields]=width&populate[cover][fields]=height').then((res) => res.json());
 if (!posts.data[0]) {
 	return Astro.redirect('/404');
 }
@@ -43,7 +43,7 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 			<Header />
 			<main class="place-self-center">
 				<section class="px-6 md:px-0 w-full md:w-[45rem] lg:w-[55rem]">
-					<div class="pb-6 md:min-h-[459px] min-h-[250px]">
+					<div class="pb-6">
 						<PostImage imageObject={post.cover.data.attributes} classes={'rounded-md w-full h-full object-cover border-2 border-rose-800 flex place-items-center justify-center'} size={'large'} alt={'Heading Image'} />
 					</div>
 					<div>
