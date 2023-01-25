@@ -24,8 +24,11 @@
 }
 
 html {
+	background-color: rgb(18 18 18) !important;
+	color: rgb(228 228 231) !important;
 	padding-left: calc(100vw - 100%); /* Dont shift content when theres a scrollbar https://stackoverflow.com/a/30293718 */
 }
+
 pre {
 	max-width: 85vw;
 }
