@@ -22,6 +22,10 @@
 	font-display: swap;
 	src: local(''), url('/rubik-vinyl-v1-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */ url('/rubik-vinyl-v1-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
+
+html {
+	padding-left: calc(100vw - 100%); /* Dont shift content when theres a scrollbar https://stackoverflow.com/a/30293718 */
+}
 pre {
 	max-width: 85vw;
 }
