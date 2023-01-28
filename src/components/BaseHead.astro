@@ -2,6 +2,7 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
+import { CLOUDFLARE_ANALYTICS_TOKEN } from '../config';
 
 export interface Props {
 	title: string;
@@ -17,6 +18,7 @@ const { title, description = '', image = '/logo.png' } = Astro.props;
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/png" href="/favicon.png" />
 <meta name="generator" content={Astro.generator} />
+<script defer src="analytics" data-cf-beacon={'"token:" "' + CLOUDFLARE_ANALYTICS_TOKEN + '"'}></script>
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>

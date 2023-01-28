@@ -9,3 +9,4 @@ export const PAGESIZE = '5';
 export const API = 'http://localhost:1337';
 export const CLOUDFLARE_SECRET_KEY = '';
 export const CLOUDFLARE_PUBLIC_KEY = '';
+export const CLOUDFLARE_ANALYTICS_TOKEN = '';
