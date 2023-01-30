@@ -31,6 +31,15 @@ marked.setOptions({
 	smartypants: true
 });
 
+DOMPurify.addHook('afterSanitizeAttributes', function (node) {
+	// set all elements owning target to target=_blank
+	// Stolen from https://github.com/cure53/DOMPurify/issues/317#issuecomment-698800327
+	if ('target' in node) {
+		node.setAttribute('target', '_blank');
+		node.setAttribute('rel', 'noopener');
+	}
+});
+
 const content = DOMPurify.sanitize(marked.parse(post.content));
 ---
 
