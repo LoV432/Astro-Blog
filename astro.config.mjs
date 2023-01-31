@@ -10,11 +10,20 @@ import node from '@astrojs/node';
 import prefetch from '@astrojs/prefetch';
 
 // https://astro.build/config
+import image from "@astrojs/image";
+
+// https://astro.build/config
 export default defineConfig({
-	site: 'https://example.com',
-	integrations: [tailwind({ config: { applyBaseStyles: false } }), prefetch()],
-	output: 'server',
-	adapter: node({
-		mode: 'standalone'
-	})
+  site: 'https://example.com',
+  integrations: [tailwind({
+    config: {
+      applyBaseStyles: false
+    }
+  }), prefetch(), image({
+    serviceEntryPoint: '@astrojs/image/sharp'
+  })],
+  output: 'server',
+  adapter: node({
+    mode: 'standalone'
+  })
 });
