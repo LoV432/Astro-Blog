@@ -19,14 +19,10 @@ const { posts } = Astro.props;
 					<div class="w-fit mx-5 mb-5">
 						<object aria-label="just here so i can add nested <a>">
 							<span class="bg-rose-200 text-rose-900 text-xs font-semibold mr-2 px-2.5 py-0.5 pb-1 rounded">tags:</span>
-							{post.attributes.tags.data.map((tag) => (
-								<span>
-									{' '}
-									<a class="text-blue-700" href={'/tag/' + tag.attributes.tag} rel="prefetch">
-										#{tag.attributes.tag}
-									</a>{' '}
-									&VeryThinSpace;
-								</span>
+							{post.attributes.tags.data.map((tag: { id: number; attributes: { tag: string } }) => (
+								<a class="text-blue-700 inline-block hover:text-rose-700" href={'/tag/' + tag.attributes.tag} rel="prefetch">
+									#{tag.attributes.tag} &VeryThinSpace;
+								</a>
 							))}
 						</object>
 					</div>
