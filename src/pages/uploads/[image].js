@@ -4,12 +4,10 @@ export async function get({ params }) {
 	const response = await fetch(API + '/uploads/' + imageSrc);
 	if (response.headers.get('Content-Type').split('/')[0] == 'image') {
 		const buffer = Buffer.from(await response.arrayBuffer());
-		let imageType = imageSrc.split('.'); // ['imagename', 'png']
-		imageType = imageType[imageType.length - 1]; // 'png'
 		return new Response(buffer, {
 			status: 200,
 			headers: {
-				'Content-Type': 'image/' + imageType,
+				'Content-Type': response.headers.get('Content-Type'),
 				'Cache-Control': 'max-age=15552000'
 			}
 		});
