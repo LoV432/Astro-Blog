@@ -26,7 +26,9 @@ const { posts } = Astro.props;
 							))}
 						</object>
 					</div>
-					<div class="pl-5 pr-5 pb-5">{post.attributes.description}</div>
+					<div class="pl-5 pr-5 pb-5">
+						<p class="overflow-hidden line-clamp-5 md:line-clamp-3">{post.attributes.description}</p>
+					</div>
 				</div>
 			</a>
 		))
