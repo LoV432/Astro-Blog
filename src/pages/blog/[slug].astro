@@ -66,23 +66,19 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 			<CommentSection />
 			<Footer />
 		</div>
-		<script>
+		<script is:inline>
 			// Fix post timestamps
-			let updatedAtElement: HTMLElement = document.querySelector('#updatedAt');
+			let updatedAtElement = document.querySelector('#updatedAt');
 			let updatedAt = updatedAtElement.dataset.updatedat;
-			let publishedAtElement: HTMLElement = document.querySelector('#publishedAt');
+			let publishedAtElement = document.querySelector('#publishedAt');
 			let publishedAt = publishedAtElement.dataset.publishedat;
+			const options = {
+				dateStyle: 'short',
+				timeStyle: 'short'
+			};
 
-			publishedAtElement.innerHTML = 'Published on: ' + getFormattedUTCTime(publishedAt);
-			updatedAtElement.innerHTML = 'Last updated on: ' + getFormattedUTCTime(updatedAt);
-
-			function getFormattedUTCTime(time) {
-				const options: Intl.DateTimeFormatOptions = {
-					dateStyle: 'short',
-					timeStyle: 'short'
-				};
-				return new Date(time).toLocaleString('en-US', options);
-			}
+			publishedAtElement.innerHTML = 'Published on: ' + new Date(publishedAt).toLocaleString('en-US', options);
+			updatedAtElement.innerHTML = 'Last updated on: ' + new Date(updatedAt).toLocaleString('en-US', options);
 		</script>
 	</body>
 </html>
