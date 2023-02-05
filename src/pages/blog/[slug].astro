@@ -3,7 +3,6 @@ import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import CommentPost from '../../components/CommentPost.astro';
 import CommentSection from '../../components/CommentSection.astro';
-import Comment from '../../components/Comment.astro';
 import Footer from '../../components/Footer.astro';
 import PostImage from '../../components/PostImage.astro';
 import { API } from '../../config';
@@ -16,8 +15,6 @@ let posts = await fetch(API + '/api/posts/?filters[slug][$eq]=' + slug + '&field
 if (!posts.data[0]) {
 	return Astro.redirect('/404');
 }
-let comments = await fetch(API + '/api/comments/api::post.post:' + posts.data[0].id + '?sort=id:desc').then((res) => res.json());
-comments = comments.filter((comment) => !comment.blocked);
 const post = posts.data[0].attributes;
 
 marked.setOptions({
@@ -66,26 +63,11 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 				</section>
 			</main>
 			<CommentPost />
-			<CommentSection totalComments={comments.length}>
-				{
-					comments.map((comment) => (
-						<div class="first:pt-5 pb-5">
-							<Comment comment={comment} />
-						</div>
-					))
-				}
-			</CommentSection>
+			<CommentSection />
 			<Footer />
 		</div>
 		<script>
-			function getFormattedUTCTime(time) {
-				const options: Intl.DateTimeFormatOptions = {
-					dateStyle: 'short',
-					timeStyle: 'short'
-				};
-				return new Date(time).toLocaleString('en-US', options);
-			}
-
+			// Fix post timestamps
 			let updatedAtElement: HTMLElement = document.querySelector('#updatedAt');
 			let updatedAt = updatedAtElement.dataset.updatedat;
 			let publishedAtElement: HTMLElement = document.querySelector('#publishedAt');
@@ -94,11 +76,13 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 			publishedAtElement.innerHTML = 'Published on: ' + getFormattedUTCTime(publishedAt);
 			updatedAtElement.innerHTML = 'Last updated on: ' + getFormattedUTCTime(updatedAt);
 
-			let allCommentTimes = document.querySelectorAll('.commentPostTime');
-			allCommentTimes.forEach((commentPostTimeElement: HTMLElement) => {
-				let commentPostTime = commentPostTimeElement.dataset.commentposttime;
-				commentPostTimeElement.innerHTML = getFormattedUTCTime(commentPostTime);
-			});
+			function getFormattedUTCTime(time) {
+				const options: Intl.DateTimeFormatOptions = {
+					dateStyle: 'short',
+					timeStyle: 'short'
+				};
+				return new Date(time).toLocaleString('en-US', options);
+			}
 		</script>
 	</body>
 </html>

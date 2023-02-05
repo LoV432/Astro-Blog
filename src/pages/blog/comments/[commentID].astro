@@ -1,0 +1,16 @@
+---
+import { API } from '../../../config';
+import Comment from '../../../components/Comment.astro';
+const { commentID } = Astro.params;
+let comments = await fetch(API + '/api/comments/api::post.post:' + commentID + '?sort=id:desc&filters[blocked][$eq]=false').then((res) => res.json());
+---
+
+<div id="comments" data-total_comments={comments.length}>
+	{
+		comments.map((comment) => (
+			<div class="first:pt-5 pb-5">
+				<Comment comment={comment} />
+			</div>
+		))
+	}
+</div>
