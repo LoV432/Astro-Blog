@@ -126,6 +126,7 @@ import { CLOUDFLARE_PUBLIC_KEY } from '../config';
 		postButton.classList.add('disabled:text-green-800', 'disabled:hover:text-green-800');
 		postButton.innerText = 'Posted!';
 		postButton.disabled = true;
+		postButton.dispatchEvent(new Event('updateComments'));
 	}
 
 	function failed() {

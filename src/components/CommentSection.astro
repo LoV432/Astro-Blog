@@ -7,47 +7,62 @@
 </section>
 
 <script>
-	// Get comments and render
-	let getComments = await window.fetch('/blog/comments/' + document.querySelector('body').dataset.post_id);
-	let getCommentsHTML = new DOMParser().parseFromString(await getComments.text(), 'text/html');
-	let comments = getCommentsHTML.body;
-	document.querySelector<HTMLElement>('#commentsContainer').innerHTML = comments.innerHTML;
-	let totalComments = document.querySelector<HTMLElement>('#comments').dataset.total_comments;
-	document.querySelector<HTMLElement>('#commentCount').innerText = 'Comments (' + totalComments + ')';
+	updateComments();
+	const postButton: HTMLButtonElement = document.querySelector('#postComment');
+	postButton.addEventListener(
+		'updateComments',
+		(e) => {
+			updateComments();
+		},
+		false
+	);
 
-	// Fix all comments timestamps
-	let allCommentTimes = document.querySelectorAll('.commentPostTime');
-	allCommentTimes.forEach((commentPostTimeElement: HTMLElement) => {
-		let commentPostTime = commentPostTimeElement.dataset.commentposttime;
-		commentPostTimeElement.innerHTML = getFormattedUTCTime(commentPostTime);
-	});
+	async function getComents() {
+		let getComments = await window.fetch('/blog/comments/' + document.querySelector('body').dataset.post_id);
+		let getCommentsHTML = new DOMParser().parseFromString(await getComments.text(), 'text/html');
+		return getCommentsHTML.body.innerHTML;
+	}
 
-	// Add report button EventListeners
-	document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
-		button.addEventListener('click', async () => {
-			closeDropDown();
-			const cloudflareToken = await cloudflareChallenge();
-			// Dont go any forward in case it failed
-			if (cloudflareToken == 'undefined') {
-				return 0;
-			}
+	export async function updateComments() {
+		console.log('Updating Comments');
+		document.querySelector<HTMLElement>('#commentsContainer').innerHTML = await getComents();
+		let totalComments = document.querySelector<HTMLElement>('#comments').dataset.total_comments;
+		document.querySelector<HTMLElement>('#commentCount').innerText = 'Comments (' + totalComments + ')';
 
-			const commentID = button.dataset.commentid;
-			const postID = document.querySelector('body').dataset.post_id;
-			const options = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: '{"postID":"' + postID + '","commentID":"' + commentID + '","cloudflaretoken":"' + cloudflareToken + '"}'
-			};
-			window.fetch('/blog/report', options);
+		// Fix all comments timestamps
+		let allCommentTimes = document.querySelectorAll('.commentPostTime');
+		allCommentTimes.forEach((commentPostTimeElement: HTMLElement) => {
+			let commentPostTime = commentPostTimeElement.dataset.commentposttime;
+			commentPostTimeElement.innerHTML = getFormattedUTCTime(commentPostTime);
 		});
-	});
 
-	document.querySelectorAll('.cancelReport').forEach((button: HTMLElement) => {
-		button.addEventListener('click', () => {
-			closeDropDown();
+		// Add report button EventListeners
+		document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
+			button.addEventListener('click', async () => {
+				closeDropDown();
+				const cloudflareToken = await cloudflareChallenge();
+				// Dont go any forward in case it failed
+				if (cloudflareToken == 'undefined') {
+					return 0;
+				}
+
+				const commentID = button.dataset.commentid;
+				const postID = document.querySelector('body').dataset.post_id;
+				const options = {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: '{"postID":"' + postID + '","commentID":"' + commentID + '","cloudflaretoken":"' + cloudflareToken + '"}'
+				};
+				window.fetch('/blog/report', options);
+			});
 		});
-	});
+
+		document.querySelectorAll('.cancelReport').forEach((button: HTMLElement) => {
+			button.addEventListener('click', () => {
+				closeDropDown();
+			});
+		});
+	}
 
 	// Helper functions
 	async function cloudflareChallenge(): Promise<string> {
