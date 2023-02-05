@@ -1,5 +1,5 @@
 import DOMPurify from 'isomorphic-dompurify';
-import { API, CLOUDFLARE_SECRET_KEY } from '../../config';
+import { API, CLOUDFLARE_SECRET_KEY, CLOUDFLARE_API_KEY, CLOUDFLARE_ZONE, BASE_URL } from '../../config';
 export async function post({ request, clientAddress }) {
 	let commenterIP;
 	const avatar = 'https://avatars.dicebear.com/api/identicon/' + Math.random() * 99999999 + '.svg?background=%23ffffff';
@@ -18,21 +18,30 @@ export async function post({ request, clientAddress }) {
 			status: 401
 		});
 	}
-	const options = {
+	const postCommentOptions = {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: '{"author":{"id":"' + commenterIP + '","name":"' + sanitizedName + '","email":"' + sanitizedEmail + '","avatar":"' + avatar + '"},"content":"' + sanitizedComment + '"}'
 	};
-	let response = await fetch(API + '/api/comments/api::post.post:' + data.post_id, options);
+	let response = await fetch(API + '/api/comments/api::post.post:' + data.post_id, postCommentOptions);
 	let status = response.status;
 	if (status != 200) {
 		console.log('Failed Request!');
-		console.log(options);
+		console.log(postCommentOptions);
 		console.log('END');
 		return new Response('{"response": "failed"}', {
 			status: 400
 		});
 	} else {
+		const cacheClearOptions = {
+			body: '{"files":["' + BASE_URL + '/blog/comments/' + data.post_id + '"]}',
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": "Bearer " + CLOUDFLARE_API_KEY
+			},
+			method: "POST"
+		}
+		await fetch("https://api.cloudflare.com/client/v4/zones/" + CLOUDFLARE_ZONE + "/purge_cache", cacheClearOptions)
 		return new Response('{"response": "Posted....Probably!"}', {
 			status: 200
 		});
