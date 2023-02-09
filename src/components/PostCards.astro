@@ -7,6 +7,7 @@ const { posts } = Astro.props;
 	{
 		posts.data.map((post) => (
 			<>
+				<a aria-disabled="true" role="link" aria-label="prefetch image" rel="prefetch" tabindex="-1" href={post.attributes.cover.data.attributes.url} />
 				<a
 					tabindex="0"
 					href={'/blog/' + post.attributes.slug}
@@ -32,7 +33,6 @@ const { posts } = Astro.props;
 						</div>
 					</div>
 				</a>
-				<a rel="prefetch" tabindex="-1" href={post.attributes.cover.data.attributes.url} />
 			</>
 		))
 	}
