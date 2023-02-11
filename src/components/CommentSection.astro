@@ -9,9 +9,20 @@
 <script>
 	updateComments();
 	const postButton: HTMLButtonElement = document.querySelector('#postComment');
+	const sendReplyButton: HTMLButtonElement = document.querySelector('#replyToComment');
 	postButton.addEventListener(
 		'updateComments',
 		(e) => {
+			updateComments();
+		},
+		false
+	);
+	sendReplyButton.addEventListener(
+		'updateComments',
+		(e) => {
+			setTimeout(() => {
+				resetReply();
+			}, 10000);
 			updateComments();
 		},
 		false
@@ -24,7 +35,6 @@
 	}
 
 	export async function updateComments() {
-		console.log('Updating Comments');
 		document.querySelector<HTMLElement>('#commentsContainer').innerHTML = await getComents();
 		let totalComments = document.querySelector<HTMLElement>('#comments').dataset.total_comments;
 		document.querySelector<HTMLElement>('#commentCount').innerText = 'Comments (' + totalComments + ')';
@@ -55,6 +65,26 @@
 				};
 				window.fetch('/blog/report', options);
 			});
+		});
+
+		// Add reply button EventListeners
+		const allReplyButtons = document.querySelectorAll('.reply-to-comment');
+		allReplyButtons.forEach((button: HTMLElement) => {
+			button.addEventListener('click', () => {
+				resetReply();
+				const authorName = button.dataset.threadauthor;
+				const threadID = button.dataset.threadid;
+				document.querySelector<HTMLElement>('#originalCommenterName').innerText = authorName;
+				document.querySelector<HTMLElement>('#replyToComment').dataset.threadid = threadID;
+				document.querySelector<HTMLFormElement>('#replyCommentSection').classList.remove('hidden');
+				document.querySelector<HTMLFormElement>('#replyCommentSection').scrollIntoView();
+				document.querySelector<HTMLFormElement>('#reply-commenter-name').focus();
+			});
+		});
+
+		const cancelReplyButton = document.querySelector('#cancelReplyToComment');
+		cancelReplyButton.addEventListener('click', () => {
+			resetReply();
 		});
 
 		document.querySelectorAll('.cancelReport').forEach((button: HTMLElement) => {
@@ -103,5 +133,11 @@
 			timeStyle: 'short'
 		};
 		return new Date(time).toLocaleString('en-US', options);
+	}
+
+	function resetReply() {
+		document.querySelector<HTMLFormElement>('#replyCommentSection').classList.add('hidden');
+		document.querySelector<HTMLFormElement>('#replyToComment').innerText = 'SEND';
+		document.querySelector<HTMLFormElement>('#reply-fieldsRequired').style.opacity = '0';
 	}
 </script>

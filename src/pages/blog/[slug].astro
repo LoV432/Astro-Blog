@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import CommentPost from '../../components/CommentPost.astro';
+import CommentReply from '../../components/CommentReply.astro';
 import CommentSection from '../../components/CommentSection.astro';
 import Footer from '../../components/Footer.astro';
 import PostImage from '../../components/PostImage.astro';
@@ -63,6 +64,7 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 				</section>
 			</main>
 			<CommentPost />
+			<CommentReply />
 			<CommentSection />
 			<Footer />
 		</div>

@@ -13,15 +13,24 @@ export async function post({ request, clientAddress }) {
 	const sanitizedComment = sanitize(data.comment);
 	const sanitizedEmail = sanitize(data.email);
 	const sanitizedName = sanitize(data.name);
+	let sanitizedThreadOf
+	Object.hasOwn(data, 'threadOf') ? sanitizedThreadOf = sanitize(data.threadOf) : sanitizedThreadOf = "null"
 	if (!(await validateCloudflare(CLOUDFLARE_SECRET_KEY, data.cloudflaretoken))) {
 		return new Response('{"response": "failed"}', {
 			status: 401
 		});
 	}
+
+	let commentPostRequestBody
+	if (!isNaN(sanitizedThreadOf)) {
+		commentPostRequestBody = '{"author":{"id":"' + commenterIP + '","name":"' + sanitizedName + '","email":"' + sanitizedEmail + '","avatar":"' + avatar + '"},"content":"' + sanitizedComment + '","threadOf":"' + sanitizedThreadOf + '"}'
+	} else {
+		commentPostRequestBody = '{"author":{"id":"' + commenterIP + '","name":"' + sanitizedName + '","email":"' + sanitizedEmail + '","avatar":"' + avatar + '"},"content":"' + sanitizedComment + '"}'
+	}
 	const postCommentOptions = {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: '{"author":{"id":"' + commenterIP + '","name":"' + sanitizedName + '","email":"' + sanitizedEmail + '","avatar":"' + avatar + '"},"content":"' + sanitizedComment + '"}'
+		body: commentPostRequestBody
 	};
 	let response = await fetch(API + '/api/comments/api::post.post:' + data.post_id, postCommentOptions);
 	let status = response.status;
