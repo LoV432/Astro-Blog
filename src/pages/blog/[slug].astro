@@ -10,7 +10,7 @@ import { API, API_PUBLIC } from '../../config';
 const { slug } = Astro.params;
 import { marked } from '../../../node_modules/marked';
 import DOMPurify from 'isomorphic-dompurify';
-import hljs from 'highlight.js/lib/common';
+import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
 let posts = await fetch(API + '/api/posts/?filters[slug][$eq]=' + slug + '&fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&fields[5]=description&populate[cover][fields][0]=formats&populate[cover][fields]=url&populate[cover][fields]=width&populate[cover][fields]=height').then((res) => res.json());
 if (!posts.data[0]) {
