@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import { BASE_URL } from './src/config'
 
 // https://astro.build/config
 import tailwind from '@astrojs/tailwind';
@@ -11,7 +12,7 @@ import prefetch from '@astrojs/prefetch';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://example.com',
+	site: BASE_URL,
 	integrations: [tailwind({ config: { applyBaseStyles: false } }), prefetch()],
 	output: 'server',
 	adapter: node({
