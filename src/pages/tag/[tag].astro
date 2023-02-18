@@ -24,7 +24,7 @@ const currentPage = posts.meta.pagination.page;
 
 <!DOCTYPE html>
 <html lang="en">
-	<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	<BaseHead title={`${tag[0].toUpperCase() + tag.slice(1)} | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 	<MainPageBody>
 		<Header />
 		<main>
