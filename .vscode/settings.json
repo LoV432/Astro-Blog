@@ -1,4 +1,6 @@
 {
 	"tailwindCSS.emmetCompletions": false,
-	"editor.formatOnSave": true
+	"editor.formatOnSave": true,
+	"git.enableCommitSigning": true,
+	"github.gitProtocol": "ssh"
 }
