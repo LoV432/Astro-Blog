@@ -45,6 +45,7 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 <html lang="en">
 	<BaseHead title={`${post.heading} | ${SITE_TITLE}`} description={post.description} image={API_PUBLIC + post.cover.data.attributes.formats['thumbnail'].url} />
 	<link rel="preload" as="image" href={API_PUBLIC + post.cover.data.attributes.url} />
+	<link rel="dns-prefetch" href="https://avatars.dicebear.com/" />
 	<body data-post_id={posts.data[0].id}>
 		<!-- Inject post id here so its known on client side  -->
 		<div class="min-h-screen grid grid-rows-[auto,1fr,auto]">
