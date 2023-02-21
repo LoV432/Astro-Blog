@@ -45,9 +45,9 @@
 	document.querySelector('#replyToComment').addEventListener('click', async () => {
 		const id = document.querySelector('body').dataset.post_id;
 		const threadID = document.querySelector<HTMLElement>('#replyToComment').dataset.threadid;
-		const name = nameElement.value.replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and spaces
-		const email = emailElement.value.replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and spaces
-		const comment = commentElement.value.replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and spaces
+		const name = nameElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
+		const email = emailElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
+		const comment = commentElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
 
 		// Check if any field empty and show error message if true
 		if (name === '' || email === '' || comment === '') {

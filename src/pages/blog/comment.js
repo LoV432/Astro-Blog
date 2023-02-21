@@ -69,7 +69,7 @@ async function validateCloudflare(secretKey, token) {
 }
 
 function sanitize(value) {
-	value = value.replace(/<[^>]+>/g, ''); // Strip all html tags
-	value = value.replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and spaces
-	return DOMPurify.sanitize(value); // Run it thru DOMPurify just to be sure
+	value = DOMPurify.sanitize(value); // Run it thru DOMPurify
+	value = value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
+	return value
 }
