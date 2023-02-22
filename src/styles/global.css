@@ -238,10 +238,10 @@ pre {
 
 @keyframes pulsate {
 	100% {
-		text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 0 0 40px #9f1239, 0 0 80px #9f1239, 0 0 90px #9f1239, 0 0 100px #9f1239, 0 0 150px #9f1239;
+		text-shadow: 0 0 4px #b69393, 0 0 11px #cebaba, 0 0 19px #fff, 0 0 40px #9f1239, 0 0 80px #9f1239, 0 0 90px #9f1239, 0 0 100px #9f1239, 0 0 150px #9f1239;
 	}
 
 	0% {
-		text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px #fff, 0 0 10px #9f1239, 0 0 45px #9f1239, 0 0 55px #9f1239, 0 0 70px #9f1239, 0 0 80px #9f1239;
+		text-shadow: 0 0 2px #a17f7f, 0 0 4px #b9a0a0, 0 0 6px #fff, 0 0 10px #9f1239, 0 0 45px #9f1239, 0 0 55px #9f1239, 0 0 70px #9f1239, 0 0 80px #9f1239;
 	}
 }
