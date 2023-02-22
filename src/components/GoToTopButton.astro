@@ -1,0 +1,19 @@
+<a aria-labelledby="Go to top" href="#header" id="gotop" class="btn btn-circle hover:bg-rose-800 fixed bottom-0 right-0 m-5 hidden">
+	<svg class="fill-white w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"> <path d="M201.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 173.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path></svg>
+</a>
+<script>
+	const toTopButton = document.querySelector('#gotop');
+	toTopButton.addEventListener('click', function (e) {
+		e.preventDefault();
+		document.querySelector(this.getAttribute('href')).scrollIntoView({
+			behavior: 'smooth'
+		});
+	});
+	window.addEventListener('scroll', () => {
+		if (window.pageYOffset > 100) {
+			toTopButton.classList.remove('hidden');
+		} else {
+			toTopButton.classList.add('hidden');
+		}
+	});
+</script>

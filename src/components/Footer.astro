@@ -1,9 +1,11 @@
 ---
 const today = new Date();
 import { COPYRIGHT_NAME } from '../config';
+import GoToTopButton from './GoToTopButton.astro';
 ---
 
 <footer class="place-items-end text-left p-5 pt-16">
 	&copy; {today.getFullYear()}
 	{COPYRIGHT_NAME}. All rights reserved.
 </footer>
+<GoToTopButton />
