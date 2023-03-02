@@ -36,128 +36,15 @@
 	</div>
 </section>
 <script>
+	import comment from '../lib/comment-helper';
 	const sendReplyButton: HTMLButtonElement = document.querySelector('#replyToComment');
 	const nameElement: HTMLInputElement = document.querySelector('#reply-commenter-name');
 	const emailElement: HTMLInputElement = document.querySelector('#reply-commenter-email');
 	const commentElement: HTMLInputElement = document.querySelector('#reply-commenter-comment');
 	const fieldsRequired: HTMLInputElement = document.querySelector('#reply-fieldsRequired');
 
-	document.querySelector('#replyToComment').addEventListener('click', async () => {
-		const id = document.querySelector('body').dataset.post_id;
+	document.querySelector('#replyToComment').addEventListener('click', () => {
 		const threadID = document.querySelector<HTMLElement>('#replyToComment').dataset.threadid;
-		const name = nameElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
-		const email = emailElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
-		const comment = commentElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
-
-		// Check if any field empty and show error message if true
-		if (name === '' || email === '' || comment === '') {
-			fieldsRequired.style.opacity = '100';
-			sendReplyButton.innerText = ascii[Math.floor(Math.random() * ascii.length)];
-			return 0;
-		}
-		fieldsRequired.style.opacity = '0'; // Remove the empty field error message in case its showing
-		sendReplyButton.innerText = '';
-		sendReplyButton.classList.add('loading');
-
-		const cloudflareToken = await cloudflareChallenge(); // Start Cloudflare Challenge
-		// Dont go any forward in case it failed
-		if (cloudflareToken == 'undefined') {
-			sendReplyButton.classList.remove('loading');
-			bot();
-			setTimeout(() => {
-				sendReplyButton.innerText = 'SEND';
-				sendReplyButton.disabled = false;
-			}, 10000);
-			return 0;
-		}
-
-		const status = await sendRequest(id, name, email, comment, threadID, cloudflareToken);
-		sendReplyButton.classList.remove('loading');
-		switch (status) {
-			case 200:
-				success();
-				break;
-
-			case 401:
-				bot();
-				break;
-
-			default:
-				failed();
-				break;
-		}
-		setTimeout(() => {
-			sendReplyButton.innerText = 'SEND';
-			sendReplyButton.disabled = false;
-		}, 10000);
+		comment(nameElement, emailElement, commentElement, fieldsRequired, sendReplyButton, true, threadID);
 	});
-
-	async function cloudflareChallenge(): Promise<string> {
-		const sitekey = document.querySelector<HTMLElement>('#cf-turnstile').dataset.cloudflare_public_key;
-		return new Promise((resolve) => {
-			//@ts-ignore
-			turnstile.render('#cf-turnstile', {
-				sitekey: sitekey,
-				retry: 'never',
-				'refresh-expired': 'never',
-				callback: function (token: string) {
-					resolve(token);
-				},
-				'timeout-callback': function () {
-					resolve('undefined');
-				},
-				'expired-callback': function () {
-					resolve('undefined');
-				},
-				'error-callback': function () {
-					resolve('undefined');
-				}
-			});
-		});
-	}
-
-	function success() {
-		[nameElement.value, emailElement.value, commentElement.value] = ['', '', '']; // Clear all text fields
-		sendReplyButton.classList.remove('disabled:text-rose-800', 'disabled:hover:text-rose-800');
-		sendReplyButton.classList.add('disabled:text-green-800', 'disabled:hover:text-green-800');
-		sendReplyButton.innerText = 'Posted!';
-		sendReplyButton.disabled = true;
-		sendReplyButton.dispatchEvent(new Event('updateComments'));
-	}
-
-	function failed() {
-		sendReplyButton.classList.remove('disabled:text-green-800', 'disabled:hover:text-green-800');
-		sendReplyButton.classList.add('shake-little', 'shake-constant', 'disabled:text-rose-800', 'disabled:hover:text-rose-800');
-		sendReplyButton.innerText = 'Failed!';
-		sendReplyButton.disabled = true;
-		setTimeout(() => {
-			sendReplyButton.classList.remove('shake-little', 'shake-constant');
-		}, 400);
-	}
-
-	function bot() {
-		sendReplyButton.classList.add('shake-little', 'shake-constant');
-		sendReplyButton.innerHTML =
-			'<svg class="w-8 fill-rose-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 0c17.7 0 32 14.3 32 32V96H480c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H160c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256c0-22.1-17.9-40-40-40s-40 17.9-40 40s17.9 40 40 40s40-17.9 40-40zm152 40c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40s17.9 40 40 40zM48 224H64V416H48c-26.5 0-48-21.5-48-48V272c0-26.5 21.5-48 48-48zm544 0c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H576V224h16z"/></svg>';
-		sendReplyButton.disabled = true;
-		setTimeout(() => {
-			sendReplyButton.classList.remove('shake-little', 'shake-constant');
-		}, 400);
-	}
-
-	async function sendRequest(id: string, name: string, email: string, comment: string, threadID: string, cloudflareToken: string): Promise<number> {
-		const options = {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: '{"post_id":"' + id + '","name":"' + name + '","email":"' + email + '","comment":"' + comment + '","threadOf":"' + threadID + '","cloudflaretoken":"' + cloudflareToken + '"}'
-		};
-		try {
-			const response = await window.fetch('/blog/comment', options);
-			const status = response.status;
-			return status;
-		} catch {
-			return 400;
-		}
-	}
-	const ascii = ['૮⸝⸝> ̫ <⸝⸝ ა', '(,,>﹏<,,)', '(>᎑<๑)/♡', '(つ≧﹏≦)', '૮₍˶ •. • ⑅₎ა ♡', '૮( ๑ᵔ ᵕ ᵔ๑ )ა', '≧﹏≦', '(✿˵•́ᴗ•̀˵)', '(ꈍ◡ꈍ🌸)', '(•◡•🌸)♡'];
 </script>

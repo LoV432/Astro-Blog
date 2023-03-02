@@ -7,6 +7,7 @@
 </section>
 
 <script>
+	import { cloudflareChallenge } from '../lib/comment-helper';
 	updateComments();
 	const postButton: HTMLButtonElement = document.querySelector('#postComment');
 	const sendReplyButton: HTMLButtonElement = document.querySelector('#replyToComment');
@@ -28,16 +29,11 @@
 		false
 	);
 
-	async function getComents() {
-		let getComments = await window.fetch('/blog/comments/' + document.querySelector('body').dataset.post_id);
-		let getCommentsHTML = new DOMParser().parseFromString(await getComments.text(), 'text/html');
-		return getCommentsHTML.body.innerHTML;
-	}
-
-	export async function updateComments() {
-		document.querySelector<HTMLElement>('#commentsContainer').innerHTML = await getComents();
+	// ALL FUNCTIONS
+	async function updateComments() {
+		document.querySelector<HTMLElement>('#commentsContainer').innerHTML = await getComments();
 		let totalComments = document.querySelector<HTMLElement>('#comments').dataset.total_comments;
-		document.querySelector<HTMLElement>('#commentCount').innerText = 'Comments (' + totalComments + ')';
+		document.querySelector<HTMLElement>('#commentCount').innerText = `Comments (${totalComments})`;
 
 		// Fix all comments timestamps
 		let allCommentTimes = document.querySelectorAll('.commentPostTime');
@@ -45,7 +41,16 @@
 			let commentPostTime = commentPostTimeElement.dataset.commentposttime;
 			commentPostTimeElement.innerHTML = getFormattedUTCTime(commentPostTime);
 		});
+		addEventListeners();
+	}
 
+	async function getComments() {
+		let getComments = await window.fetch('/blog/comments/' + document.querySelector('body').dataset.post_id);
+		let getCommentsHTML = new DOMParser().parseFromString(await getComments.text(), 'text/html');
+		return getCommentsHTML.body.innerHTML;
+	}
+
+	async function addEventListeners() {
 		// Add report button EventListeners
 		document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
 			button.addEventListener('click', async () => {
@@ -82,39 +87,16 @@
 			});
 		});
 
+		// Add cancel reply button EventListeners
 		const cancelReplyButton = document.querySelector('#cancelReplyToComment');
 		cancelReplyButton.addEventListener('click', () => {
 			resetReply();
 		});
 
+		// Add cancel report button EventListeners
 		document.querySelectorAll('.cancelReport').forEach((button: HTMLElement) => {
 			button.addEventListener('click', () => {
 				closeDropDown();
-			});
-		});
-	}
-
-	// Helper functions
-	async function cloudflareChallenge(): Promise<string> {
-		const sitekey = document.querySelector<HTMLElement>('#cf-turnstile').dataset.cloudflare_public_key;
-		return new Promise((resolve) => {
-			//@ts-ignore
-			turnstile.render('#cf-turnstile', {
-				sitekey: sitekey,
-				retry: 'never',
-				'refresh-expired': 'never',
-				callback: function (token: string) {
-					resolve(token);
-				},
-				'timeout-callback': function () {
-					resolve('undefined');
-				},
-				'expired-callback': function () {
-					resolve('undefined');
-				},
-				'error-callback': function () {
-					resolve('undefined');
-				}
 			});
 		});
 	}
