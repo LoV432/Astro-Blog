@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import BaseHead from '../../components/BaseHead.astro';
 import MainPageBody from '../../components/MainPageBody.astro';
 import Header from '../../components/Header.astro';
@@ -8,6 +9,40 @@ import Search from '../../components/Search.astro';
 import PostCards from '../../components/PostCards.astro';
 import { SITE_TITLE, SITE_DESCRIPTION, API, PAGESIZE } from '../../config';
 
+export async function getStaticPaths() {
+	async function getTotalPages() {
+		let url: string = API + '/api/tags/?fields[0]=tag&pagination[pageSize]=1';
+		let fetchPages = await fetch(url);
+		let pages = await fetchPages.json();
+		return pages.meta.pagination.pageCount;
+	}
+	async function getTags(page: number) {
+		let Tags: string[] = [];
+		let url: string = API + '/api/tags/?fields[0]=tag&pagination[pageSize]=1&pagination[page]=' + page;
+		let makeRequest = await fetch(url);
+		let responseJson = await makeRequest.json();
+		responseJson.data.forEach((post) => {
+			Tags.push(post.attributes.tag);
+		});
+		return { Tags: Tags };
+	}
+	let TotalPages: number = await getTotalPages();
+	let paginationDone: boolean = TotalPages != 0 ? false : true;
+	let pageNumber: number = 1;
+	let allTags: object[] = [];
+	while (!paginationDone) {
+		let response = await getTags(pageNumber);
+		if (!response) {
+			break;
+		}
+		response.Tags.forEach((tag) => {
+			allTags.push({ params: { tag } });
+		});
+		pageNumber == TotalPages ? (paginationDone = true) : (paginationDone = false);
+		pageNumber = pageNumber + 1;
+	}
+	return allTags;
+}
 const { tag } = Astro.params;
 var api = API + '/api/posts?filters[tags][tag][$eq]=' + tag + '&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=' + PAGESIZE;
 let search: string = '';
