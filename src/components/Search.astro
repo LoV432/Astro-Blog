@@ -1,10 +1,11 @@
 ---
-const { action = '/', placeholder = 'Search' } = Astro.props;
+const { placeholder = 'Search', tag = '' } = Astro.props;
 ---
 
 <section>
-	<form method="get" action={action} class="w-full grid place-items-center">
+	<form method="get" action="/search" class="w-full grid place-items-center">
 		<input type="text" id="search" name="search" placeholder={placeholder} class="border-rose-700 border-2 rounded-lg bg-zinc-800 focus:outline-none focus:shadow-lg focus:shadow-rose-600/50 text-2xl font-bold input-error text-center w-[19rem] md:w-[48rem] h-14 mb-10" />
+		<input type="text" id="tag" name="tag" value={tag} placeholder={placeholder} class="hidden" />
 		<input class="hidden" type="submit" value="Go!" />
 	</form>
 </section>

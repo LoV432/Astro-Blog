@@ -62,13 +62,7 @@ export async function getStaticPaths() {
 	return response;
 }
 const { page, tag } = Astro.params;
-var api = API + '/api/posts?filters[tags][tag][$eq]=' + tag + '&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=' + PAGESIZE + '&pagination[page]=' + parseInt(page);
-let search: string = '';
-
-if (Astro.url.searchParams.get('search')) {
-	api = api + '&filters%5Bheading%5D%5B$contains%5D=' + Astro.url.searchParams.get('search');
-	search = '?search=' + Astro.url.searchParams.get('search');
-}
+var api = API + '/api/posts?filters[tags][tag][$eq]=' + tag + '&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=' + PAGESIZE + '&pagination[page]=' + page;
 
 const posts = await fetch(api).then((res) => res.json());
 const totalPages = posts.meta.pagination.pageCount;
@@ -81,9 +75,9 @@ const currentPage = posts.meta.pagination.page;
 	<MainPageBody>
 		<Header />
 		<main>
-			<Search action={'/tag/' + tag} placeholder={'Search #' + tag} />
+			<Search placeholder={'Search #' + tag} tag={tag} />
 			<PostCards posts={posts} />
-			<Pagination totalPages={totalPages} currentPage={currentPage} search={search} tag={'/tag/' + tag} />
+			<Pagination totalPages={totalPages} currentPage={currentPage} path={'/tag/' + tag} />
 		</main>
 		<Footer />
 	</MainPageBody>
