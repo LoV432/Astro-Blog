@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import BaseHead from '../../../../components/BaseHead.astro';
 import MainPageBody from '../../../../components/MainPageBody.astro';
 import Header from '../../../../components/Header.astro';
@@ -8,18 +9,60 @@ import Pagination from '../../../../components/Pagination.astro';
 import Search from '../../../../components/Search.astro';
 import PostCards from '../../../../components/PostCards.astro';
 
-const { page, tag } = Astro.params;
-//@ts-ignore
-if (isNaN(page)) {
-	return Astro.redirect('/404');
-}
-var api = API + '/api/posts?filters[tags][tag][$eq]=' + tag + '&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=' + PAGESIZE + '&pagination[page]=' + parseInt(page);
-let search: string = '';
+export async function getStaticPaths() {
+	async function getAllTags() {
+		async function getTotalPages() {
+			let url: string = `${API}/api/tags?fields[0]=tag&pagination[pageSize]=1`;
+			let fetchPages = await fetch(url);
+			let pages = await fetchPages.json();
+			return pages.meta.pagination.pageCount;
+		}
+		async function getTags(page: number) {
+			let Tags: string[] = [];
+			let url: string = `${API}/api/tags?fields[0]=tag&pagination[pageSize]=${PAGESIZE}&pagination[page]=${page}`;
+			let makeRequest = await fetch(url);
+			let responseJson = await makeRequest.json();
+			responseJson.data.forEach((post) => {
+				Tags.push(post.attributes.tag);
+			});
+			return { Tags: Tags };
+		}
+		let TotalPages: number = await getTotalPages();
+		let paginationDone: boolean = TotalPages != 0 ? false : true;
+		let pageNumber: number = 1;
+		let allTags: string[] = [];
+		while (!paginationDone) {
+			let response = await getTags(pageNumber);
+			if (!response) {
+				break;
+			}
+			response.Tags.forEach((tag) => {
+				allTags.push(tag);
+			});
+			pageNumber == TotalPages ? (paginationDone = true) : (paginationDone = false);
+			pageNumber = pageNumber + 1;
+		}
+		return allTags;
+	}
+	async function getTotalPagesOfTag(tag: string) {
+		let url: string = `${API}/api/posts?filters[tags][tag][$eq]=${tag}&fields[0]=slug&pagination[pageSize]=${PAGESIZE}`;
+		let fetchPages = await fetch(url);
+		let pages = await fetchPages.json();
+		return pages.meta.pagination.pageCount;
+	}
 
-if (Astro.url.searchParams.get('search')) {
-	api = api + '&filters%5Bheading%5D%5B$contains%5D=' + Astro.url.searchParams.get('search');
-	search = '?search=' + Astro.url.searchParams.get('search');
+	const allTags = await getAllTags();
+	let response: object[] = [];
+	for (let i = 0; i < allTags.length; i++) {
+		for (let ii = 1; ii <= (await getTotalPagesOfTag(allTags[i])); ii++) {
+			response.push({ params: { tag: allTags[i], page: ii } });
+		}
+	}
+
+	return response;
 }
+const { page, tag } = Astro.params;
+var api = API + '/api/posts?filters[tags][tag][$eq]=' + tag + '&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&pagination[pageSize]=' + PAGESIZE + '&pagination[page]=' + page;
 
 const posts = await fetch(api).then((res) => res.json());
 const totalPages = posts.meta.pagination.pageCount;
@@ -32,9 +75,9 @@ const currentPage = posts.meta.pagination.page;
 	<MainPageBody>
 		<Header />
 		<main>
-			<Search action={'/tag/' + tag} placeholder={'Search #' + tag} />
+			<Search placeholder={'Search #' + tag} tag={tag} />
 			<PostCards posts={posts} />
-			<Pagination totalPages={totalPages} currentPage={currentPage} search={search} tag={'/tag/' + tag} />
+			<Pagination totalPages={totalPages} currentPage={currentPage} path={'/tag/' + tag} />
 		</main>
 		<Footer />
 	</MainPageBody>

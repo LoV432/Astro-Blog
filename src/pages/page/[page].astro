@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import BaseHead from '../../components/BaseHead.astro';
 import MainPageBody from '../../components/MainPageBody.astro';
 import Header from '../../components/Header.astro';
@@ -8,18 +9,22 @@ import Pagination from '../../components/Pagination.astro';
 import Search from '../../components/Search.astro';
 import PostCards from '../../components/PostCards.astro';
 
-const { page } = Astro.params;
-//@ts-ignore
-if (isNaN(page)) {
-	return Astro.redirect('/404');
+export async function getStaticPaths() {
+	async function getTotalPages() {
+		let url: string = `${API}/api/posts/?fields[0]=slug&pagination[pageSize]=${PAGESIZE}`;
+		let fetchPages = await fetch(url);
+		let pages = await fetchPages.json();
+		return pages.meta.pagination.pageCount;
+	}
+	let response: object[] = [];
+	for (let index = 1; index <= (await getTotalPages()); index++) {
+		response.push({ params: { page: index } });
+	}
+	return response;
 }
-var api = API + '/api/posts?sort=id:desc&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&pagination[pageSize]=' + PAGESIZE + '&pagination[page]=' + parseInt(page);
-let search: string = '';
 
-if (Astro.url.searchParams.get('search')) {
-	api = api + '&filters%5Bheading%5D%5B$contains%5D=' + Astro.url.searchParams.get('search');
-	search = '?search=' + Astro.url.searchParams.get('search');
-}
+const { page } = Astro.params;
+var api = API + '/api/posts?sort=id:desc&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&pagination[pageSize]=' + PAGESIZE + '&pagination[page]=' + page;
 
 const posts = await fetch(api).then((res) => res.json());
 const totalPages = posts.meta.pagination.pageCount;
@@ -34,7 +39,7 @@ const currentPage = posts.meta.pagination.page;
 		<main>
 			<Search />
 			<PostCards posts={posts} />
-			<Pagination totalPages={totalPages} currentPage={currentPage} search={search} />
+			<Pagination totalPages={totalPages} currentPage={currentPage} />
 		</main>
 		<Footer />
 	</MainPageBody>

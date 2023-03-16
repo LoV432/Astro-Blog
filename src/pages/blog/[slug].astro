@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import CommentPost from '../../components/CommentPost.astro';
@@ -6,12 +7,46 @@ import CommentReply from '../../components/CommentReply.astro';
 import CommentSection from '../../components/CommentSection.astro';
 import Footer from '../../components/Footer.astro';
 import PostImage from '../../components/PostImage.astro';
-import { API, API_PUBLIC, SITE_TITLE } from '../../config';
-const { slug } = Astro.params;
+import { API, API_PUBLIC, PAGESIZE, SITE_TITLE } from '../../config';
 import { marked } from '../../../node_modules/marked';
 import DOMPurify from 'isomorphic-dompurify';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
+export async function getStaticPaths() {
+	async function getTotalPages() {
+		let url: string = API + '/api/posts/?fields[0]=slug&pagination[pageSize]=1';
+		let fetchPages = await fetch(url);
+		let pages = await fetchPages.json();
+		return pages.meta.pagination.pageCount;
+	}
+	async function getSlugs(page: number) {
+		let slugs: string[] = [];
+		let url: string = `${API}/api/posts/?fields[0]=slug&pagination[pageSize]=${PAGESIZE}&pagination[page]=${page}`;
+		let makeRequest = await fetch(url);
+		let responseJson = await makeRequest.json();
+		responseJson.data.forEach((post) => {
+			slugs.push(post.attributes.slug);
+		});
+		return { slugs: slugs };
+	}
+	let TotalPages: number = await getTotalPages();
+	let paginationDone: boolean = TotalPages != 0 ? false : true;
+	let pageNumber: number = 1;
+	let allSlugs: object[] = [];
+	while (!paginationDone) {
+		let response = await getSlugs(pageNumber);
+		if (!response) {
+			break;
+		}
+		response.slugs.forEach((slug) => {
+			allSlugs.push({ params: { slug } });
+		});
+		pageNumber == TotalPages ? (paginationDone = true) : (paginationDone = false);
+		pageNumber = pageNumber + 1;
+	}
+	return allSlugs;
+}
+const { slug } = Astro.params;
 let posts = await fetch(API + '/api/posts/?filters[slug][$eq]=' + slug + '&fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&fields[5]=description&populate[cover][fields][0]=formats&populate[cover][fields]=url&populate[cover][fields]=width&populate[cover][fields]=height').then((res) => res.json());
 if (!posts.data[0]) {
 	return Astro.redirect('/404');
