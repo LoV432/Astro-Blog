@@ -43,7 +43,7 @@ export async function post({ request, clientAddress }) {
 		});
 	} else {
 		const cacheClearOptions = {
-			body: '{"files":["' + BASE_URL + '/blog/comments/' + data.post_id + '"]}',
+			body: `{"files":["https://${BASE_URL}/blog/comments/${data.post_id}"]}`,
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization": "Bearer " + CLOUDFLARE_API_KEY

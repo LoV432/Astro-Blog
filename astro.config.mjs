@@ -12,7 +12,7 @@ import prefetch from '@astrojs/prefetch';
 
 // https://astro.build/config
 export default defineConfig({
-	site: BASE_URL,
+	site: `https://${BASE_URL}`,
 	integrations: [tailwind({ config: { applyBaseStyles: false } }), prefetch()],
 	output: 'server',
 	adapter: node({
