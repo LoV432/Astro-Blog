@@ -11,17 +11,15 @@ import PostCards from '../../../components/PostCards.astro';
 const { page } = Astro.params;
 var api = API + '/api/posts?sort=id:desc&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&pagination[pageSize]=' + PAGESIZE + '&pagination[page]=' + page;
 
-let searchValues: string = '';
+let searchValues: string = Astro.url.search;
 let hasTagSearched: boolean;
 if (Astro.url.searchParams.get('tag')) {
 	api = api + '&filters[tags][tag][$eq]=' + Astro.url.searchParams.get('tag');
-	searchValues = '?tag=' + Astro.url.searchParams.get('tag');
 	hasTagSearched = true;
 }
 
 if (Astro.url.searchParams.get('search')) {
 	api = api + '&filters%5Bheading%5D%5B$contains%5D=' + Astro.url.searchParams.get('search');
-	searchValues = searchValues + '&search=' + Astro.url.searchParams.get('search');
 }
 
 const posts = await fetch(api).then((res) => res.json());
