@@ -11,7 +11,7 @@ const { posts } = Astro.props;
 				<a aria-disabled="true" role="link" aria-label="prefetch image" rel="prefetch" tabindex="-1" href={API_PUBLIC + post.attributes.cover.data.attributes.url} />
 				<a
 					tabindex="0"
-					href={'/blog/' + post.attributes.slug}
+					href={`/blog/${post.attributes.slug}/`}
 					rel="prefetch"
 					class="grid md:grid-cols-[1fr,63%] md:grid-rows-[unset] sm:grid-rows-[1fr,66%] w-[20rem] md:w-[48rem] md:min-h-[182.5px] mb-6 
 			border-2 rounded-lg border-rose-700 shadow-xl shadow-rose-600/10 hover:shadow-rose-600/40 hover:cursor-pointer hover:-translate-y-1 transition-all overflow-hidden"
@@ -23,7 +23,7 @@ const { posts } = Astro.props;
 							<object aria-label="just here so i can add nested <a>">
 								<span class="bg-rose-200 text-rose-900 text-xs font-semibold mr-2 px-2.5 py-0.5 pb-1 rounded">tags:</span>
 								{post.attributes.tags.data.map((tag: { id: number; attributes: { tag: string } }) => (
-									<a class="text-blue-700 inline-block hover:text-rose-700" href={'/tag/' + tag.attributes.tag} rel="prefetch">
+									<a class="text-blue-700 inline-block hover:text-rose-700" href={`/tag/${tag.attributes.tag}/`} rel="prefetch">
 										#{tag.attributes.tag} &VeryThinSpace;
 									</a>
 								))}
