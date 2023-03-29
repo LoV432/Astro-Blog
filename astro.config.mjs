@@ -16,6 +16,6 @@ export default defineConfig({
 	integrations: [tailwind({ config: { applyBaseStyles: false } }), prefetch()],
 	output: 'server',
 	adapter: node({
-		mode: 'standalone'
+		mode: 'middleware'
 	})
 });
