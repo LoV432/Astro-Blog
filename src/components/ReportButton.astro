@@ -2,22 +2,22 @@
 const { commentID } = Astro.props;
 ---
 
-<button class="p-2 pt-[0.55rem] pr-2.5 dropdown dropdown-left float-right">
-	<svg xmlns="http://www.w3.org/2000/svg" class="fill-rose-800 w-2.5" viewBox="0 0 448 512">
+<button class="dropdown-left dropdown float-right p-2 pr-2.5 pt-[0.55rem]">
+	<svg xmlns="http://www.w3.org/2000/svg" class="w-2.5 fill-rose-800" viewBox="0 0 448 512">
 		<path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32V64 368 480c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"></path>
 	</svg>
 	<span class="sr-only">Report Comment</span>
-	<ul tabindex="0" class="dropdown-content menu p-2 shadow border border-rose-600 bg-zinc-900 rounded-xl w-36">
+	<ul tabindex="0" class="dropdown-content menu w-36 rounded-xl border border-rose-600 bg-zinc-900 p-2 shadow">
 		<li>
-			<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
-				<input type="checkbox" data-commentid={commentID} class="hidden cancelReport" />
-				<span class="text-green-600 font-extrabold active:bg-green-900 focus:bg-green-900 w-28 py-3 px-4 rounded-md">CANCEL</span>
+			<label class="w-28 justify-center place-self-center p-0 text-center active:bg-transparent">
+				<input type="checkbox" data-commentid={commentID} class="cancelReport hidden" />
+				<span class="w-28 rounded-md px-4 py-3 font-extrabold text-green-600 focus:bg-green-900 active:bg-green-900">CANCEL</span>
 			</label>
 		</li>
 		<li>
-			<label class="w-28 p-0 place-self-center justify-center text-center active:bg-transparent">
+			<label class="w-28 justify-center place-self-center p-0 text-center active:bg-transparent">
 				<input data-commentid={commentID} class="hidden" />
-				<span data-commentid={commentID} class="text-red-600 font-extrabold active:bg-red-900 w-28 py-3 px-4 rounded-md reportButton"> REPORT?</span>
+				<span data-commentid={commentID} class="reportButton w-28 rounded-md px-4 py-3 font-extrabold text-red-600 active:bg-red-900"> REPORT?</span>
 			</label>
 		</li>
 	</ul>

@@ -7,10 +7,10 @@ import { handler as ssrHandler } from './dist/server/entry.mjs';
 const app = Fastify({ logger: false });
 
 await app
-    .register(fastifyStatic, {
-        root: fileURLToPath(new URL('./dist/client', import.meta.url)),
-    })
-    .register(fastifyMiddie);
+	.register(fastifyStatic, {
+		root: fileURLToPath(new URL('./dist/client', import.meta.url))
+	})
+	.register(fastifyMiddie);
 app.use(ssrHandler);
 
 app.listen({ port: 3000, host: '0.0.0.0' });

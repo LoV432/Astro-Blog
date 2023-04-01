@@ -10,12 +10,12 @@ const { totalPages, currentPage, search = '', path = '' } = Astro.props;
 					<>
 						{currentPage > 1 ? (
 							<a rel="prefetch" href={`${path}/page/${currentPage - 1}/${search}`}>
-								<button tabindex="-1" class="btn bg-transparent border-2 border-rose-700 hover:border-rose-700 text-rose-700 hover:shadow-lg hover:shadow-rose-600/20 rounded-r-none min-w-[8rem]">
+								<button tabindex="-1" class="btn min-w-[8rem] rounded-r-none border-2 border-rose-700 bg-transparent text-rose-700 hover:border-rose-700 hover:shadow-lg hover:shadow-rose-600/20">
 									Previous page
 								</button>
 							</a>
 						) : (
-							<button tabindex="-1" class="btn bg-transparent hover:cursor-not-allowed hover:bg-[rgb(25,29,36)] rounded-r-none min-w-[8rem]">
+							<button tabindex="-1" class="btn min-w-[8rem] rounded-r-none bg-transparent hover:cursor-not-allowed hover:bg-[rgb(25,29,36)]">
 								Previous page
 							</button>
 						)}{' '}
@@ -23,12 +23,12 @@ const { totalPages, currentPage, search = '', path = '' } = Astro.props;
 					<>
 						{currentPage < totalPages ? (
 							<a rel="prefetch" href={`${path}/page/${currentPage + 1}/${search}`}>
-								<button tabindex="-1" class="btn bg-transparent border-2 border-rose-700 hover:border-rose-700 text-rose-700 hover:shadow-lg hover:shadow-rose-600/20 rounded-l-none min-w-[8rem]">
+								<button tabindex="-1" class="btn min-w-[8rem] rounded-l-none border-2 border-rose-700 bg-transparent text-rose-700 hover:border-rose-700 hover:shadow-lg hover:shadow-rose-600/20">
 									Next
 								</button>
 							</a>
 						) : (
-							<button tabindex="-1" class="btn bg-transparent hover:cursor-not-allowed hover:bg-[rgb(25,29,36)] rounded-l-none min-w-[8rem]">
+							<button tabindex="-1" class="btn min-w-[8rem] rounded-l-none bg-transparent hover:cursor-not-allowed hover:bg-[rgb(25,29,36)]">
 								Next
 							</button>
 						)}

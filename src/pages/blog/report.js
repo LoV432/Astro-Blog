@@ -1,8 +1,8 @@
 import { API, CLOUDFLARE_SECRET_KEY } from '../../config';
 export async function post({ request }) {
 	const data = await request.json();
-	let postID = data.postID
-	let commentID = data.commentID
+	let postID = data.postID;
+	let commentID = data.commentID;
 	if (isNaN(commentID) || isNaN(postID)) {
 		// Return early if post/commend id isnt number
 		return new Response('{"response": "Reported....Probably!"}', {

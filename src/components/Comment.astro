@@ -10,12 +10,12 @@ const avatar: string = comment.author.avatar == null ? 'https://avatars.dicebear
 
 <div class={'rounded grid grid-cols-[auto] md:grid-cols-[auto,1fr] ' + (isReply ? 'pl-5' : '')}>
 	<article class={'px-6 py-5 mb-6 text-base rounded-md bg-zinc-900 customBorder guest ' + (isReply ? 'md:w-[38.75rem]' : 'md:w-[40rem]')}>
-		<footer class="flex items-center mb-2">
+		<footer class="mb-2 flex items-center">
 			<div class="flex w-full">
 				<div aria-labelledby="Commenter Image" class="mr-3 self-center">
-					<img class="w-10 h-10 rounded-sm" loading="lazy" src={avatar} alt={comment.author.name} />
+					<img class="h-10 w-10 rounded-sm" loading="lazy" src={avatar} alt={comment.author.name} />
 				</div>
-				<div class="self-center w-full">
+				<div class="w-full self-center">
 					<p class="text-base">
 						{comment.author.name}
 						{isAdmin ? <AdminIcon /> : <ReportButton commentID={comment.id} />}
@@ -26,11 +26,11 @@ const avatar: string = comment.author.avatar == null ? 'https://avatars.dicebear
 				</div>
 			</div>
 		</footer>
-		<pre aria-label="Comment Content" class="whitespace-pre-wrap mt-3">{comment.content}</pre>
+		<pre aria-label="Comment Content" class="mt-3 whitespace-pre-wrap">{comment.content}</pre>
 		{!isReply ? <ReplyButton commentAuthor={comment.author.name} commentID={comment.id} /> : ''}
 	</article>
 </div>
-<div class="relative after:border-l after:border-zinc-600 after:absolute after:top-0 after:h-[97%] after:w-full after:-z-10 after:rounded-bl-lg">
+<div class="relative after:absolute after:top-0 after:-z-10 after:h-[97%] after:w-full after:rounded-bl-lg after:border-l after:border-zinc-600">
 	{
 		comment.children
 			.slice(0)

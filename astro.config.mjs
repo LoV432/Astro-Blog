@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import { BASE_URL } from './src/config'
+import { BASE_URL } from './src/config';
 
 // https://astro.build/config
 import tailwind from '@astrojs/tailwind';

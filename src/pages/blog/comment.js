@@ -13,19 +13,19 @@ export async function post({ request, clientAddress }) {
 	const sanitizedComment = sanitize(data.comment);
 	const sanitizedEmail = sanitize(data.email);
 	const sanitizedName = sanitize(data.name);
-	let sanitizedThreadOf
-	Object.hasOwn(data, 'threadOf') ? sanitizedThreadOf = sanitize(data.threadOf) : sanitizedThreadOf = "null"
+	let sanitizedThreadOf;
+	Object.hasOwn(data, 'threadOf') ? (sanitizedThreadOf = sanitize(data.threadOf)) : (sanitizedThreadOf = 'null');
 	if (!(await validateCloudflare(CLOUDFLARE_SECRET_KEY, data.cloudflaretoken))) {
 		return new Response('{"response": "failed"}', {
 			status: 401
 		});
 	}
 
-	let commentPostRequestBody
+	let commentPostRequestBody;
 	if (!isNaN(sanitizedThreadOf)) {
-		commentPostRequestBody = '{"author":{"id":"' + commenterIP + '","name":"' + sanitizedName + '","email":"' + sanitizedEmail + '","avatar":"' + avatar + '"},"content":"' + sanitizedComment + '","threadOf":"' + sanitizedThreadOf + '"}'
+		commentPostRequestBody = '{"author":{"id":"' + commenterIP + '","name":"' + sanitizedName + '","email":"' + sanitizedEmail + '","avatar":"' + avatar + '"},"content":"' + sanitizedComment + '","threadOf":"' + sanitizedThreadOf + '"}';
 	} else {
-		commentPostRequestBody = '{"author":{"id":"' + commenterIP + '","name":"' + sanitizedName + '","email":"' + sanitizedEmail + '","avatar":"' + avatar + '"},"content":"' + sanitizedComment + '"}'
+		commentPostRequestBody = '{"author":{"id":"' + commenterIP + '","name":"' + sanitizedName + '","email":"' + sanitizedEmail + '","avatar":"' + avatar + '"},"content":"' + sanitizedComment + '"}';
 	}
 	const postCommentOptions = {
 		method: 'POST',
@@ -45,12 +45,12 @@ export async function post({ request, clientAddress }) {
 		const cacheClearOptions = {
 			body: `{"files":["https://${BASE_URL}/blog/comments/${data.post_id}"]}`,
 			headers: {
-				"Content-Type": "application/json",
-				"Authorization": "Bearer " + CLOUDFLARE_API_KEY
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + CLOUDFLARE_API_KEY
 			},
-			method: "POST"
-		}
-		await fetch("https://api.cloudflare.com/client/v4/zones/" + CLOUDFLARE_ZONE + "/purge_cache", cacheClearOptions)
+			method: 'POST'
+		};
+		await fetch('https://api.cloudflare.com/client/v4/zones/' + CLOUDFLARE_ZONE + '/purge_cache', cacheClearOptions);
 		return new Response('{"response": "Posted....Probably!"}', {
 			status: 200
 		});
@@ -71,5 +71,5 @@ async function validateCloudflare(secretKey, token) {
 function sanitize(value) {
 	value = DOMPurify.sanitize(value); // Run it thru DOMPurify
 	value = value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
-	return value
+	return value;
 }

@@ -1,5 +1,5 @@
-<section id="replyCommentSection" class="mt-20 py-6 w-[90%] md:w-[45rem] lg:w-[55rem] border-y-2 border-rose-800 rounded hidden" aria-label="Reply to Comment">
-	<div class="collapse collapse-plus rounded-box">
+<section id="replyCommentSection" class="mt-20 hidden w-[90%] rounded border-y-2 border-rose-800 py-6 md:w-[45rem] lg:w-[55rem]" aria-label="Reply to Comment">
+	<div class="collapse-plus rounded-box collapse">
 		<input aria-label="Show/Hide Reply to Comment Section" type="checkbox" checked disabled />
 		<div class="collapse-title text-xl font-medium">Reply to <span id="originalCommenterName"></span></div>
 		<div role="form" class="collapse-content">
@@ -9,7 +9,7 @@
 				</label>
 				<label class="input-group">
 					<span class="w-20 justify-center">Name</span>
-					<input id="reply-commenter-name" type="text" placeholder="Chloe Walker" class="input input-bordered" />
+					<input id="reply-commenter-name" type="text" placeholder="Chloe Walker" class="input-bordered input" />
 				</label>
 
 				<label class="label">
@@ -17,19 +17,19 @@
 				</label>
 				<label class="input-group">
 					<span class="w-20 justify-center">Email</span>
-					<input id="reply-commenter-email" type="text" placeholder="info@site.com" class="input input-bordered" />
+					<input id="reply-commenter-email" type="text" placeholder="info@site.com" class="input-bordered input" />
 				</label>
 
 				<label class="label">
 					<span class="label-text">Your Comment</span>
 				</label>
 				<label class="input-group">
-					<textarea style="border-radius: 0.75rem !important;" id="reply-commenter-comment" class="textarea textarea-bordered h-44 w-full text-xl" placeholder="What's on your mind?"></textarea>
+					<textarea style="border-radius: 0.75rem !important;" id="reply-commenter-comment" class="textarea-bordered textarea h-44 w-full text-xl" placeholder="What's on your mind?"></textarea>
 				</label>
 				<div>
-					<button id="replyToComment" class="btn btn-outline btn-square disabled:text-base disabled:font-bold disabled:bg-zinc-800 disabled:hover:bg-zinc-800 border-rose-800 hover:border-rose-800 hover:bg-rose-900 text-rose-700 hover:text-white mt-6 w-32">SEND</button>
-					<button id="cancelReplyToComment" class="btn btn-outline btn-square disabled:text-base disabled:font-bold disabled:bg-zinc-800 disabled:hover:bg-zinc-800 border-rose-800 hover:border-rose-800 hover:bg-rose-900 text-rose-700 hover:text-white mt-6 w-32 ml-4">Cancel</button>
-					<p id="reply-fieldsRequired" style="opacity: 0;" class="mt-5 sm:inline-block sm:ml-5">All Fields Are Required!</p>
+					<button id="replyToComment" class="btn-outline btn-square btn mt-6 w-32 border-rose-800 text-rose-700 hover:border-rose-800 hover:bg-rose-900 hover:text-white disabled:bg-zinc-800 disabled:text-base disabled:font-bold disabled:hover:bg-zinc-800">SEND</button>
+					<button id="cancelReplyToComment" class="btn-outline btn-square btn ml-4 mt-6 w-32 border-rose-800 text-rose-700 hover:border-rose-800 hover:bg-rose-900 hover:text-white disabled:bg-zinc-800 disabled:text-base disabled:font-bold disabled:hover:bg-zinc-800">Cancel</button>
+					<p id="reply-fieldsRequired" style="opacity: 0;" class="mt-5 sm:ml-5 sm:inline-block">All Fields Are Required!</p>
 				</div>
 			</div>
 		</div>
