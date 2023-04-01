@@ -2,7 +2,7 @@
 import { CLOUDFLARE_PUBLIC_KEY } from '../config';
 ---
 
-<section class="place-self-center mt-20 py-6 w-[90%] md:w-[45rem] lg:w-[55rem] border-y-2 border-rose-800 rounded" aria-label="Post Comment Section">
+<section class="mt-20 py-6 w-[90%] md:w-[45rem] lg:w-[55rem] border-y-2 border-rose-800 rounded" aria-label="Post Comment">
 	<div class="collapse collapse-plus rounded-box">
 		<input aria-label="Show/Hide Post Comment Section" type="checkbox" />
 		<div class="collapse-title text-xl font-medium">Write a comment</div>
@@ -39,7 +39,6 @@ import { CLOUDFLARE_PUBLIC_KEY } from '../config';
 		</div>
 	</div>
 </section>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <script>
 	import comment from '../lib/comment-helper';
 	const postButton: HTMLButtonElement = document.querySelector('#postComment');
