@@ -7,7 +7,7 @@ import CommentReply from '../../components/CommentReply.astro';
 import CommentSection from '../../components/CommentSection.astro';
 import Footer from '../../components/Footer.astro';
 import PostImage from '../../components/PostImage.astro';
-import { API, API_PUBLIC, PAGESIZE, SITE_TITLE } from '../../config';
+import { API, PAGESIZE, SITE_TITLE } from '../../config';
 import { marked } from '../../../node_modules/marked';
 import DOMPurify from 'isomorphic-dompurify';
 import hljs from 'highlight.js';
@@ -78,8 +78,8 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 
 <!DOCTYPE html>
 <html lang="en">
-	<BaseHead title={`${post.heading} | ${SITE_TITLE}`} description={post.description} image={API_PUBLIC + post.cover.data.attributes.formats['thumbnail'].url} />
-	<link rel="preload" as="image" href={API_PUBLIC + post.cover.data.attributes.url} />
+	<BaseHead title={`${post.heading} | ${SITE_TITLE}`} description={post.description} image={post.cover.data.attributes.formats['thumbnail'].url} />
+	<link rel="preload" as="image" href={post.cover.data.attributes.url} />
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 	<link rel="dns-prefetch" href="https://avatars.dicebear.com/" />
 	<body data-post_id={posts.data[0].id} class="grid min-h-screen grid-rows-[auto,1fr,auto]">
