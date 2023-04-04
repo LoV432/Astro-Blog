@@ -3,7 +3,7 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-	src: local(''), url('/rubik-vinyl.woff2') format('woff2'), url('/rubik-vinyl.woff') format('woff');
+	src: local(''), url('https://res.cloudinary.com/dae61srso/raw/upload/v1680639849/rubik-vinyl_nxnxgd.woff2') format('woff2'), url('https://res.cloudinary.com/dae61srso/raw/upload/v1680639849/rubik-vinyl_nla19a.woff') format('woff');
 }
 
 @tailwind base;
