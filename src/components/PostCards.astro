@@ -1,5 +1,6 @@
 ---
 import PostImage from '../components/PostImage.astro';
+import imageHelper from '../lib/image-helper';
 const { posts } = Astro.props;
 ---
 
@@ -7,7 +8,7 @@ const { posts } = Astro.props;
 	{
 		posts.data.map((post) => (
 			<>
-				<a aria-disabled="true" role="link" aria-label="prefetch image" rel="prefetch" tabindex="-1" href={post.attributes.cover.data.attributes.url} />
+				<a aria-disabled="true" role="link" aria-label="prefetch image" rel="prefetch" tabindex="-1" href={imageHelper(post.attributes.cover.data.attributes, 'original').src} />
 				<a
 					tabindex="0"
 					href={`/blog/${post.attributes.slug}/`}
