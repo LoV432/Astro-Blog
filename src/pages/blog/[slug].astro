@@ -100,7 +100,7 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 				<article class="prose-md prose-invert prose mt-5 max-w-full md:prose-xl" set:html={content} />
 			</section>
 		</main>
-		<section aria-label="Comments" class="grid place-items-center place-self-center">
+		<section aria-label="Comments" class="grid w-full place-items-center place-self-center">
 			<CommentPost />
 			<CommentReply />
 			<CommentSection />
