@@ -1,3 +1,4 @@
+import { API_PUBLIC } from '../config';
 export default function imageHelper(imageObject: any, size: string) {
 	let image: string;
 	let width: number;
@@ -10,7 +11,7 @@ export default function imageHelper(imageObject: any, size: string) {
 		(width = imageObject.width), (height = imageObject.height);
 	}
 	return {
-		src: image,
+		src: API_PUBLIC + image,
 		width: width,
 		height: height
 	};
