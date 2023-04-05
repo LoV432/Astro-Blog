@@ -23,7 +23,7 @@ const { posts } = Astro.props;
 						<div class="relative mx-5 mb-5 w-fit">
 							<span class="mr-2 rounded bg-rose-200 px-2.5 py-0.5 pb-1 text-xs font-semibold text-rose-900">tags:</span>
 							{post.attributes.tags.data.map((tag: { id: number; attributes: { tag: string } }) => (
-								<a class="z-20 inline-block text-blue-700 hover:text-rose-700" href={`/tag/${tag.attributes.tag}/`} rel="prefetch">
+								<a class="z-20 inline-block text-blue-500 hover:text-rose-700" href={`/tag/${tag.attributes.tag}/`} rel="prefetch">
 									#{tag.attributes.tag} &VeryThinSpace;
 								</a>
 							))}
