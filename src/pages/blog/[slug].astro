@@ -79,10 +79,11 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 
 <!DOCTYPE html>
 <html lang="en">
-	<BaseHead title={`${post.heading} | ${SITE_TITLE}`} description={post.description} image={imageHelper(post.cover.data.attributes, 'thumbnail').src} />
-	<link rel="preload" as="image" href={imageHelper(post.cover.data.attributes, 'original').src} />
-	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
-	<link rel="dns-prefetch" href="https://avatars.dicebear.com/" />
+	<BaseHead title={`${post.heading} | ${SITE_TITLE}`} description={post.description} image={imageHelper(post.cover.data.attributes, 'thumbnail').src}>
+		<link rel="preload" as="image" href={imageHelper(post.cover.data.attributes, 'original').src} />
+		<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+		<link rel="dns-prefetch" href="https://avatars.dicebear.com/" />
+	</BaseHead>
 	<body data-post_id={posts.data[0].id} class="grid min-h-screen grid-rows-[auto,1fr,auto]">
 		<!-- Inject post id here so its known on client side  -->
 		<Header />

@@ -13,19 +13,22 @@ export interface Props {
 const { title, description = '', image = '/logo.png' } = Astro.props;
 ---
 
-<!-- Global Metadata -->
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/png" href="/favicon.png" />
-<link rel="preload" href="/rubik-vinyl.woff2" as="font" type="font/woff2" crossorigin />
-<meta name="generator" content={Astro.generator} />
-<script defer data-domain={BASE_URL} src={`https://${BASE_URL}/js/script.js`}></script>
+<head>
+	<!-- Global Metadata -->
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	<link rel="preload" href="/rubik-vinyl.woff2" as="font" type="font/woff2" crossorigin />
+	<meta name="generator" content={Astro.generator} />
+	<script defer data-domain={BASE_URL} src={`https://${BASE_URL}/js/script.js`}></script>
 
-<!-- Primary Meta Tags -->
-<title>{title}</title>
-<meta name="title" content={title} />
-<meta name="description" content={description} />
-<meta property="og:image" content={image} />
-<meta property="og:image:type" content="image/png" />
-<meta property="og:image:width" content="864" />
-<meta property="og:image:height" content="864" />
+	<!-- Primary Meta Tags -->
+	<title>{title}</title>
+	<meta name="title" content={title} />
+	<meta name="description" content={description} />
+	<meta property="og:image" content={image} />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content="864" />
+	<meta property="og:image:height" content="864" />
+	<slot />
+</head>
