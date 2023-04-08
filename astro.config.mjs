@@ -22,7 +22,9 @@ export default defineConfig({
     }
   }), prefetch(), critters({
     logger: 0
-  }), compress()],
+  }), compress({
+    html: false
+  })],
   output: 'server',
   adapter: node({
     mode: 'standalone'
