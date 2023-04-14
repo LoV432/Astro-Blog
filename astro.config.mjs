@@ -23,7 +23,8 @@ export default defineConfig({
   }), prefetch(), critters({
     logger: 0
   }), compress({
-    html: false
+    html: false,
+    css: false
   })],
   output: 'server',
   adapter: node({

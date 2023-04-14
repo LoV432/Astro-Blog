@@ -11,7 +11,7 @@ const { posts } = Astro.props;
 				<a aria-disabled="true" role="link" aria-label="prefetch image" rel="prefetch" tabindex="-1" href={imageHelper(post.attributes.cover.data.attributes, 'original').src} />
 				<div
 					class="relative mb-6 grid w-[20rem] overflow-hidden rounded-lg border-2 border-rose-700 shadow-xl shadow-rose-600/10 transition-all hover:-translate-y-1
-				hover:shadow-rose-600/40 sm:grid-rows-[1fr,66%] md:min-h-[182.5px] md:w-[48rem] md:grid-cols-[1fr,63%] md:grid-rows-[unset]"
+				hover:shadow-rose-600/40 sm:grid-rows-[1fr,66%] md:min-h-[184px] md:w-[48rem] md:grid-cols-[1fr,63%] md:grid-rows-none"
 				>
 					<PostImage imageObject={post.attributes.cover.data.attributes} classes={'rounded-l-sm w-full h-full aspect-video object-cover flex place-items-center justify-center'} size={'small'} alt={'Thumbnail'} />
 					<div class="h-fit rounded-r-sm bg-zinc-900 md:h-full">
@@ -29,7 +29,7 @@ const { posts } = Astro.props;
 							))}
 						</div>
 						<div class="pb-5 pl-5 pr-5">
-							<p class="line-clamp-5 overflow-hidden md:line-clamp-3">{post.attributes.description}</p>
+							<p class="overflow-hidden line-clamp-5 md:line-clamp-3">{post.attributes.description}</p>
 						</div>
 					</div>
 				</div>
