@@ -28,12 +28,17 @@ html {
 	padding-left: calc(100vw - 100%); /* Dont shift content when theres a scrollbar https://stackoverflow.com/a/30293718 */
 }
 
-pre {
+.prose pre {
 	max-width: 85vw;
 }
 
-.hljs {
+.prose .hljs {
 	background: none !important;
+}
+
+.prose details {
+	max-width: 85vw;
+	@apply relative mb-5 w-full rounded-xl border border-rose-800 px-5 py-3 last:mb-0 hover:cursor-default;
 }
 
 .shake-little {
