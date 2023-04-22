@@ -168,6 +168,7 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 					setTimeout(() => {
 						// Revert to clipboard icon
 						copyButton.style.display = '';
+						if ('ontouchstart' in window) copyButton.classList.add('hidden'); // The icon gets stuck on touch screens so force hide it
 						copyButton.classList.remove('fill-green-800', 'w-4');
 						copyButton.innerHTML = clipboardIcon;
 					}, 2000);
