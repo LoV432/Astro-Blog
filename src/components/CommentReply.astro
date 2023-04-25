@@ -37,7 +37,7 @@
 	</div>
 </section>
 <script>
-	import comment from '../lib/comment-helper';
+	import comment, { resetReplyForm } from '../lib/comment-helper';
 	const formElement: HTMLFormElement = document.querySelector('#reply-comment-form');
 	const sendReplyButton: HTMLButtonElement = document.querySelector('#replyToComment');
 	const nameElement: HTMLInputElement = document.querySelector('#reply-commenter-name');
@@ -49,5 +49,11 @@
 		e.preventDefault();
 		const threadID = document.querySelector<HTMLElement>('#replyToComment').dataset.threadid;
 		comment(formElement, nameElement, emailElement, commentElement, fieldsRequired, sendReplyButton, true, threadID);
+	});
+
+	// Add cancel reply button EventListeners
+	const cancelReplyButton = document.querySelector('#cancelReplyToComment');
+	cancelReplyButton.addEventListener('click', () => {
+		resetReplyForm();
 	});
 </script>

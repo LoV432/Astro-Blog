@@ -1,5 +1,5 @@
 <section class="mt-14 w-[92%] rounded border-y-2 border-rose-800 py-6 md:w-[45rem] lg:w-[55rem]" aria-label="Comments">
-	<div class="collapse-plus rounded-box collapse">
+	<div class="rounded-box collapse-plus collapse">
 		<input aria-label="Show/Hide All Comments" type="checkbox" />
 		<div id="commentCount" class="collapse-title text-xl font-medium">Comments (0)</div>
 		<div id="commentsContainer" class="collapse-content"></div>
@@ -7,7 +7,7 @@
 </section>
 
 <script>
-	import { cloudflareChallenge } from '../lib/comment-helper';
+	import { cloudflareChallenge, resetReplyForm } from '../lib/comment-helper';
 	updateComments();
 	const postButton: HTMLButtonElement = document.querySelector('#postComment');
 	const sendReplyButton: HTMLButtonElement = document.querySelector('#replyToComment');
@@ -22,7 +22,7 @@
 		'updateComments',
 		(e) => {
 			setTimeout(() => {
-				resetReply();
+				resetReplyForm();
 			}, 10000);
 			updateComments();
 		},
@@ -41,7 +41,9 @@
 			let commentPostTime = commentPostTimeElement.dataset.commentposttime;
 			commentPostTimeElement.innerHTML = getFormattedUTCTime(commentPostTime);
 		});
-		addEventListeners();
+		addReportButtonEventListener();
+		addReplyButtonEventListener();
+		addCancelReportEventListener();
 	}
 
 	async function getComments() {
@@ -50,7 +52,7 @@
 		return getCommentsHTML.body.innerHTML;
 	}
 
-	async function addEventListeners() {
+	async function addReportButtonEventListener() {
 		// Add report button EventListeners
 		document.querySelectorAll('.reportButton').forEach((button: HTMLElement) => {
 			button.addEventListener('click', async () => {
@@ -71,12 +73,14 @@
 				window.fetch('/blog/report', options);
 			});
 		});
+	}
 
+	async function addReplyButtonEventListener() {
 		// Add reply button EventListeners
 		const allReplyButtons = document.querySelectorAll('.reply-to-comment');
 		allReplyButtons.forEach((button: HTMLElement) => {
 			button.addEventListener('click', () => {
-				resetReply();
+				resetReplyForm();
 				const authorName = button.dataset.threadauthor;
 				const threadID = button.dataset.threadid;
 				document.querySelector<HTMLElement>('#originalCommenterName').innerText = authorName;
@@ -86,13 +90,9 @@
 				document.querySelector<HTMLFormElement>('#reply-commenter-name').focus();
 			});
 		});
+	}
 
-		// Add cancel reply button EventListeners
-		const cancelReplyButton = document.querySelector('#cancelReplyToComment');
-		cancelReplyButton.addEventListener('click', () => {
-			resetReply();
-		});
-
+	async function addCancelReportEventListener() {
 		// Add cancel report button EventListeners
 		document.querySelectorAll('.cancelReport').forEach((button: HTMLElement) => {
 			button.addEventListener('click', () => {
@@ -115,10 +115,5 @@
 			timeStyle: 'short'
 		};
 		return new Date(time).toLocaleString('en-US', options);
-	}
-
-	function resetReply() {
-		document.querySelector<HTMLFormElement>('#replyCommentSection').classList.add('hidden');
-		document.querySelector<HTMLFormElement>('#replyToComment').innerText = 'SEND';
 	}
 </script>

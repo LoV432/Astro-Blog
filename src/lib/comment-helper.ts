@@ -135,3 +135,8 @@ function bot(sendButton: HTMLButtonElement): void {
 		sendButton.classList.remove('shake-little', 'shake-constant');
 	}, 400);
 }
+
+export function resetReplyForm() {
+	document.querySelector<HTMLFormElement>('#replyCommentSection').classList.add('hidden');
+	document.querySelector<HTMLFormElement>('#replyToComment').innerText = 'SEND';
+}
