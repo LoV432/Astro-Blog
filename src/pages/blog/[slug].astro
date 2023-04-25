@@ -121,5 +121,59 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 			publishedAtElement.innerHTML = 'Published on: ' + new Date(publishedAt).toLocaleString('en-US', options);
 			updatedAtElement.innerHTML = 'Last updated on: ' + new Date(updatedAt).toLocaleString('en-US', options);
 		</script>
+		<script>
+			const clipboardIcon =
+				'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"/></svg>';
+			const tickIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>';
+			document.querySelectorAll('pre').forEach((pre) => {
+				// Create new button
+				let copyButton = document.createElement('button');
+				copyButton.innerHTML = clipboardIcon;
+				let buttonClasses = 'absolute top-4 right-4 fill-gray-400 w-3.5 copy-button hidden';
+				copyButton.classList.add(...buttonClasses.split(' '));
+
+				pre.style.position = 'relative'; // Needed to position button correctly
+
+				// Add that button to the pre block
+				pre.appendChild(copyButton);
+
+				// Add event listeners to show hide button
+				pre.addEventListener('mouseenter', () => {
+					copyButton.classList.remove('hidden');
+				});
+				pre.addEventListener('mouseleave', () => {
+					copyButton.classList.add('hidden');
+				});
+			});
+
+			// Copy button event listener
+			document.querySelectorAll('.copy-button').forEach((copyButton: HTMLElement) => {
+				copyButton.addEventListener('click', () => {
+					// Get code block Element
+					let codeBlock = copyButton.previousSibling.cloneNode(true) as HTMLElement;
+
+					// Find all comments
+					codeBlock.querySelectorAll('.hljs-comment').forEach((comment) => {
+						// Remove them
+						comment.remove();
+					});
+
+					let clipboardText = codeBlock.textContent.replace(/^\s*[\r\n]/gm, ''); // Regex to remove all empty lines
+					navigator.clipboard.writeText(clipboardText);
+
+					// Change to tick icon
+					copyButton.classList.add('fill-green-800', 'w-4');
+					copyButton.style.display = 'block';
+					copyButton.innerHTML = tickIcon;
+					setTimeout(() => {
+						// Revert to clipboard icon
+						copyButton.style.display = '';
+						if ('ontouchstart' in window) copyButton.classList.add('hidden'); // The icon gets stuck on touch screens so force hide it
+						copyButton.classList.remove('fill-green-800', 'w-4');
+						copyButton.innerHTML = clipboardIcon;
+					}, 2000);
+				});
+			});
+		</script>
 	</body>
 </html>
