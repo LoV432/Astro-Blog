@@ -139,4 +139,5 @@ function bot(sendButton: HTMLButtonElement): void {
 export function resetReplyForm() {
 	document.querySelector<HTMLFormElement>('#replyCommentSection').classList.add('hidden');
 	document.querySelector<HTMLFormElement>('#replyToComment').innerText = 'SEND';
+	document.querySelector<HTMLFormElement>('#postCommentCheckBox').checked = false; // Close the "Write a comment" drop down
 }
