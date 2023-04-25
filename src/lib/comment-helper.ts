@@ -1,18 +1,16 @@
 const ascii = ['૮⸝⸝> ̫ <⸝⸝ ა', '(,,>﹏<,,)', '(>᎑<๑)/♡', '(つ≧﹏≦)', '૮₍˶ •. • ⑅₎ა ♡', '૮( ๑ᵔ ᵕ ᵔ๑ )ა', '≧﹏≦', '(✿˵•́ᴗ•̀˵)', '(ꈍ◡ꈍ🌸)', '(•◡•🌸)♡'];
 
-export default async function comment(nameElement: HTMLInputElement, emailElement: HTMLInputElement, commentElement: HTMLInputElement, fieldsRequired: HTMLInputElement, sendButton: HTMLButtonElement, isReply: boolean = false, threadID: string = ''): Promise<void> {
+export default async function comment(formElement: HTMLFormElement, nameElement: HTMLInputElement, emailElement: HTMLInputElement, commentElement: HTMLInputElement, fieldsRequired: HTMLInputElement, sendButton: HTMLButtonElement, isReply: boolean = false, threadID: string = ''): Promise<void> {
 	const id = document.querySelector('body').dataset.post_id;
 	const name = nameElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
 	const email = emailElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
 	const comment = commentElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
-
+	const form = formElement;
 	// Return early if any of the fields are empty
-	if (fieldsEmpty(name, email, comment)) {
-		fieldsRequired.style.opacity = '100';
+	if (!form.reportValidity()) {
 		sendButton.innerText = ascii[Math.floor(Math.random() * ascii.length)];
 		return;
 	}
-	fieldsRequired.style.opacity = '0'; // Remove the empty field error message in case its showing
 	sendButton.innerText = '';
 	sendButton.classList.add('loading');
 
@@ -136,11 +134,4 @@ function bot(sendButton: HTMLButtonElement): void {
 	setTimeout(() => {
 		sendButton.classList.remove('shake-little', 'shake-constant');
 	}, 400);
-}
-
-function fieldsEmpty(name: string, email: string, comment: string): boolean {
-	if (name === '' || email === '' || comment === '') {
-		return true;
-	}
-	return false;
 }

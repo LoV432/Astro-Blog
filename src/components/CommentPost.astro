@@ -7,47 +7,50 @@ import { CLOUDFLARE_PUBLIC_KEY } from '../config';
 		<input aria-label="Show/Hide Post Comment Section" type="checkbox" />
 		<div class="collapse-title text-xl font-medium">Write a comment</div>
 		<div role="form" class="collapse-content">
-			<div class="form-control">
-				<label class="label">
-					<span class="label-text">Your Name</span>
-				</label>
-				<label class="input-group">
-					<span class="w-20 justify-center">Name</span>
-					<input id="commenter-name" type="text" placeholder="Chloe Walker" class="input-bordered input" />
-				</label>
+			<form id="comment-form">
+				<div class="form-control">
+					<label class="label">
+						<span class="label-text">Your Name</span>
+					</label>
+					<label class="input-group">
+						<span class="w-20 justify-center">Name</span>
+						<input required id="commenter-name" type="text" placeholder="Chloe Walker" class="input-bordered input" />
+					</label>
 
-				<label class="label">
-					<span class="label-text">Your Email</span>
-				</label>
-				<label class="input-group">
-					<span class="w-20 justify-center">Email</span>
-					<input id="commenter-email" type="text" placeholder="info@site.com" class="input-bordered input" />
-				</label>
+					<label class="label">
+						<span class="label-text">Your Email</span>
+					</label>
+					<label class="input-group">
+						<span class="w-20 justify-center">Email</span>
+						<input required id="commenter-email" type="email" placeholder="info@site.com" class="input-bordered input" />
+					</label>
 
-				<label class="label">
-					<span class="label-text">Your Comment</span>
-				</label>
-				<label class="input-group">
-					<textarea style="border-radius: 0.75rem !important;" id="commenter-comment" class="textarea-bordered textarea h-44 w-full text-xl" placeholder="What's on your mind?"></textarea>
-				</label>
-				<div>
-					<div id="cf-turnstile" class="hidden" data-cloudflare_public_key={CLOUDFLARE_PUBLIC_KEY}></div>
-					<button id="postComment" class="btn-outline btn-square btn mt-6 w-32 border-rose-800 text-rose-700 hover:border-rose-800 hover:bg-rose-900 hover:text-white disabled:bg-zinc-800 disabled:text-base disabled:font-bold disabled:hover:bg-zinc-800">SEND</button>
-					<p id="fieldsRequired" style="opacity: 0;" class="mt-5 sm:ml-5 sm:inline-block">All Fields Are Required!</p>
+					<label class="label">
+						<span class="label-text">Your Comment</span>
+					</label>
+					<label class="input-group">
+						<textarea required style="border-radius: 0.75rem !important;" id="commenter-comment" class="textarea-bordered textarea h-44 w-full text-xl" placeholder="What's on your mind?"></textarea>
+					</label>
+					<div>
+						<div id="cf-turnstile" class="hidden" data-cloudflare_public_key={CLOUDFLARE_PUBLIC_KEY}></div>
+						<button id="postComment" class="btn-outline btn-square btn mt-6 w-32 border-rose-800 text-rose-700 hover:border-rose-800 hover:bg-rose-900 hover:text-white disabled:bg-zinc-800 disabled:text-base disabled:font-bold disabled:hover:bg-zinc-800">SEND</button>
+					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	</div>
 </section>
 <script>
 	import comment from '../lib/comment-helper';
+	const formElement: HTMLFormElement = document.querySelector('#comment-form');
 	const postButton: HTMLButtonElement = document.querySelector('#postComment');
 	const nameElement: HTMLInputElement = document.querySelector('#commenter-name');
 	const emailElement: HTMLInputElement = document.querySelector('#commenter-email');
 	const commentElement: HTMLInputElement = document.querySelector('#commenter-comment');
 	const fieldsRequired: HTMLInputElement = document.querySelector('#fieldsRequired');
 
-	document.querySelector('#postComment').addEventListener('click', () => {
-		comment(nameElement, emailElement, commentElement, fieldsRequired, postButton);
+	document.querySelector('#postComment').addEventListener('click', (e) => {
+		e.preventDefault();
+		comment(formElement, nameElement, emailElement, commentElement, fieldsRequired, postButton);
 	});
 </script>

@@ -3,48 +3,51 @@
 		<input aria-label="Show/Hide Reply to Comment Section" type="checkbox" checked disabled />
 		<div class="collapse-title text-xl font-medium">Reply to <span id="originalCommenterName"></span></div>
 		<div role="form" class="collapse-content">
-			<div class="form-control">
-				<label class="label">
-					<span class="label-text">Your Name</span>
-				</label>
-				<label class="input-group">
-					<span class="w-20 justify-center">Name</span>
-					<input id="reply-commenter-name" type="text" placeholder="Chloe Walker" class="input-bordered input" />
-				</label>
+			<form id="reply-comment-form">
+				<div class="form-control">
+					<label class="label">
+						<span class="label-text">Your Name</span>
+					</label>
+					<label class="input-group">
+						<span class="w-20 justify-center">Name</span>
+						<input required id="reply-commenter-name" type="text" placeholder="Chloe Walker" class="input-bordered input" />
+					</label>
 
-				<label class="label">
-					<span class="label-text">Your Email</span>
-				</label>
-				<label class="input-group">
-					<span class="w-20 justify-center">Email</span>
-					<input id="reply-commenter-email" type="text" placeholder="info@site.com" class="input-bordered input" />
-				</label>
+					<label class="label">
+						<span class="label-text">Your Email</span>
+					</label>
+					<label class="input-group">
+						<span class="w-20 justify-center">Email</span>
+						<input required id="reply-commenter-email" type="email" placeholder="info@site.com" class="input-bordered input" />
+					</label>
 
-				<label class="label">
-					<span class="label-text">Your Comment</span>
-				</label>
-				<label class="input-group">
-					<textarea style="border-radius: 0.75rem !important;" id="reply-commenter-comment" class="textarea-bordered textarea h-44 w-full text-xl" placeholder="What's on your mind?"></textarea>
-				</label>
-				<div>
-					<button id="replyToComment" class="btn-outline btn-square btn mt-6 w-32 border-rose-800 text-rose-700 hover:border-rose-800 hover:bg-rose-900 hover:text-white disabled:bg-zinc-800 disabled:text-base disabled:font-bold disabled:hover:bg-zinc-800">SEND</button>
-					<button id="cancelReplyToComment" class="btn-outline btn-square btn ml-4 mt-6 w-32 border-rose-800 text-rose-700 hover:border-rose-800 hover:bg-rose-900 hover:text-white disabled:bg-zinc-800 disabled:text-base disabled:font-bold disabled:hover:bg-zinc-800">Cancel</button>
-					<p id="reply-fieldsRequired" style="opacity: 0;" class="mt-5 sm:ml-5 sm:inline-block">All Fields Are Required!</p>
+					<label class="label">
+						<span class="label-text">Your Comment</span>
+					</label>
+					<label class="input-group">
+						<textarea required style="border-radius: 0.75rem !important;" id="reply-commenter-comment" class="textarea-bordered textarea h-44 w-full text-xl" placeholder="What's on your mind?"></textarea>
+					</label>
+					<div>
+						<button id="replyToComment" class="btn-outline btn-square btn mt-6 w-32 border-rose-800 text-rose-700 hover:border-rose-800 hover:bg-rose-900 hover:text-white disabled:bg-zinc-800 disabled:text-base disabled:font-bold disabled:hover:bg-zinc-800">SEND</button>
+						<button id="cancelReplyToComment" class="btn-outline btn-square btn ml-4 mt-6 w-32 border-rose-800 text-rose-700 hover:border-rose-800 hover:bg-rose-900 hover:text-white disabled:bg-zinc-800 disabled:text-base disabled:font-bold disabled:hover:bg-zinc-800">Cancel</button>
+					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	</div>
 </section>
 <script>
 	import comment from '../lib/comment-helper';
+	const formElement: HTMLFormElement = document.querySelector('#reply-comment-form');
 	const sendReplyButton: HTMLButtonElement = document.querySelector('#replyToComment');
 	const nameElement: HTMLInputElement = document.querySelector('#reply-commenter-name');
 	const emailElement: HTMLInputElement = document.querySelector('#reply-commenter-email');
 	const commentElement: HTMLInputElement = document.querySelector('#reply-commenter-comment');
 	const fieldsRequired: HTMLInputElement = document.querySelector('#reply-fieldsRequired');
 
-	document.querySelector('#replyToComment').addEventListener('click', () => {
+	document.querySelector('#replyToComment').addEventListener('click', (e) => {
+		e.preventDefault();
 		const threadID = document.querySelector<HTMLElement>('#replyToComment').dataset.threadid;
-		comment(nameElement, emailElement, commentElement, fieldsRequired, sendReplyButton, true, threadID);
+		comment(formElement, nameElement, emailElement, commentElement, fieldsRequired, sendReplyButton, true, threadID);
 	});
 </script>
