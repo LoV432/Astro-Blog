@@ -10,18 +10,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-	.admin.customBorder {
-		--tw-ring-offset-shadow: inset 0 0 0.5em 0 var(--tw-shadow-color);
-		--tw-ring-shadow: inset 0 0 0.5em 0 var(--tw-shadow-color);
-		@apply border border-rose-800 shadow-md shadow-rose-800;
-	}
-
-	.guest.customBorder {
-		@apply border border-rose-800;
-	}
-}
-
 html {
 	background-color: rgb(18 18 18) !important;
 	color: rgb(228 228 231) !important;
