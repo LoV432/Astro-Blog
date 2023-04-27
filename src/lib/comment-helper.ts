@@ -7,10 +7,16 @@ export default async function comment(formElement: HTMLFormElement, nameElement:
 	const comment = commentElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
 	const form = formElement;
 	// Return early if any of the fields are empty
-	if (!form.reportValidity()) {
+	if (!form.checkValidity()) {
+		nameElement.nextElementSibling.classList.remove('hidden');
+		emailElement.nextElementSibling.classList.remove('hidden');
+		commentElement.nextElementSibling.classList.remove('hidden');
 		sendButton.innerText = ascii[Math.floor(Math.random() * ascii.length)];
 		return;
 	}
+	nameElement.nextElementSibling.classList.add('hidden');
+	emailElement.nextElementSibling.classList.add('hidden');
+	commentElement.nextElementSibling.classList.add('hidden');
 	sendButton.innerText = '';
 	sendButton.classList.add('loading');
 

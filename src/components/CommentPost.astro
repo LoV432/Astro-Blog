@@ -14,7 +14,8 @@ import { CLOUDFLARE_PUBLIC_KEY } from '../config';
 					</label>
 					<label class="input-group">
 						<span class="w-20 justify-center">Name</span>
-						<input required id="commenter-name" type="text" placeholder="Chloe Walker" class="input-bordered input" />
+						<input required id="commenter-name" type="text" placeholder="Chloe Walker" class="peer input-bordered input !rounded-r-lg" />
+						<div class="tooltip-open tooltip tooltip-error absolute left-44 hidden peer-valid:hidden" data-tip="Cant be empty"></div>
 					</label>
 
 					<label class="label">
@@ -22,14 +23,16 @@ import { CLOUDFLARE_PUBLIC_KEY } from '../config';
 					</label>
 					<label class="input-group">
 						<span class="w-20 justify-center">Email</span>
-						<input required id="commenter-email" type="email" placeholder="info@site.com" class="input-bordered input" />
+						<input required id="commenter-email" type="email" placeholder="info@site.com" class="peer input-bordered input !rounded-r-lg" />
+						<div class="tooltip-open tooltip tooltip-error absolute left-44 hidden peer-valid:hidden" data-tip="Enter a valid e-mail"></div>
 					</label>
 
 					<label class="label">
 						<span class="label-text">Your Comment</span>
 					</label>
 					<label class="input-group">
-						<textarea required style="border-radius: 0.75rem !important;" id="commenter-comment" class="textarea-bordered textarea h-44 w-full text-xl" placeholder="What's on your mind?"></textarea>
+						<textarea required style="border-radius: 0.75rem !important;" id="commenter-comment" class="peer textarea-bordered textarea h-44 w-full text-xl" placeholder="What's on your mind?"></textarea>
+						<div class="tooltip-open tooltip tooltip-error absolute left-44 hidden peer-valid:hidden" data-tip="Cant be empty"></div>
 					</label>
 					<div>
 						<div id="cf-turnstile" class="hidden" data-cloudflare_public_key={CLOUDFLARE_PUBLIC_KEY}></div>
