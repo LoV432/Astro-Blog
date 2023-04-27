@@ -50,10 +50,9 @@ import { CLOUDFLARE_PUBLIC_KEY } from '../config';
 	const nameElement: HTMLInputElement = document.querySelector('#commenter-name');
 	const emailElement: HTMLInputElement = document.querySelector('#commenter-email');
 	const commentElement: HTMLInputElement = document.querySelector('#commenter-comment');
-	const fieldsRequired: HTMLInputElement = document.querySelector('#fieldsRequired');
 
 	document.querySelector('#postComment').addEventListener('click', (e) => {
 		e.preventDefault();
-		comment(formElement, nameElement, emailElement, commentElement, fieldsRequired, postButton);
+		comment(formElement, nameElement, emailElement, commentElement, postButton);
 	});
 </script>

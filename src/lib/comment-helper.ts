@@ -1,6 +1,6 @@
 const ascii = ['૮⸝⸝> ̫ <⸝⸝ ა', '(,,>﹏<,,)', '(>᎑<๑)/♡', '(つ≧﹏≦)', '૮₍˶ •. • ⑅₎ა ♡', '૮( ๑ᵔ ᵕ ᵔ๑ )ა', '≧﹏≦', '(✿˵•́ᴗ•̀˵)', '(ꈍ◡ꈍ🌸)', '(•◡•🌸)♡'];
 
-export default async function comment(formElement: HTMLFormElement, nameElement: HTMLInputElement, emailElement: HTMLInputElement, commentElement: HTMLInputElement, fieldsRequired: HTMLInputElement, sendButton: HTMLButtonElement, isReply: boolean = false, threadID: string = ''): Promise<void> {
+export default async function comment(formElement: HTMLFormElement, nameElement: HTMLInputElement, emailElement: HTMLInputElement, commentElement: HTMLInputElement, sendButton: HTMLButtonElement, isReply: boolean = false, threadID: string = ''): Promise<void> {
 	const id = document.querySelector('body').dataset.post_id;
 	const name = nameElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \
 	const email = emailElement.value.replace(/\\/g, '\\\\').replace(/["]/g, '\\$&').replace(/\n/g, '\\n'); // Escape all "" and line breaks and \

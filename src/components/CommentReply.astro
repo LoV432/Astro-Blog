@@ -46,12 +46,11 @@
 	const nameElement: HTMLInputElement = document.querySelector('#reply-commenter-name');
 	const emailElement: HTMLInputElement = document.querySelector('#reply-commenter-email');
 	const commentElement: HTMLInputElement = document.querySelector('#reply-commenter-comment');
-	const fieldsRequired: HTMLInputElement = document.querySelector('#reply-fieldsRequired');
 
 	document.querySelector('#replyToComment').addEventListener('click', (e) => {
 		e.preventDefault();
 		const threadID = document.querySelector<HTMLElement>('#replyToComment').dataset.threadid;
-		comment(formElement, nameElement, emailElement, commentElement, fieldsRequired, sendReplyButton, true, threadID);
+		comment(formElement, nameElement, emailElement, commentElement, sendReplyButton, true, threadID);
 	});
 
 	// Add cancel reply button EventListeners
