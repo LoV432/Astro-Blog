@@ -36,7 +36,7 @@ export default async function comment(formElement: HTMLFormElement, nameElement:
 	sendButton.classList.remove('loading');
 	switch (status) {
 		case 200:
-			success(nameElement, emailElement, commentElement, sendButton);
+			success(formElement, sendButton);
 			break;
 
 		case 401:
@@ -107,8 +107,8 @@ async function sendReply(id: string, name: string, email: string, comment: strin
 	}
 }
 
-function success(nameElement: HTMLInputElement, emailElement: HTMLInputElement, commentElement: HTMLInputElement, sendButton: HTMLButtonElement): void {
-	[nameElement.value, emailElement.value, commentElement.value] = ['', '', '']; // Clear all text fields
+function success(formElement: HTMLFormElement, sendButton: HTMLButtonElement): void {
+	formElement.reset();
 	sendButton.classList.remove('disabled:text-rose-800', 'disabled:hover:text-rose-800');
 	sendButton.classList.add('disabled:text-green-800', 'disabled:hover:text-green-800');
 	sendButton.innerText = 'Posted!';
@@ -137,6 +137,7 @@ function bot(sendButton: HTMLButtonElement): void {
 }
 
 export function resetReplyForm() {
+	document.querySelector<HTMLFormElement>('#reply-comment-form').reset();
 	document.querySelector<HTMLFormElement>('#replyCommentSection').classList.add('hidden');
 	document.querySelector<HTMLFormElement>('#replyToComment').innerText = 'SEND';
 	document.querySelector<HTMLFormElement>('#postCommentCheckBox').checked = false; // Close the "Write a comment" drop down
