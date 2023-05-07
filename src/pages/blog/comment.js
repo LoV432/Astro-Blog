@@ -3,9 +3,9 @@ import { API, CLOUDFLARE_SECRET_KEY, CLOUDFLARE_API_KEY, CLOUDFLARE_ZONE, BASE_U
 export async function post({ request, clientAddress }) {
 	let commenterIP;
 	const avatar = 'https://avatars.dicebear.com/api/identicon/' + Math.random() * 99999999 + '.svg?background=%23ffffff';
-	if (request.headers.get('x-real-ip') != null) {
-		// this assumes the x-real-ip header can be trusted (like all traffic coming thru cloudflare)
-		commenterIP = request.headers.get('x-real-ip');
+	if (request.headers.get('CF-Connecting-IP') != null) {
+		// this assumes the CF-Connecting-IP header can be trusted (like all traffic coming thru cloudflare)
+		commenterIP = request.headers.get('CF-Connecting-IP');
 	} else {
 		commenterIP = clientAddress;
 	}
