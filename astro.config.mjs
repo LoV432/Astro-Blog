@@ -20,9 +20,11 @@ export default defineConfig({
     config: {
       applyBaseStyles: false
     }
-  }), prefetch(), critters({
-    logger: 0
-  }), compress({
+  }), prefetch(),
+  // critters({
+  //   logger: 0
+  // }), // TODO: Re-add critters
+  compress({
     html: false,
     css: false
   })],
