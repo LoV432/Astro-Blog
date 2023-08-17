@@ -16,6 +16,10 @@ html {
 	padding-left: calc(100vw - 100%); /* Dont shift content when theres a scrollbar https://stackoverflow.com/a/30293718 */
 }
 
+article code {
+	@apply border-2
+}
+
 .prose pre {
 	max-width: 85vw;
 }
