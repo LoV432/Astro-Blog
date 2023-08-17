@@ -20,6 +20,10 @@ article code {
 	@apply border-2
 }
 
+article img {
+	@apply border-2 border-rose-700 rounded-md
+}
+
 .prose pre {
 	max-width: 85vw;
 }
