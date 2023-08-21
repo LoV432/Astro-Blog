@@ -20,7 +20,7 @@ article code {
 	@apply border-2
 }
 
-article img {
+#article img {
 	@apply border-2 border-rose-700 rounded-md
 }
 
