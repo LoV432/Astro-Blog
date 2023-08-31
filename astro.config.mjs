@@ -8,28 +8,31 @@ import node from '@astrojs/node';
 import prefetch from '@astrojs/prefetch';
 
 // https://astro.build/config
-import critters from "astro-critters";
+import critters from 'astro-critters';
 
 // https://astro.build/config
-import compress from "astro-compress";
+import compress from 'astro-compress';
 
 // https://astro.build/config
 export default defineConfig({
-  site: `https://${BASE_URL}`,
-  integrations: [tailwind({
-    config: {
-      applyBaseStyles: false
-    }
-  }), prefetch(),
-  // critters({
-  //   logger: 0
-  // }), // TODO: Re-add critters
-  compress({
-    html: false,
-    css: false
-  })],
-  output: 'server',
-  adapter: node({
-    mode: 'standalone'
-  })
+	site: `https://${BASE_URL}`,
+	integrations: [
+		tailwind({
+			config: {
+				applyBaseStyles: false
+			}
+		}),
+		prefetch(),
+		// critters({
+		//   logger: 0
+		// }), // TODO: Re-add critters
+		compress({
+			html: false,
+			css: false
+		})
+	],
+	output: 'server',
+	adapter: node({
+		mode: 'standalone'
+	})
 });

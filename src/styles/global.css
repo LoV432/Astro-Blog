@@ -17,11 +17,11 @@ html {
 }
 
 article code {
-	@apply border-2
+	@apply border-2;
 }
 
 #article img {
-	@apply border-2 border-rose-700 rounded-md
+	@apply rounded-md border-2 border-rose-700;
 }
 
 .prose pre {
