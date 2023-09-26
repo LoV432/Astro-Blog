@@ -7,6 +7,7 @@ import CommentReply from '../../components/CommentReply.astro';
 import CommentSection from '../../components/CommentSection.astro';
 import Footer from '../../components/Footer.astro';
 import PostImage from '../../components/PostImage.astro';
+import { parse } from 'node-html-parser';
 import { API, PAGESIZE, SITE_TITLE } from '../../config';
 import { marked } from '../../../node_modules/marked';
 import DOMPurify from 'isomorphic-dompurify';
@@ -74,7 +75,25 @@ DOMPurify.addHook('afterSanitizeAttributes', function (node) {
 	}
 });
 
-const content = DOMPurify.sanitize(marked.parse(post.content));
+let vdom = parse(marked.parse(post.content)) as unknown as HTMLElement;
+const clipboardIcon =
+	'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"/></svg>';
+vdom.querySelectorAll('pre').forEach((pre) => {
+	// Create new button
+	let copyButton = parse('<button></button>') as unknown as HTMLButtonElement;
+	copyButton = copyButton.querySelector('button');
+	copyButton.innerHTML = clipboardIcon;
+	let buttonClasses = 'copybutton absolute top-4 right-4 fill-gray-400 w-3.5 copy-button hidden';
+	buttonClasses.split(' ').forEach((buttonClass) => {
+		copyButton.classList.add(buttonClass); // This is not native .classList. This classList doesn't support spread syntax. Hence the Loop
+	});
+	pre.classList.add('relative'); // Needed to position button correctly
+
+	// Add that button to the pre block
+	pre.appendChild(copyButton);
+});
+
+const content = DOMPurify.sanitize(vdom.toString());
 ---
 
 <!DOCTYPE html>
@@ -126,18 +145,8 @@ const content = DOMPurify.sanitize(marked.parse(post.content));
 				'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"/></svg>';
 			const tickIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>';
 			document.querySelectorAll('pre').forEach((pre) => {
-				// Create new button
-				let copyButton = document.createElement('button');
-				copyButton.innerHTML = clipboardIcon;
-				let buttonClasses = 'absolute top-4 right-4 fill-gray-400 w-3.5 copy-button hidden';
-				copyButton.classList.add(...buttonClasses.split(' '));
-
-				pre.style.position = 'relative'; // Needed to position button correctly
-
-				// Add that button to the pre block
-				pre.appendChild(copyButton);
-
 				// Add event listeners to show hide button
+				let copyButton = pre.querySelector('.copybutton');
 				pre.addEventListener('mouseenter', () => {
 					copyButton.classList.remove('hidden');
 				});
