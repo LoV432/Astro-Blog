@@ -83,7 +83,7 @@ vdom.querySelectorAll('pre').forEach((pre) => {
 	let copyButton = nodeHtmlParser('<button></button>') as unknown as HTMLButtonElement;
 	copyButton = copyButton.querySelector('button');
 	copyButton.innerHTML = clipboardIcon;
-	let buttonClasses = 'copybutton absolute top-4 right-4 fill-gray-400 w-3.5 copy-button hidden';
+	let buttonClasses = `copybutton absolute top-4 right-4 fill-gray-400 w-3.5 copy-button hidden plausible-event-name=Code+Copied plausible-event-position=${slug}`;
 	buttonClasses.split(' ').forEach((buttonClass) => {
 		copyButton.classList.add(buttonClass); // This is not native .classList. This classList doesn't support spread syntax. Hence the Loop
 	});
