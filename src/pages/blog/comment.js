@@ -2,7 +2,7 @@ import DOMPurify from 'isomorphic-dompurify';
 import { API, CLOUDFLARE_SECRET_KEY, CLOUDFLARE_API_KEY, CLOUDFLARE_ZONE, BASE_URL } from '../../config';
 export async function post({ request, clientAddress }) {
 	let commenterIP;
-	const avatar = 'https://avatars.dicebear.com/api/identicon/' + Math.random() * 99999999 + '.svg?background=%23ffffff';
+	const avatar = `https://api.dicebear.com/7.x/identicon/svg?background=%23ffffff&seed=${Math.random() * 99999999}`;
 	if (request.headers.get('CF-Connecting-IP') != null) {
 		// this assumes the CF-Connecting-IP header can be trusted (like all traffic coming thru cloudflare)
 		commenterIP = request.headers.get('CF-Connecting-IP');

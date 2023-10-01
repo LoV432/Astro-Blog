@@ -5,7 +5,7 @@ import ReportButton from './ReportButton.astro';
 
 const { comment, isReply = false } = Astro.props;
 const isAdmin: boolean = comment.isAdminComment == null ? false : true;
-const avatar: string = comment.author.avatar == null ? 'https://avatars.dicebear.com/api/identicon/loveingtheairUwU.svg?background=%23ffffff' : comment.author.avatar;
+const avatar: string = comment.author.avatar == null ? 'https://api.dicebear.com/7.x/identicon/svg?background=%23ffffff&seed=loveingtheairUwU' : comment.author.avatar;
 ---
 
 <div class={'rounded grid grid-cols-[auto] md:grid-cols-[auto,1fr] ' + (isReply ? 'pl-5' : '')}>
