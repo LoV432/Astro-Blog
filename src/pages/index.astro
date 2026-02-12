@@ -9,7 +9,7 @@ import Pagination from '../components/Pagination.astro';
 import Search from '../components/Search.astro';
 import PostCards from '../components/PostCards.astro';
 
-var api = API + '/api/posts?sort=id:desc&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&pagination[pageSize]=' + PAGESIZE;
+var api = API + '/api/posts?sort=id:desc&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&populate[cover][fields]=width&populate[cover][fields]=height&pagination[pageSize]=' + PAGESIZE;
 
 const posts = await fetch(api).then((res) => res.json());
 const totalPages = posts.meta.pagination.pageCount;

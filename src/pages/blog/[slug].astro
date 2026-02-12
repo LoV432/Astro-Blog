@@ -27,7 +27,7 @@ export async function getStaticPaths() {
 		let makeRequest = await fetch(url);
 		let responseJson = await makeRequest.json();
 		responseJson.data.forEach((post) => {
-			slugs.push(post.attributes.slug);
+			slugs.push(post.slug);
 		});
 		return { slugs: slugs };
 	}
@@ -49,11 +49,11 @@ export async function getStaticPaths() {
 	return allSlugs;
 }
 const { slug } = Astro.params;
-let posts = await fetch(API + '/api/posts/?filters[slug][$eq]=' + slug + '&fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&fields[5]=description&populate[cover][fields][0]=formats&populate[cover][fields]=url&populate[cover][fields]=width&populate[cover][fields]=height').then((res) => res.json());
+let posts = await fetch(API + '/api/posts/?filters[slug][$eq]=' + slug + '&fields[0]=heading&fields[1]=publishedAt&fields[2]=slug&fields[3]=updatedAt&fields[4]=content&fields[5]=description&populate[cover][fields][0]=formats&populate[cover][fields]=url&populate[cover][fields]=width&populate[cover][fields]=height&populate[cover][fields]=width&populate[cover][fields]=height').then((res) => res.json());
 if (!posts.data[0]) {
 	return Astro.redirect('/404');
 }
-const post = posts.data[0].attributes;
+const post = posts.data[0];
 
 marked.setOptions({
 	renderer: new marked.Renderer(),
@@ -98,8 +98,8 @@ const content = DOMPurify.sanitize(vdom.toString());
 
 <!DOCTYPE html>
 <html lang="en">
-	<BaseHead title={`${post.heading} | ${SITE_TITLE}`} description={post.description} image={imageHelper(post.cover.data.attributes, 'thumbnail').src}>
-		<link rel="preload" as="image" href={imageHelper(post.cover.data.attributes, 'original').src} />
+	<BaseHead title={`${post.heading} | ${SITE_TITLE}`} description={post.description} image={imageHelper(post.cover, 'thumbnail').src}>
+		<link rel="preload" as="image" href={imageHelper(post.cover, 'original').src} />
 		<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 		<link rel="dns-prefetch" href="https://api.dicebear.com/" />
 	</BaseHead>
@@ -109,7 +109,7 @@ const content = DOMPurify.sanitize(vdom.toString());
 		<main aria-label="Main" class="place-self-center">
 			<section aria-label="Post Image & Publish Date" class="w-full px-6 md:w-[45rem] md:px-0 lg:w-[55rem]">
 				<div class="pb-6">
-					<PostImage imageObject={post.cover.data.attributes} classes={'rounded-md w-full h-full object-cover aspect-video border-2 border-rose-800 flex place-items-center justify-center'} size={'original'} alt={'Heading Image'} />
+					<PostImage imageObject={post.cover} classes={'rounded-md w-full h-full object-cover aspect-video border-2 border-rose-800 flex place-items-center justify-center'} size={'original'} alt={'Heading Image'} />
 				</div>
 				<div>
 					<p><time id="publishedAt" data-publishedat={post.publishedAt}>Published on: {post.publishedAt}</time></p>

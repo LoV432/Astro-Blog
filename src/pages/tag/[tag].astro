@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 		let makeRequest = await fetch(url);
 		let responseJson = await makeRequest.json();
 		responseJson.data.forEach((post) => {
-			Tags.push(post.attributes.tag);
+			Tags.push(post.tag);
 		});
 		return { Tags: Tags };
 	}
@@ -44,7 +44,7 @@ export async function getStaticPaths() {
 	return allTags;
 }
 const { tag } = Astro.params;
-var api = API + '/api/posts?sort=id:desc&filters[tags][tag][$eq]=' + tag + '&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&pagination[pageSize]=' + PAGESIZE;
+var api = API + '/api/posts?sort=id:desc&filters[tags][tag][$eq]=' + tag + '&fields[0]=heading&fields[1]=createdAt&fields[2]=slug&fields[3]=description&populate[tags][fields]=tag&populate[cover][fields][0]=formats&populate[cover][fields]=url&populate[cover][fields]=width&populate[cover][fields]=height&pagination[pageSize]=' + PAGESIZE;
 
 const posts = await fetch(api).then((res) => res.json());
 const totalPages = posts.meta.pagination.pageCount;
