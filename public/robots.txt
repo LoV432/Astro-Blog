@@ -1,3 +1,5 @@
 # https://www.robotstxt.org/robotstxt.html
+Sitemap: https://blog.monib.xyz/sitemap-index.xml
 User-agent: *
 Allow: /
+Disallow: /cdn-cgi/

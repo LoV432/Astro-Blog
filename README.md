@@ -1,10 +1,9 @@
-# Astro Blog
+# blog.monib.xyz
 
 ## Setup
 
 ```sh
 pnpm install
-cp src/example.config.ts src/config.ts
 pnpm dev
 ```
 
@@ -30,14 +29,6 @@ updatedAt: 2026-10-05T12:00:00Z # optional
 
 Post content…
 ```
-
-## Importing from Strapi
-
-```sh
-node scripts/strapi-export.mjs http://localhost:1337
-```
-
-Downloads every post, its cover and any `/uploads/` images into `src/content/blog/`.
 
 ## Deploying
 

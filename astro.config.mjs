@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
+import sitemap from '@astrojs/sitemap';
 import { satteri } from '@astrojs/markdown-satteri';
 import tailwindcss from '@tailwindcss/vite';
 import { BASE_URL } from './src/config';
@@ -13,6 +14,7 @@ export default defineConfig({
 		mode: 'standalone'
 	}),
 	prefetch: true,
+	integrations: [sitemap()],
 	markdown: {
 		syntaxHighlight: false,
 		processor: satteri({
