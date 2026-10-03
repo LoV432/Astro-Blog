@@ -18,7 +18,6 @@
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
-    "daisyui": "^5.7.47",
     "highlight.js": "^11.12.0",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3"
