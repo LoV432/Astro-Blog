@@ -1,0 +1,28 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Search from '../components/Search.astro';
+import PostCards from '../components/PostCards.astro';
+import Pagination from '../components/Pagination.astro';
+import { SITE_DESCRIPTION } from '../config';
+import type { Post } from '../lib/posts';
+
+interface Props {
+	title: string;
+	posts: Post[];
+	totalPages: number;
+	currentPage: number;
+	tag?: string;
+	path?: string;
+	search?: string;
+}
+
+const { title, posts, totalPages, currentPage, tag, path, search } = Astro.props;
+---
+
+<BaseLayout title={title} description={SITE_DESCRIPTION}>
+	<main>
+		{tag ? <Search tag={tag} placeholder={`Search #${tag}`} /> : <Search />}
+		<PostCards posts={posts} />
+		<Pagination totalPages={totalPages} currentPage={currentPage} path={path} search={search} />
+	</main>
+</BaseLayout>

@@ -1,0 +1,93 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostImage from '../../components/PostImage.astro';
+import { SITE_TITLE } from '../../config';
+import imageHelper from '../../lib/image-helper';
+import { getPosts, type Post } from '../../lib/posts';
+import 'highlight.js/styles/github-dark.css';
+
+export async function getStaticPaths() {
+	return (await getPosts()).map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: Post };
+const { Content } = await render(post);
+const publishedAt = post.data.publishedAt.toISOString();
+const updatedAt = (post.data.updatedAt ?? post.data.publishedAt).toISOString();
+const thumbnail = await imageHelper(post.data.cover, 'thumbnail');
+const original = await imageHelper(post.data.cover, 'original');
+---
+
+<BaseLayout title={`${post.data.heading} | ${SITE_TITLE}`} description={post.data.description} image={new URL(thumbnail.src, Astro.site).href}>
+	<link slot="head" rel="preload" as="image" href={original.src} />
+	<main aria-label="Main" class="place-self-center">
+		<section aria-label="Post Image & Publish Date" class="w-full px-6 md:w-[45rem] md:px-0 lg:w-[55rem]">
+			<div class="pb-6">
+				<PostImage imageObject={post.data.cover} classes={'rounded-md w-full h-full object-cover aspect-video border-2 border-rose-800 flex place-items-center justify-center'} size={'original'} alt={'Heading Image'} />
+			</div>
+			<div>
+				<p><time id="publishedAt" data-publishedat={publishedAt}>Published on: {publishedAt}</time></p>
+				<p><time id="updatedAt" data-updatedat={updatedAt}>Last updated on: {updatedAt}</time></p>
+			</div>
+		</section>
+		<section aria-label="Main Article" class="mt-14 w-full px-6 md:w-[45rem] md:px-0 lg:w-[55rem]">
+			<article id="article" data-slug={post.id} class="prose-md prose prose-invert mt-5 max-w-full md:prose-xl">
+				<Content />
+			</article>
+		</section>
+	</main>
+	<script is:inline>
+		let updatedAtElement = document.querySelector('#updatedAt');
+		let updatedAt = updatedAtElement.dataset.updatedat;
+		let publishedAtElement = document.querySelector('#publishedAt');
+		let publishedAt = publishedAtElement.dataset.publishedat;
+		const options = {
+			dateStyle: 'short',
+			timeStyle: 'short'
+		};
+
+		publishedAtElement.innerHTML = 'Published on: ' + new Date(publishedAt).toLocaleString('en-US', options);
+		updatedAtElement.innerHTML = 'Last updated on: ' + new Date(updatedAt).toLocaleString('en-US', options);
+	</script>
+	<script>
+		const clipboardIcon =
+			'<svg style="pointer-events:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"/></svg>';
+		const tickIcon = '<svg style="pointer-events:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>';
+		const slug = document.querySelector<HTMLElement>('#article')!.dataset.slug;
+
+		document.querySelectorAll('pre').forEach((pre) => {
+			const copyButton = pre.querySelector('.copybutton');
+			if (!copyButton) return;
+			copyButton.classList.add(`plausible-event-position=${slug}`);
+			pre.addEventListener('mouseenter', () => {
+				copyButton.classList.remove('hidden');
+			});
+			pre.addEventListener('mouseleave', () => {
+				copyButton.classList.add('hidden');
+			});
+		});
+
+		document.querySelectorAll<HTMLElement>('.copy-button').forEach((copyButton) => {
+			copyButton.addEventListener('click', () => {
+				const codeBlock = copyButton.previousSibling!.cloneNode(true) as HTMLElement;
+				codeBlock.querySelectorAll('.hljs-comment').forEach((comment) => {
+					comment.remove();
+				});
+
+				const clipboardText = codeBlock.textContent!.replace(/^\s*[\r\n]/gm, '');
+				navigator.clipboard.writeText(clipboardText);
+
+				copyButton.classList.add('fill-green-800', 'w-4');
+				copyButton.style.display = 'block';
+				copyButton.innerHTML = tickIcon;
+				setTimeout(() => {
+					copyButton.style.display = '';
+					if ('ontouchstart' in window) copyButton.classList.add('hidden');
+					copyButton.classList.remove('fill-green-800', 'w-4');
+					copyButton.innerHTML = clipboardIcon;
+				}, 2000);
+			});
+		});
+	</script>
+</BaseLayout>

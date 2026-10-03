@@ -1,46 +1,49 @@
-# Astro Starter Kit: Basics
+# Astro Blog
+
+## Setup
 
 ```sh
-pnpm create astro@latest -- --template basics
+pnpm install
+cp src/example.config.ts src/config.ts
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Writing posts
 
-## 🚀 Project Structure
+Each post is a folder in `src/content/blog/`. The folder name is the slug (`/blog/<slug>/`).
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```
+src/content/blog/my-post/
+├── index.md
+└── cover.png
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+```md
+---
+heading: My Post
+description: Shown on the post card and in the meta description.
+cover: ./cover.png
+tags: [linux, astro]
+publishedAt: 2026-10-04T12:00:00Z
+updatedAt: 2026-10-05T12:00:00Z # optional
+---
 
-## 🧞 Commands
+Post content…
+```
 
-All commands are run from the root of the project, from a terminal:
+## Importing from Strapi
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+```sh
+node scripts/strapi-export.mjs http://localhost:1337
+```
 
-## 👀 Want to learn more?
+Downloads every post, its cover and any `/uploads/` images into `src/content/blog/`.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Deploying
+
+Everything is prerendered except `/search`, which runs on the Node server:
+
+```sh
+pnpm build
+node dist/server/entry.mjs
+```

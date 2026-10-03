@@ -1,0 +1,13 @@
+---
+import PostListLayout from '../../../layouts/PostListLayout.astro';
+import { SITE_TITLE } from '../../../config';
+import { paginate } from '../../../lib/posts';
+import { searchPosts } from '../../../lib/search';
+
+export const prerender = false;
+
+const page = Number(Astro.params.page) || 1;
+const { posts, totalPages, currentPage } = paginate(await searchPosts(Astro.url), page);
+---
+
+<PostListLayout title={SITE_TITLE} posts={posts} totalPages={totalPages} currentPage={currentPage} tag={Astro.url.searchParams.get('tag') || undefined} path="/search" search={Astro.url.search} />

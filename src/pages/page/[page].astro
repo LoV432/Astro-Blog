@@ -1,0 +1,14 @@
+---
+import PostListLayout from '../../layouts/PostListLayout.astro';
+import { SITE_TITLE } from '../../config';
+import { getPosts, getTotalPages, pagePaths, paginate } from '../../lib/posts';
+
+export async function getStaticPaths() {
+	return pagePaths(getTotalPages(await getPosts())).map((page) => ({ params: { page } }));
+}
+
+const { page } = Astro.params;
+const { posts, totalPages, currentPage } = paginate(await getPosts(), Number(page));
+---
+
+<PostListLayout title={`Page ${page} | ${SITE_TITLE}`} posts={posts} totalPages={totalPages} currentPage={currentPage} />

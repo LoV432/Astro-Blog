@@ -1,0 +1,11 @@
+---
+const { placeholder = 'Search', tag = '' } = Astro.props;
+---
+
+<section>
+	<form method="get" action="/search" class="grid w-full place-items-center">
+		<input type="text" id="search" name="search" placeholder={placeholder} class="input-error mb-10 h-14 w-[19rem] rounded-lg border-2 border-rose-700 bg-zinc-800 text-center text-2xl font-bold focus:shadow-lg focus:shadow-rose-600/50 focus:outline-hidden md:w-[48rem]" />
+		<input type="text" id="tag" name="tag" value={tag} placeholder={placeholder} class="hidden" />
+		<input class="hidden" type="submit" value="Go!" />
+	</form>
+</section>

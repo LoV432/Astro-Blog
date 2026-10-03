@@ -1,0 +1,16 @@
+---
+import type { ImageMetadata } from 'astro';
+import imageHelper, { type CoverSize } from '../lib/image-helper';
+
+interface Props {
+	imageObject: ImageMetadata;
+	classes: string;
+	size: CoverSize;
+	alt: string;
+}
+
+const { imageObject, classes, size, alt } = Astro.props;
+const image = await imageHelper(imageObject, size);
+---
+
+<img width={image.attributes.width} height={image.attributes.height} src={image.src} class={classes} alt={alt} />

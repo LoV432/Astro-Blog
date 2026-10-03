@@ -1,5 +1,25 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import node from '@astrojs/node';
+import { satteri } from '@astrojs/markdown-satteri';
+import tailwindcss from '@tailwindcss/vite';
+import { BASE_URL } from './src/config';
+import { postContentPlugin } from './src/lib/markdown-plugins.mjs';
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+	site: `https://${BASE_URL}`,
+	output: 'static',
+	adapter: node({
+		mode: 'standalone'
+	}),
+	prefetch: true,
+	markdown: {
+		syntaxHighlight: false,
+		processor: satteri({
+			hastPlugins: [postContentPlugin]
+		})
+	},
+	vite: {
+		plugins: [tailwindcss()]
+	}
+});

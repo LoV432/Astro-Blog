@@ -1,0 +1,19 @@
+---
+import PostListLayout from '../../../../layouts/PostListLayout.astro';
+import { SITE_TITLE } from '../../../../config';
+import { getPosts, getTags, getTotalPages, pagePaths, paginate } from '../../../../lib/posts';
+
+export async function getStaticPaths() {
+	const allPosts = await getPosts();
+	return getTags(allPosts).flatMap((tag) => {
+		const tagged = allPosts.filter((post) => post.data.tags.includes(tag));
+		return pagePaths(getTotalPages(tagged)).map((page) => ({ params: { tag, page } }));
+	});
+}
+
+const { tag, page } = Astro.params;
+const tagged = (await getPosts()).filter((post) => post.data.tags.includes(tag));
+const { posts, totalPages, currentPage } = paginate(tagged, Number(page));
+---
+
+<PostListLayout title={`Page ${page} | ${tag[0].toUpperCase() + tag.slice(1)} | ${SITE_TITLE}`} posts={posts} totalPages={totalPages} currentPage={currentPage} tag={tag} path={`/tag/${tag}`} />
