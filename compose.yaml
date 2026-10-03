@@ -1,0 +1,22 @@
+services:
+  blog:
+    build: .
+    image: astro-blog
+    container_name: blog
+    restart: unless-stopped
+    networks:
+      - traefik_default
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "traefik.enable=true"
+      - "traefik.http.routers.blog.rule=Host(`blog.monib.xyz`)"
+      - "traefik.http.routers.blog.entrypoints=websecure"
+      - "traefik.http.routers.blog.tls.certresolver=production"
+      - "traefik.http.routers.blog.tls.domains[0].main=*.monib.xyz"
+      #- "traefik.http.routers.blog.middlewares=cloudflarewarp@file"
+      - "traefik.http.services.blog.loadbalancer.server.port=4321"
+      - "traefik.docker.network=traefik_default"
+
+networks:
+  traefik_default:
+    external: true
